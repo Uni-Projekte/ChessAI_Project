@@ -48,18 +48,26 @@ Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" p
 The CXX compiler identification is MSVC, found in "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/3.25.2/CompilerIdCXX/CMakeCXXCompilerId.exe"
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-im6sf4
+Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ju6lsu
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.1.1/bin/ninja/win/x64/ninja.exe cmTC_184d5 && [1/2] Building C object CMakeFiles\cmTC_184d5.dir\CMakeCCompilerABI.c.obj
-[2/2] Linking C executable cmTC_184d5.exe
+Run Build Command(s):nmake -f Makefile /nologo cmTC_59f03\fast && 	"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\bin\HostX86\x86\nmake.exe"  -f CMakeFiles\cmTC_59f03.dir\build.make /nologo -L                  CMakeFiles\cmTC_59f03.dir\build
+Building C object CMakeFiles/cmTC_59f03.dir/CMakeCCompilerABI.c.obj
+	"C:\Program Files\JetBrains\CLion 2023.1.1\bin\cmake\win\x64\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_59f03.dir\CMakeCCompilerABI.c.obj.d --working-dir="C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\ChessAI_Project\cmake-build-debug\CMakeFiles\CMakeScratch\TryCompile-ju6lsu" --filter-prefix="Hinweis: Einlesen der Datei: " -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\cl.exe @C:\Users\MATEUS~1\AppData\Local\Temp\nm1DB7.tmp
+CMakeCCompilerABI.c
+Linking C executable cmTC_59f03.exe
+	"C:\Program Files\JetBrains\CLion 2023.1.1\bin\cmake\win\x64\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_59f03.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\mt.exe --manifests -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\cmTC_59f03.dir\objects1 @C:\Users\MATEUS~1\AppData\Local\Temp\nm1F3F.tmp
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ghuf4y
+Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-8c0seo
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.1.1/bin/ninja/win/x64/ninja.exe cmTC_9a500 && [1/2] Building CXX object CMakeFiles\cmTC_9a500.dir\CMakeCXXCompilerABI.cpp.obj
-[2/2] Linking CXX executable cmTC_9a500.exe
+Run Build Command(s):nmake -f Makefile /nologo cmTC_445fa\fast && 	"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\bin\HostX86\x86\nmake.exe"  -f CMakeFiles\cmTC_445fa.dir\build.make /nologo -L                  CMakeFiles\cmTC_445fa.dir\build
+Building CXX object CMakeFiles/cmTC_445fa.dir/CMakeCXXCompilerABI.cpp.obj
+	"C:\Program Files\JetBrains\CLion 2023.1.1\bin\cmake\win\x64\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_445fa.dir\CMakeCXXCompilerABI.cpp.obj.d --working-dir="C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\ChessAI_Project\cmake-build-debug\CMakeFiles\CMakeScratch\TryCompile-8c0seo" --filter-prefix="Hinweis: Einlesen der Datei: " -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\cl.exe @C:\Users\MATEUS~1\AppData\Local\Temp\nm2151.tmp
+CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_445fa.exe
+	"C:\Program Files\JetBrains\CLion 2023.1.1\bin\cmake\win\x64\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_445fa.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\mt.exe --manifests -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\cmTC_445fa.dir\objects1 @C:\Users\MATEUS~1\AppData\Local\Temp\nm21CF.tmp
 
 
 
