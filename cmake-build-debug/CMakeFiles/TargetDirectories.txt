@@ -1,3 +1,0 @@
-C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/ChessAI_Project.dir
-C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,4 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.22/Modules/CMakeDependentOption.cmake
+C:/Program Files/CMake/share/cmake-3.22/Modules/GNUInstallDirs.cmake
+C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-src/CMakeLists.txt

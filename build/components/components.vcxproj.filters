@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\vsChessAi\ChessAI_Project\src\components\Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\vsChessAi\ChessAI_Project\src\components\Board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\vsChessAi\ChessAI_Project\src\components\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{B72DC4FB-1BC9-3FCD-B3BE-C0F477D525D5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{090D367C-28CA-3C0F-AD6C-2537AFA369D1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

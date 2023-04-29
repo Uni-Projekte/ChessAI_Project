@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/490b632f5b6a45ef407914e3ad40817e/googletest-populate.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/0ff5930405d7e9cb2a7ea9cfb10a87ed/googletest-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/build/_deps/googletest-subbuild/CMakeFiles/88aaa85d851af1d1c6e51e49a4c9a9c8/googletest-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"googletest-populate"
+		],
+		"name" : "googletest-populate"
+	}
+}

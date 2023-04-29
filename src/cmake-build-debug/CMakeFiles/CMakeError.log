@@ -1,0 +1,58 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-e5nf1d
+
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.1.1/bin/ninja/win/x64/ninja.exe cmTC_e253c && [1/2] Building C object CMakeFiles\cmTC_e253c.dir\src.c.obj
+FAILED: CMakeFiles/cmTC_e253c.dir/src.c.obj 
+C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\cl.exe  /nologo -DCMAKE_HAVE_LIBC_PTHREAD  /DWIN32 /D_WINDOWS /W3  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\cmTC_e253c.dir\src.c.obj /FdCMakeFiles\cmTC_e253c.dir\ /FS -c "C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\vsChessAi\ChessAI_Project\src\cmake-build-debug\CMakeFiles\CMakeScratch\TryCompile-e5nf1d\src.c"
+C:\Users\Mateusz Pawelczyk\Documents\Programmieren\C++ Scripts\vsChessAi\ChessAI_Project\src\cmake-build-debug\CMakeFiles\CMakeScratch\TryCompile-e5nf1d\src.c(1): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "pthread.h": No such file or directory
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c5dhy4
+
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.1.1/bin/ninja/win/x64/ninja.exe cmTC_8931c && [1/2] Building C object CMakeFiles\cmTC_8931c.dir\CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_8931c.exe
+FAILED: cmTC_8931c.exe 
+cmd.exe /C "cd . && "C:\Program Files\JetBrains\CLion 2023.1.1\bin\cmake\win\x64\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_8931c.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\mt.exe --manifests  -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\link.exe /nologo CMakeFiles\cmTC_8931c.dir\CheckFunctionExists.c.obj  /out:cmTC_8931c.exe /implib:cmTC_8931c.lib /pdb:cmTC_8931c.pdb /version:0.0 /machine:X86  /debug /INCREMENTAL /subsystem:console  pthreads.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+LINK Pass 1: command "C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\link.exe /nologo CMakeFiles\cmTC_8931c.dir\CheckFunctionExists.c.obj /out:cmTC_8931c.exe /implib:cmTC_8931c.lib /pdb:cmTC_8931c.pdb /version:0.0 /machine:X86 /debug /INCREMENTAL /subsystem:console pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\cmTC_8931c.dir/intermediate.manifest CMakeFiles\cmTC_8931c.dir/manifest.res" failed (exit code 1104) with the following output:
+LINK : fatal error LNK1104: Datei "pthreads.lib" kann nicht geöffnet werden.
+ninja: build stopped: subcommand failed.
+
+
+
+Determining if the function pthread_create exists in the pthread failed with the following output:
+Change Dir: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-0byc4x
+
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.1.1/bin/ninja/win/x64/ninja.exe cmTC_b9318 && [1/2] Building C object CMakeFiles\cmTC_b9318.dir\CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_b9318.exe
+FAILED: cmTC_b9318.exe 
+cmd.exe /C "cd . && "C:\Program Files\JetBrains\CLion 2023.1.1\bin\cmake\win\x64\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_b9318.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\mt.exe --manifests  -- C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\link.exe /nologo CMakeFiles\cmTC_b9318.dir\CheckFunctionExists.c.obj  /out:cmTC_b9318.exe /implib:cmTC_b9318.lib /pdb:cmTC_b9318.pdb /version:0.0 /machine:X86  /debug /INCREMENTAL /subsystem:console  pthread.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+LINK Pass 1: command "C:\PROGRA~1\MICROS~1\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx86\x86\link.exe /nologo CMakeFiles\cmTC_b9318.dir\CheckFunctionExists.c.obj /out:cmTC_b9318.exe /implib:cmTC_b9318.lib /pdb:cmTC_b9318.pdb /version:0.0 /machine:X86 /debug /INCREMENTAL /subsystem:console pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\cmTC_b9318.dir/intermediate.manifest CMakeFiles\cmTC_b9318.dir/manifest.res" failed (exit code 1104) with the following output:
+LINK : fatal error LNK1104: Datei "pthread.lib" kann nicht geöffnet werden.
+ninja: build stopped: subcommand failed.
+
+
+
