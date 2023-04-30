@@ -12,7 +12,7 @@ To build the project, follow these steps:
 2. Run the following command to generate the build files:
 
 ```bash
-cmake -S src -B cmake-build-debug
+cmake -B cmake-build-debug
 ```
 3. Once the build files have been generated, run the following command to build the project:
 ```bash
