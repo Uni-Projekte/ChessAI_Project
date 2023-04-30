@@ -8,6 +8,17 @@ set(ChessAI_Project_Src
     Board.h
     bitBoardLoader.cpp
     bitBoardLoader.h
-)
+        pieces/bishop.cpp
+        pieces/bishop.h
+        pieces/king.cpp
+        pieces/king.h
+        pieces/knight.cpp
+        pieces/knight.h
+        pieces/pawn.cpp
+        pieces/pawn.h
+        pieces/queen.cpp
+        pieces/queen.h
+        pieces/rook.cpp
+        pieces/rook.h)
 
-add_library(components ${ChessAI_Project_Src})
+add_library(components ${ChessAI_Project_Src} )

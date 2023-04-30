@@ -1,0 +1,10 @@
+#ifndef CHESSAI_PROJECT_KNIGHT_H
+#define CHESSAI_PROJECT_KNIGHT_H
+
+
+class knight {
+
+};
+
+
+#endif //CHESSAI_PROJECT_KNIGHT_H

@@ -1,0 +1,10 @@
+#ifndef CHESSAI_PROJECT_QUEEN_H
+#define CHESSAI_PROJECT_QUEEN_H
+
+
+class queen {
+
+};
+
+
+#endif //CHESSAI_PROJECT_QUEEN_H
