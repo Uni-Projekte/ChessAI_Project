@@ -1,12 +1,15 @@
 #include "components/Board.h"
-
+#include "components/bitBoardLoader.h"
 #include <iostream>
 
 
 int main()
 {
-	Board board("8/8/8/2k5/4K3/8/8/8");
-	
+    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
+    Board board("8/8/8/2k5/4K3/8/8/8");
+
+    std::cout << board.ToString(loader);
+
     std::cout << "Hello World!\n";
 }
 

@@ -3,7 +3,9 @@
 
 // Tests made bny RamRam
 TEST(BoardTest, FromFENTestInitalBoard) {
+    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0xff000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x800000000000000);
@@ -19,23 +21,26 @@ TEST(BoardTest, FromFENTestInitalBoard) {
 }
 
 TEST(BoardTest, FromFENTestRandomBoard1) {
-    Board board2("2rq3k/pB1P2pp/8/5b2/4p3/1PQ5/P4PPP/6K1");
-    EXPECT_EQ(board2.GetBlackPawns(), 0x83000008000000);
-    EXPECT_EQ(board2.GetBlackQueen(), 0x1000000000000000);
-    EXPECT_EQ(board2.GetBlackKing(), 0x100000000000000);
-    EXPECT_EQ(board2.GetBlackBishops(), 0x400000000);
-    EXPECT_EQ(board2.GetBlackKnights(), 0x0);
-    EXPECT_EQ(board2.GetBlackTowers(), 0x2000000000000000);
-    EXPECT_EQ(board2.GetWhitePawns(), 0x10000000408700);
-    EXPECT_EQ(board2.GetWhiteQueen(), 0x200000);
-    EXPECT_EQ(board2.GetWhiteKing(), 0x2);
-    EXPECT_EQ(board2.GetWhiteBishops(), 0x40000000000000);
-    EXPECT_EQ(board2.GetWhiteKnights(), 0x0);
+    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
+    Board board("2rq3k/pB1P2pp/8/5b2/4p3/1PQ5/P4PPP/6K1");
+    std::cout << board.ToString(loader);
+    EXPECT_EQ(board.GetBlackPawns(), 0x83000008000000);
+    EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
+    EXPECT_EQ(board.GetBlackKing(), 0x100000000000000);
+    EXPECT_EQ(board.GetBlackBishops(), 0x400000000);
+    EXPECT_EQ(board.GetBlackKnights(), 0x0);
+    EXPECT_EQ(board.GetBlackTowers(), 0x2000000000000000);
+    EXPECT_EQ(board.GetWhitePawns(), 0x10000000408700);
+    EXPECT_EQ(board.GetWhiteQueen(), 0x200000);
+    EXPECT_EQ(board.GetWhiteKing(), 0x2);
+    EXPECT_EQ(board.GetWhiteBishops(), 0x40000000000000);
+    EXPECT_EQ(board.GetWhiteKnights(), 0x0);
 }
 
 TEST(BoardTest, FromFENTestRandomBoard2) {
+    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("6k1/p5pp/8/8/8/3r1q2/6PK/8 w - - 0 1");
-
+    std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0x83000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x40000);
     EXPECT_EQ(board.GetBlackKing(), 0x200000000000000);

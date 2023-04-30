@@ -12,6 +12,9 @@ add_subdirectory(components_tests)
 
 target_link_libraries(${PROJECT_NAME} components)
 
+file(COPY bitboards.txt DESTINATION ../cmake-build-debug/Debug)
+file(COPY bitboards.txt DESTINATION ../cmake-build-debug/components_tests/Debug)
+
 if(NOT googletest)
 	include(FetchContent)
 	FetchContent_Declare(

@@ -5,69 +5,22 @@
 
 using namespace std;
 
-// Constructor that initializes the chessboard to the standard starting position
-Board::Board(){
-    // Initialize bitboards to standard starting position
-    this->black = 0xffff000000000000;
-    this->white = 0xffff;
-    this->pawns = 0x00ff00000000ff00;
-    size_t pos = 0;
-    this->bishops = stoull(
-            "00100100"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00100100",&pos, 2);
-    this->kings =stoull(
-            "00001000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00001000",&pos, 2);
-    this->queens = stoull(
-            "00010000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00010000",&pos, 2);
-    this->towers = stoull(
-            "10000001"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "10000001",&pos, 2);
-    this->bishops = stoull(
-            "00100100"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00100100",&pos, 2);
-    this->knights = stoull(
-            "01000010"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "00000000"
-            "01000010",&pos, 2);
+/**
+ * @brief create new standard board
+ * @param loader: standard start configuration
+ * @return new complete bit-board-collection
+ */
+Board::Board(BitBoardLoader &loader)
+{
+    this->black = loader.GetBlack();
+    this->white = loader.GetWhite();
+    this->bishops = loader.GetBishops();
+    this->queens = loader.GetQueens();
+    this->towers = loader.GetTowers();
+    this->pawns = loader.GetPawns();
+    this->kings = loader.GetKings();
+    this->knights = loader.GetKnights();
 }
-
 
 Board::Board(std::string fen) {
     this->black = 0;
@@ -179,19 +132,143 @@ uint64_t Board::GetWhiteTowers() const {
 }
 
 /**
- * @brief convert the chessboard into a string
- * @return string representation of the chessboard
+ * @brief check if player's piece is on position with row and column
+ * @param player: bit-board (white or black)
+ * @param piece: bit-board (one of kings/queens/bishops/towers/knights/pawns)
+ * @param row: bit-board (from 1-8)
+ * @param column: bit-board (from a-h)
+ * @return 0 (false) or >0 (true)
  */
-string Board::ToString() const {
+uint64_t Board::IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column)
+{
+    return player & piece & row & column;
+}
+
+/**
+ * @brief multiply string
+ * @param src: string to multiply
+ * @param times: number of multiplication
+ * @return new string src x times
+ */
+string stringMultiply(string src, unsigned int times)
+{
+    string out = "";
+    for (int i = 0; i < times; i++)
+    {
+        out = out + src;
+    }
+    return out;
+}
+
+/**
+ * @brief generate string representation of the board
+ * @param loader: access to constant boards needed
+ * @return new string string representation of the board
+ */
+string Board::ToString(BitBoardLoader &loader)
+{
     string board[64];
     string output = "";
 
-    const uint64_t rowBlackKing = GetBlackKing() & 0xf * 1;
-    const uint64_t columnBlackKing = GetBlackKing() % 2;
+    int maxWidth = 0;
 
-    for (int i = 0; i < 64; i++) {
-        output = output + board[i];
+    for (int r = 0; r < 8; r++)
+    {
+        for (int c = 0; c < 8; c++)
+        {
+            int i = ((7 - r) << 3) + c;
+            if (this->IsOnField(this->white, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("WKING");
+            }
+            if (this->IsOnField(this->white, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("WQUEEN");
+            }
+            if (this->IsOnField(this->white, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("WPAWN");
+            }
+            if (this->IsOnField(this->white, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("WTOWER");
+            }
+            if (this->IsOnField(this->white, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("WKNIGHT");
+            }
+            if (this->IsOnField(this->white, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("WBISHOP");
+            }
+            if (this->IsOnField(this->black, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("BKING");
+            }
+            if (this->IsOnField(this->black, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("BQUEEN");
+            }
+            if (this->IsOnField(this->black, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("BPAWN");
+            }
+            if (this->IsOnField(this->black, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("BTOWER");
+            }
+            if (this->IsOnField(this->black, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("BKNIGHT");
+            }
+            if (this->IsOnField(this->black, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("BBISHOP");
+            }
+            if (board[i].length() > maxWidth)
+            {
+                maxWidth = board[i].length();
+            }
+        }
     }
+
+    string line = stringMultiply("-", maxWidth + 2);
+    output = output + " +" + stringMultiply(line + "+", 7) + line + "+\r\n";
+    for (int r = 0; r < 7; r++)
+    {
+        output = output + std::to_string((7 - r) + 1);
+        for (int c = 0; c < 8; c++)
+        {
+
+            output = output + "| ";
+            output = output + stringMultiply(" ", (maxWidth - board[(r << 3) + c].length()) / 2);
+            output = output + board[(r << 3) + c];
+            output = output + stringMultiply(" ", (maxWidth - board[(r << 3) + c].length() + 1) / 2);
+            output = output + " ";
+        }
+        output = output + "|\r\n";
+
+        output = output + " +" + stringMultiply(line + "+", 7) + line + "+\r\n";
+    }
+    output = output + "1";
+    for (int c = 0; c < 8; c++)
+    {
+        output = output + "| ";
+        output = output + stringMultiply(" ", (maxWidth - board[(7 << 3) + c].length()) / 2);
+        output = output + board[(7 << 3) + c];
+        output = output + stringMultiply(" ", (maxWidth - board[(7 << 3) + c].length() + 1) / 2);
+        output = output + " ";
+    }
+    output = output + "|\r\n";
+    output = output + " +" + stringMultiply(line + "+", 7) + line + "+\r\n";
+    output = output + " ";
+    for (int c = 0; c < 8; c++)
+    {
+        output = output + stringMultiply(" ", (maxWidth + 3) / 2);
+        output = output + loader.GetColumnLetterFromIndex(c);
+        output = output + stringMultiply(" ", (maxWidth + 2) / 2);
+    }
+    output = output + " \r\n";
     return output;
 }
 

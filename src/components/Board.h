@@ -2,6 +2,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "bitBoardLoader.h"
 #include <string>
 #include <vector>
 
@@ -34,7 +35,7 @@ private:
     uint16_t fullmove_number;
 public:
     // Constructor that initializes the chessboard to the standard starting position
-    Board();
+    Board(BitBoardLoader &loader);
 
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
@@ -76,7 +77,10 @@ public:
     uint64_t GetWhiteTowers() const;
 
     // Converts the board to a string representation
-    std::string ToString() const;
+    std::string ToString(BitBoardLoader &loader);
+
+    // Check if piece of player is on position with row and column
+    uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);
 
     // Converts a FEN string to a board configuration
     void fromFEN(std::string fen);
