@@ -12,8 +12,8 @@ add_subdirectory(components_tests)
 
 target_link_libraries(${PROJECT_NAME} components)
 
-file(COPY bitboards.txt DESTINATION ../cmake-build-debug/Debug)
-file(COPY bitboards.txt DESTINATION ../cmake-build-debug/components_tests/Debug)
+
+
 
 if(NOT googletest)
 	include(FetchContent)
@@ -26,3 +26,8 @@ if(NOT googletest)
 	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 	FetchContent_MakeAvailable(googletest)
 endif()
+
+file(COPY bitboards.txt DESTINATION .)
+file(COPY bitboards.txt DESTINATION ./components_tests)
+file(COPY bitboards.txt DESTINATION ./Debug)
+file(COPY bitboards.txt DESTINATION ./Debug/components_tests)

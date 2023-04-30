@@ -1,9 +1,14 @@
 #include "gtest/gtest.h"
 #include "../components/Board.h"
+#include <filesystem>
+namespace fs = std::filesystem;
 
 // Tests made bny RamRam
 TEST(BoardTest, FromFENTestInitalBoard) {
-    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
+    std::filesystem::path path = "./bitboards.txt";
+    std::cout << "Current path is " << std::filesystem::current_path() << '\n';
+    std::cout << "Absolute path for " << path << " is " << fs::absolute(path) << '\n';
+    BitBoardLoader loader = BitBoardLoader("./bitboards.txt");
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
     std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0xff000000000000);
@@ -21,9 +26,9 @@ TEST(BoardTest, FromFENTestInitalBoard) {
 }
 
 TEST(BoardTest, FromFENTestRandomBoard1) {
-    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
+    //BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("2rq3k/pB1P2pp/8/5b2/4p3/1PQ5/P4PPP/6K1");
-    std::cout << board.ToString(loader);
+    //std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0x83000008000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x100000000000000);
@@ -38,9 +43,9 @@ TEST(BoardTest, FromFENTestRandomBoard1) {
 }
 
 TEST(BoardTest, FromFENTestRandomBoard2) {
-    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
+    //BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("6k1/p5pp/8/8/8/3r1q2/6PK/8 w - - 0 1");
-    std::cout << board.ToString(loader);
+    //std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0x83000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x40000);
     EXPECT_EQ(board.GetBlackKing(), 0x200000000000000);
