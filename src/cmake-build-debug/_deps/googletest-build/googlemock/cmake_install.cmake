@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-src/googlemock
+# Install script for directory: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-src/googlemock
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -33,36 +33,36 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-src/googlemock/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-src/googlemock/include/")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/lib/gmock.lib")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/lib/gmock.lib")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/lib/gmock_main.lib")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/lib/gmock_main.lib")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE FILE OPTIONAL FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/bin/${CMAKE_INSTALL_CONFIG_NAME}/gmockpdb_debug_postfix-NOTFOUND.pdb")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE FILE OPTIONAL FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/bin/${CMAKE_INSTALL_CONFIG_NAME}/gmockpdb_debug_postfix-NOTFOUND.pdb")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE FILE OPTIONAL FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/bin/${CMAKE_INSTALL_CONFIG_NAME}/gmock_mainpdb_debug_postfix-NOTFOUND.pdb")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE FILE OPTIONAL FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/bin/${CMAKE_INSTALL_CONFIG_NAME}/gmock_mainpdb_debug_postfix-NOTFOUND.pdb")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-build/googletest/generated/gmock.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-build/googletest/generated/gmock.pc")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-build/googletest/generated/gmock_main.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-build/googletest/generated/gmock_main.pc")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-build/googletest/cmake_install.cmake")
+  include("C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-build/googletest/cmake_install.cmake")
 
 endif()
 

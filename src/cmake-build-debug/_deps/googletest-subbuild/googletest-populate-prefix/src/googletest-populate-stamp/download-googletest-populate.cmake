@@ -22,14 +22,14 @@ function(check_file_hash has_hash hash_is_good)
   set("${has_hash}" TRUE PARENT_SCOPE)
 
   message(STATUS "verifying file...
-       file='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'")
+       file='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'")
 
-  file("" "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip" actual_value)
+  file("" "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip" actual_value)
 
   if(NOT "${actual_value}" STREQUAL "")
     set("${hash_is_good}" FALSE PARENT_SCOPE)
     message(STATUS " hash of
-    C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip
+    C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip
   does not match expected value
     expected: ''
       actual: '${actual_value}'")
@@ -71,7 +71,7 @@ function(sleep_before_download attempt)
   execute_process(COMMAND "${CMAKE_COMMAND}" -E sleep "${sleep_seconds}")
 endfunction()
 
-if("C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip" STREQUAL "")
+if("C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip" STREQUAL "")
   message(FATAL_ERROR "LOCAL can't be empty")
 endif()
 
@@ -79,32 +79,32 @@ if("https://github.com/google/googletest/archive/refs/heads/main.zip" STREQUAL "
   message(FATAL_ERROR "REMOTE can't be empty")
 endif()
 
-if(EXISTS "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
+if(EXISTS "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
   check_file_hash(has_hash hash_is_good)
   if(has_hash)
     if(hash_is_good)
       message(STATUS "File already exists and hash match (skip download):
-  file='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'
+  file='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'
   =''"
       )
       return()
     else()
       message(STATUS "File already exists but hash mismatch. Removing...")
-      file(REMOVE "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
+      file(REMOVE "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
     endif()
   else()
     message(STATUS "File already exists but no hash specified (use URL_HASH):
-  file='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'
+  file='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'
 Old file will be removed and new file downloaded from URL."
     )
-    file(REMOVE "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
+    file(REMOVE "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
   endif()
 endif()
 
 set(retry_number 5)
 
 message(STATUS "Downloading...
-   dst='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'
+   dst='C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip'
    timeout='none'
    inactivity timeout='none'"
 )
@@ -126,7 +126,7 @@ foreach(i RANGE ${retry_number})
 
       file(
         DOWNLOAD
-        "${url}" "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip"
+        "${url}" "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip"
         SHOW_PROGRESS
         # no TIMEOUT
         # no INACTIVITY_TIMEOUT
@@ -143,7 +143,7 @@ foreach(i RANGE ${retry_number})
         check_file_hash(has_hash hash_is_good)
         if(has_hash AND NOT hash_is_good)
           message(STATUS "Hash mismatch, removing...")
-          file(REMOVE "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
+          file(REMOVE "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/main.zip")
         else()
           message(STATUS "Downloading... done")
           return()

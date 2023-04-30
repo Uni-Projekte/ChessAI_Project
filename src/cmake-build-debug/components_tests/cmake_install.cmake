@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/components_tests
+# Install script for directory: C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/components_tests
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

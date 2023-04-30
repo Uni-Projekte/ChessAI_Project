@@ -1,21 +1,21 @@
 # ninja log v5
-0	97	7044913289641114	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	d8695ed37121870e
-0	97	7044913289641114	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	d8695ed37121870e
-98	1764	7044913306301121	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	4a9535cf1e18f609
-98	1764	7044913306301121	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	4a9535cf1e18f609
-1765	1873	7044913307401117	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	cd2dfd3bdfd2bf60
-1765	1873	7044913307401117	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	cd2dfd3bdfd2bf60
-1873	1971	7044913308396115	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	f3193ff01b30a47d
-1873	1971	7044913308396115	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	f3193ff01b30a47d
-1971	2063	7044913309291119	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	7667c016174ab5eb
-1971	2063	7044913309291119	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	7667c016174ab5eb
-2063	2316	7044913310966112	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	c79a6a9dec1d4d9e
-2063	2316	7044913310966112	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	c79a6a9dec1d4d9e
-2316	2466	7044913313231128	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	ef05582a9e675ceb
-2316	2466	7044913313231128	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	ef05582a9e675ceb
-2466	2593	7044913314576119	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	373a168f2da42242
-2466	2593	7044913314576119	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	373a168f2da42242
-2593	2787	7044913316496128	CMakeFiles/googletest-populate-complete	94127c87b2bba23a
-2593	2787	7044913316496128	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	94127c87b2bba23a
-2593	2787	7044913316496128	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete	94127c87b2bba23a
-2593	2787	7044913316496128	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/vsChessAi/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	94127c87b2bba23a
+2809	2911	7045540284743001	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	de540997da9084de
+1	1190	7045540267448014	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	de0bd222acc4a36f
+1190	2496	7045540280588004	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	40a50e00164c453f
+2911	3013	7045540285757991	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	ed2c3e98221e8797
+2704	2809	7045540283717988	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	9c17532c30514c4c
+2496	2597	7045540281597995	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	b7a13689aacb6b08
+2597	2704	7045540282658015	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	c571c7fc9cca3ea6
+1	1190	7045540267448014	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	de0bd222acc4a36f
+1190	2496	7045540280588004	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	40a50e00164c453f
+2496	2597	7045540281597995	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	b7a13689aacb6b08
+2597	2704	7045540282658015	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	c571c7fc9cca3ea6
+2704	2809	7045540283717988	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	9c17532c30514c4c
+3118	3271	7045540288313002	CMakeFiles/googletest-populate-complete	144a4e3de343684d
+2809	2911	7045540284743001	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	de540997da9084de
+2911	3013	7045540285757991	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	ed2c3e98221e8797
+3013	3118	7045540286802998	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	4e003d678dca9167
+3013	3118	7045540286802998	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	4e003d678dca9167
+3118	3271	7045540288313002	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	144a4e3de343684d
+3118	3271	7045540288313002	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete	144a4e3de343684d
+3118	3271	7045540288313002	C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/testttt/ChessAI_Project/src/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	144a4e3de343684d
