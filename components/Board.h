@@ -79,6 +79,9 @@ public:
     // Converts the board to a string representation
     std::string ToString(BitBoardLoader &loader);
 
+    // Converts the board to a string representation
+    void ToHTML(BitBoardLoader &loader, std::string filename);
+
     // Check if piece of player is on position with row and column
     uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);
 

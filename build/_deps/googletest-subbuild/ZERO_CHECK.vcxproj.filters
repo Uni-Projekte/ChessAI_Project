@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\nikla\Desktop\chessai\ChessAI_Project\build\_deps\googletest-subbuild\CMakeFiles\b692f161fd9c82604aff5186aec4381b\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{46D1305E-3F79-38AB-9286-58988E655FE4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

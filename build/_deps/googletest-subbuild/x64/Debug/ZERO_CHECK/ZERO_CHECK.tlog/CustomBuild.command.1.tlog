@@ -1,0 +1,10 @@
+^C:\USERS\NIKLA\DESKTOP\CHESSAI\CHESSAI_PROJECT\BUILD\_DEPS\GOOGLETEST-SUBBUILD\CMAKEFILES\B692F161FD9C82604AFF5186AEC4381B\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nikla/Desktop/chessai/ChessAI_Project/build/_deps/googletest-subbuild -BC:/Users/nikla/Desktop/chessai/ChessAI_Project/build/_deps/googletest-subbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/nikla/Desktop/chessai/ChessAI_Project/build/_deps/googletest-subbuild/googletest-populate.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

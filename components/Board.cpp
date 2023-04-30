@@ -22,15 +22,16 @@ Board::Board(BitBoardLoader &loader)
     this->knights = loader.GetKnights();
 }
 
-Board::Board(std::string fen) {
+Board::Board(std::string fen)
+{
     this->black = 0;
-	this->white = 0;
-	this->pawns = 0;
-	this->kings = 0;
-	this->queens = 0;
-	this->towers = 0;
-	this->bishops = 0;
-	this->knights = 0;
+    this->white = 0;
+    this->pawns = 0;
+    this->kings = 0;
+    this->queens = 0;
+    this->towers = 0;
+    this->bishops = 0;
+    this->knights = 0;
 
     this->fromFEN(std::move(fen));
 }
@@ -39,7 +40,8 @@ Board::Board(std::string fen) {
  * @brief get bitboard of black pawns
  * @return bitboard of black pawns as uint64_t
  */
-uint64_t Board::GetBlackPawns() const {
+uint64_t Board::GetBlackPawns() const
+{
     return this->black & this->pawns;
 }
 
@@ -47,7 +49,8 @@ uint64_t Board::GetBlackPawns() const {
  * @brief get bitboard of black queen
  * @return bitboard of black queen as uint64_t
  */
-uint64_t Board::GetBlackQueen() const {
+uint64_t Board::GetBlackQueen() const
+{
     return this->black & this->queens;
 }
 
@@ -55,7 +58,8 @@ uint64_t Board::GetBlackQueen() const {
  * @brief get bitboard of black king
  * @return bitboard of black king as uint64_t
  */
-uint64_t Board::GetBlackKing() const {
+uint64_t Board::GetBlackKing() const
+{
     return this->black & this->kings;
 }
 
@@ -63,7 +67,8 @@ uint64_t Board::GetBlackKing() const {
  * @brief get bitboard of black bishops
  * @return bitboard of black bishops as uint64_t
  */
-uint64_t Board::GetBlackBishops() const {
+uint64_t Board::GetBlackBishops() const
+{
     return this->black & this->bishops;
 }
 
@@ -71,7 +76,8 @@ uint64_t Board::GetBlackBishops() const {
  * @brief get bitboard of black knights
  * @return bitboard of black knights as uint64_t
  */
-uint64_t Board::GetBlackKnights() const {
+uint64_t Board::GetBlackKnights() const
+{
     return this->black & this->knights;
 }
 
@@ -79,7 +85,8 @@ uint64_t Board::GetBlackKnights() const {
  * @brief get bitboard of black towers
  * @return bitboard of black towers as uint64_t
  */
-uint64_t Board::GetBlackTowers() const {
+uint64_t Board::GetBlackTowers() const
+{
     return this->black & this->towers;
 }
 
@@ -87,7 +94,8 @@ uint64_t Board::GetBlackTowers() const {
  * @brief get bitboard of white pawns
  * @return bitboard of white pawns as uint64_t
  */
-uint64_t Board::GetWhitePawns() const {
+uint64_t Board::GetWhitePawns() const
+{
     return this->white & this->pawns;
 }
 
@@ -95,7 +103,8 @@ uint64_t Board::GetWhitePawns() const {
  * @brief get bitboard of white queen
  * @return bitboard of white queen as uint64_t
  */
-uint64_t Board::GetWhiteQueen() const {
+uint64_t Board::GetWhiteQueen() const
+{
     return this->white & this->queens;
 }
 
@@ -103,7 +112,8 @@ uint64_t Board::GetWhiteQueen() const {
  * @brief get bitboard of white king
  * @return bitboard of white king as uint64_t
  */
-uint64_t Board::GetWhiteKing() const {
+uint64_t Board::GetWhiteKing() const
+{
     return this->white & this->kings;
 }
 
@@ -111,7 +121,8 @@ uint64_t Board::GetWhiteKing() const {
  * @brief get bitboard of white bishops
  * @return bitboard of white bishops as uint64_t
  */
-uint64_t Board::GetWhiteBishops() const {
+uint64_t Board::GetWhiteBishops() const
+{
     return this->white & this->bishops;
 }
 
@@ -119,7 +130,8 @@ uint64_t Board::GetWhiteBishops() const {
  * @brief get bitboard of white knights
  * @return bitboard of white knights as uint64_t
  */
-uint64_t Board::GetWhiteKnights() const {
+uint64_t Board::GetWhiteKnights() const
+{
     return this->white & this->knights;
 }
 
@@ -127,7 +139,8 @@ uint64_t Board::GetWhiteKnights() const {
  * @brief get bitboard of white towers
  * @return bitboard of white towers as uint64_t
  */
-uint64_t Board::GetWhiteTowers() const {
+uint64_t Board::GetWhiteTowers() const
+{
     return this->white & this->towers;
 }
 
@@ -272,6 +285,135 @@ string Board::ToString(BitBoardLoader &loader)
     return output;
 }
 
+void Board::ToHTML(BitBoardLoader &loader, std::string filename)
+{
+    string board[64];
+    string output = "";
+
+    for (int r = 0; r < 8; r++)
+    {
+        for (int c = 0; c < 8; c++)
+        {
+            int i = ((7 - r) << 3) + c;
+            if (this->IsOnField(this->white, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♔");
+            }
+            if (this->IsOnField(this->white, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♕");
+            }
+            if (this->IsOnField(this->white, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♙");
+            }
+            if (this->IsOnField(this->white, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♖");
+            }
+            if (this->IsOnField(this->white, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♘");
+            }
+            if (this->IsOnField(this->white, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♗");
+            }
+            if (this->IsOnField(this->black, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♚");
+            }
+            if (this->IsOnField(this->black, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♛");
+            }
+            if (this->IsOnField(this->black, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♟");
+            }
+            if (this->IsOnField(this->black, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♜");
+            }
+            if (this->IsOnField(this->black, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♞");
+            }
+            if (this->IsOnField(this->black, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
+            {
+                board[i] = board[i].append("♝");
+            }
+        }
+    }
+
+    ofstream file(filename);
+
+    file << "<!DOCTYPE html>" << std::endl;
+    file << " <html lang=\"en\">" << std::endl;
+    file << "<head>" << std::endl;
+    file << "<head>" << std::endl;
+    file << "<meta charset = \"UTF-8\">" << std::endl;
+    file << "<meta http-equiv = \"X-UA-Compatible\" content = \"IE=edge\">" << std::endl;
+    file << "<meta name=\"viewport\" content = \"width=device-width, initial-scale=1.0\">" << std::endl;
+    file << "<title> Document </title>" << std::endl;
+    file << "<style>" << std::endl;
+    file << "* {" << std::endl;
+    file << "box-sizing: border-box;" << std::endl;
+    file << "margin: 0;" << std::endl;
+    file << "padding: 0;" << std::endl;
+    file << "}" << std::endl;
+    file << ".board {" << std::endl;
+    file << "display: grid;" << std::endl;
+    file << "width: min(100vh,100vw);" << std::endl;
+    file << "height: min(100vh,100vw);" << std::endl;
+    file << "grid-template-columns: repeat(8, 1fr);" << std::endl;
+    file << "grid-template-rows: repeat(8, 1fr);" << std::endl;
+    file << "font-size: 64px;";
+    file << "}" << std::endl;
+    file << ".black {" << std::endl;
+    file << "background-color: #888888;" << std::endl;
+    file << "display: flex;" << std::endl;
+    file << "align-content: center;" << std::endl;
+    file << "justify-content: center;" << std::endl;
+    file << "}" << std::endl;
+    file << ".white {" << std::endl;
+    file << "display: flex;" << std::endl;
+    file << "align-content: center;" << std::endl;
+    file << "justify-content: center;" << std::endl;
+    file << "}" << std::endl;
+    file << "p {" << std::endl;
+    file << "align-self: center;" << std::endl;
+    file << "}" << std::endl;
+    file << "</style>" << std::endl;
+    file << "</head>" << std::endl;
+    file << "<body>" << std::endl;
+    file << "<div class=\"board\">" << std::endl;
+
+    for (int r = 0; r < 8; r++)
+    {
+        for (int c = 0; c < 8; c++)
+        {
+            string color = "white";
+            if ((~r & ~c & 0b1) | (r & c & 0b1))
+            {
+                color = "black";
+            }
+            int i = (r << 3) + c;
+            file << "<div class=\"" + color + "\">" << std::endl;
+            file << "<p>" << std::endl;
+            file << board[i];
+            file << "</p>" << std::endl;
+            file << "</div>" << std::endl;
+        }
+    }
+
+    file << "</div>";
+    file << "</body>";
+    file << "</html>";
+
+    file.close();
+}
+
 /**
  * @brief Converts a FEN string to a chessboard
  * @param fen FEN string representing the chessboard
@@ -284,12 +426,14 @@ void Board::fromFEN(string fen)
     vector<string> rows;
 
     // split fen strings into the rows
-    while ((position = fen.find(delimiter)) != string::npos) {
+    while ((position = fen.find(delimiter)) != string::npos)
+    {
         rows.push_back(fen.substr(0, position));
         fen.erase(0, position + delimiter.length());
     }
 
-    if (((position = fen.find(" ")) != string::npos)) {
+    if (((position = fen.find(" ")) != string::npos))
+    {
         rows.push_back(fen.substr(0, position));
         fen.erase(0, position + delimiter.length());
     }
@@ -301,7 +445,8 @@ void Board::fromFEN(string fen)
     // split the remaining part of the fen string into individual tokens
     delimiter = " ";
     vector<string> info;
-    while ((position = fen.find(delimiter)) != string::npos) {
+    while ((position = fen.find(delimiter)) != string::npos)
+    {
         info.push_back(fen.substr(0, position));
         fen.erase(0, position + delimiter.length());
     }
@@ -316,21 +461,22 @@ void Board::fromFEN(string fen)
         col = 0;
 
         // loop through each character in the row of the FEN string
-        for (auto& piece : rows[row])
+        for (auto &piece : rows[row])
         {
             // if the character represents a number, it means empty squares on the board
             if (isdigit(piece))
             {
-				col += piece - '0'; // move the column pointer by the number of empty squares
+                col += piece - '0'; // move the column pointer by the number of empty squares
             }
             else // the character represents a piece on the board
             {
                 // get the color and piece variable of the current piece
-                uint64_t* color = this->getColor(piece);
-                uint64_t* pieces = getPiece(piece);
+                uint64_t *color = this->getColor(piece);
+                uint64_t *pieces = getPiece(piece);
 
                 // if the piece type is invalid, the FEN string is invalid
-                if (pieces == NULL) {
+                if (pieces == NULL)
+                {
                     throw std::invalid_argument("Invalid FEN string. Piece type not recognized.");
                 }
 
@@ -345,13 +491,13 @@ void Board::fromFEN(string fen)
             }
         }
 
-		// if the column pointer is not at the end of the row, the FEN string is invalid
-        if (col != 8) {
+        // if the column pointer is not at the end of the row, the FEN string is invalid
+        if (col != 8)
+        {
             throw std::invalid_argument("Invalid FEN string. Not enough columns in row.");
         }
     }
 }
-
 
 /**
  * @brief Returns a pointer to the corresponding piece bitboard
@@ -360,9 +506,11 @@ void Board::fromFEN(string fen)
  * @return Pointer to the corresponding piece bitboard
  *         or NULL if piece character is not recognized
  */
-uint64_t* Board::getPiece(char piece) {
+uint64_t *Board::getPiece(char piece)
+{
     piece = tolower(piece);
-    switch (piece) {
+    switch (piece)
+    {
     case 'p':
         return &this->pawns;
     case 'q':
@@ -385,12 +533,14 @@ uint64_t* Board::getPiece(char piece) {
  * @param piece Piece in question
  * @return Color bitboard
  */
-uint64_t* Board::getColor(char piece)
+uint64_t *Board::getColor(char piece)
 {
-    if (isupper(piece)) {
+    if (isupper(piece))
+    {
         return &this->white;
     }
-    else {
+    else
+    {
         return &this->black;
     }
 }
