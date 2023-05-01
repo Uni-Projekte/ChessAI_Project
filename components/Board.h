@@ -40,6 +40,15 @@ public:
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
 
+    // Returns the bitboard representing all pieces
+    uint64_t GetAllPieces() const;
+
+    // Returns the bitboard representing all black pieces
+    uint64_t GetBlackPieces() const;
+
+    // Returns the bitboard representing all white pieces
+    uint64_t GetWhitePieces() const;
+
     // Returns the bitboard representing black pawns
     uint64_t GetBlackPawns() const;
 
@@ -90,6 +99,9 @@ public:
 
     // Gets the color variable from a piece as character
     uint64_t *getColor(char piece);
+
+    uint8_t GetPosition(std::string position) const;
+
 };
 
 #endif // BOARD_H

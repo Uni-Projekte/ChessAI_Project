@@ -36,6 +36,30 @@ Board::Board(std::string fen) {
 }
 
 /**
+ * @brief Get the bitboard of all pieces
+ * @return new complete bit-board-collection
+ */
+uint64_t Board::GetAllPieces() const {
+    return this->black | this->white;
+}
+
+/**
+ * @brief Get the bitboard of all white pieces
+ * @return new complete bit-board-collection
+ */
+uint64_t Board::GetWhitePieces() const {
+    return this->white;
+}
+
+/**
+ * @brief Get the bitboard of all black pieces
+ * @return new complete bit-board-collection
+ */
+uint64_t Board::GetBlackPieces() const {
+    return this->black;
+}
+
+/**
  * @brief get bitboard of black pawns
  * @return bitboard of black pawns as uint64_t
  */
@@ -393,4 +417,17 @@ uint64_t* Board::getColor(char piece)
     else {
         return &this->black;
     }
+}
+
+/**
+ * @brief Returns the position of a piece on the board
+ * @param position Position of the piece in algebraic notation
+ * @return Position of the piece on the board as a integer
+ */
+uint8_t Board::GetPosition(string position) const
+{
+    uint8_t col = position[0] - 'a';
+    uint8_t row = position[1] - '1';
+
+    return (row << 3) | col;
 }
