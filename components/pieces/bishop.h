@@ -10,7 +10,7 @@
 
 class bishop {
 public:
-    static std::array<uint8_t, MAX_MOVES>  possibleMoves(uint64_t interferedBoard, uint64_t colorBoard, uint8_t pos);
+    static void possibleMoves(uint8_t possibleMoves[13], uint64_t interferedBoard, uint64_t colorBoard, uint8_t x, uint8_t y);
 };
 
 

@@ -1,26 +1,19 @@
 #include "bishop.h"
-#include "array"
 
 // Maximum number of possible moves for a bishop is 13.
 #define MAX_MOVES 13
 
-std::array<uint8_t, MAX_MOVES> bishop::possibleMoves(uint64_t interferedBoard, uint64_t ownColorBoard, uint8_t pos)
+void bishop::possibleMoves(uint8_t possibleMoves[MAX_MOVES], uint64_t interferedBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y)
 {
-    // Array of possible moves.
-    std::array<uint8_t, MAX_MOVES> possibleMoves;
-
-    // x and y coordinates of the piece
-    int8_t x = (pos & 0b00111000) >> 3;
-    int8_t y = pos & 0b00000111;
-
-    int8_t newX = x + 1;
-    int8_t newY = y + 1;
+    uint8_t newX = x + 1;
+    uint8_t newY = y + 1;
 
     // Check for possible moves in the diagonal direction.
 
     uint8_t moveCount = 0;
     // diagonal north east
-    for (uint8_t i = 1; i < 8 && newX < 8 && newY < 8 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); i++)
+
+    for (moveCount = moveCount; newX < 8 && newY < 8 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
     {
         possibleMoves[moveCount] = ((newX << 3) | newY);
         if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
@@ -31,14 +24,12 @@ std::array<uint8_t, MAX_MOVES> bishop::possibleMoves(uint64_t interferedBoard, u
         }
         newX++;
         newY++;
-        moveCount++;
     }
-
 
     newX = x + 1;
     newY = y - 1;
     // diagonal south east
-    for (uint8_t i = 1; i < 8 && newX < 8 && newY >= 0 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); i++)
+    for (moveCount = moveCount;  newX < 8 && newY < 255  && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
     {
         possibleMoves[moveCount] = (newX << 3) | newY;
         if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
@@ -49,13 +40,12 @@ std::array<uint8_t, MAX_MOVES> bishop::possibleMoves(uint64_t interferedBoard, u
         }
         newX++;
         newY--;
-        moveCount++;
     }
 
     newX = x - 1;
     newY = y - 1;
     // diagonal south west
-    for (uint8_t i = 1; i < 8 && newX >= 0 && newY >= 0 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); i++)
+    for (moveCount = moveCount; newX < 255 && newY < 255 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
     {
         possibleMoves[moveCount] = (newX << 3) | newY;
         if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
@@ -66,13 +56,12 @@ std::array<uint8_t, MAX_MOVES> bishop::possibleMoves(uint64_t interferedBoard, u
         }
         newX--;
         newY--;
-        moveCount++;
     }
 
     newX = x - 1;
     newY = y + 1;
     // diagonal north west
-    for (uint8_t i = 1; i < 8 && newX >= 0 && newY < 8 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); i++)
+    for (moveCount = moveCount; newX < 255 && newY < 8 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
     {
         possibleMoves[moveCount] = (newX << 3) | newY;
         if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
@@ -83,12 +72,9 @@ std::array<uint8_t, MAX_MOVES> bishop::possibleMoves(uint64_t interferedBoard, u
         }
         newX--;
         newY++;
-        moveCount++;
     }
 
     if (moveCount < MAX_MOVES - 1) {
         possibleMoves[moveCount] = 0b01000000;
     }
-
-    return possibleMoves;
 }
