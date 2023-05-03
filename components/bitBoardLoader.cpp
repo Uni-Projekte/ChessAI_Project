@@ -1,175 +1,298 @@
 #include "bitBoardLoader.h"
 
 /**
- * @brief set BitBoardLoader bit board from name
- * @param name: bit board name
- * @param bin: bit board binaries
- * @return void
- */
-void BitBoardLoader::setBitBoard(std::string name, uint64_t bin)
-{
-    if (name.compare("BLACK") == 0)
-    {
-        this->black = bin;
-        return;
-    }
-    if (name.compare("WHITE") == 0)
-    {
-        this->white = bin;
-        return;
-    }
-    if (name.compare("PAWNS") == 0)
-    {
-        this->pawns = bin;
-        return;
-    }
-    if (name.compare("TOWERS") == 0)
-    {
-        this->towers = bin;
-        return;
-    }
-    if (name.compare("KNIGHTS") == 0)
-    {
-        this->knights = bin;
-        return;
-    }
-    if (name.compare("KINGS") == 0)
-    {
-        this->kings = bin;
-        return;
-    }
-    if (name.compare("QUEENS") == 0)
-    {
-        this->queens = bin;
-        return;
-    }
-    if (name.compare("BISHOPS") == 0)
-    {
-        this->bishops = bin;
-        return;
-    }
-    if (name.compare("8") == 0)
-    {
-        this->r8 = bin;
-        return;
-    }
-    if (name.compare("7") == 0)
-    {
-        this->r7 = bin;
-        return;
-    }
-    if (name.compare("6") == 0)
-    {
-        this->r6 = bin;
-        return;
-    }
-    if (name.compare("5") == 0)
-    {
-        this->r5 = bin;
-        return;
-    }
-    if (name.compare("4") == 0)
-    {
-        this->r4 = bin;
-        return;
-    }
-    if (name.compare("3") == 0)
-    {
-        this->r3 = bin;
-        return;
-    }
-    if (name.compare("2") == 0)
-    {
-        this->r2 = bin;
-        return;
-    }
-    if (name.compare("1") == 0)
-    {
-        this->r1 = bin;
-        return;
-    }
-    if (name.compare("A") == 0)
-    {
-        this->a = bin;
-        return;
-    }
-    if (name.compare("B") == 0)
-    {
-        this->b = bin;
-        return;
-    }
-    if (name.compare("C") == 0)
-    {
-        this->c = bin;
-        return;
-    }
-    if (name.compare("D") == 0)
-    {
-        this->d = bin;
-        return;
-    }
-    if (name.compare("E") == 0)
-    {
-        this->e = bin;
-        return;
-    }
-    if (name.compare("F") == 0)
-    {
-        this->f = bin;
-        return;
-    }
-    if (name.compare("G") == 0)
-    {
-        this->g = bin;
-        return;
-    }
-    if (name.compare("H") == 0)
-    {
-        this->h = bin;
-        return;
-    }
-}
-
-/**
- * @brief create New BitBoardLoader and load bit-boards contained in file
- * @param filename: name of file to load
+ * @brief create New BitBoardLoader
  * @return new BitBoardLoader
  */
 BitBoardLoader::BitBoardLoader(std::string filename)
 {
-    std::ifstream file;
-    file.open(filename);
-    std::string line = "";
-    std::string bin = "";
-    std::string name = "";
-    int numLines = 0;
-
-    while (!file.fail() && !file.eof())
-    {
-        file >> line;
-        if (file.fail() || file.eof()) break;
-        if (line.find("//") != std::string::npos)
-        {
-            if (numLines != 0)
-            {
-                std::size_t pos = 0;
-                setBitBoard(name, std::stoull(bin, &pos, 2));
-                bin = "";
-            }
-            line.erase(0, 2);
-            name = line;
-        }
-        else
-        {
-            bin = bin.append(line);
-        }
-        numLines = numLines + 1;
-    }
-
     std::size_t pos = 0;
-    setBitBoard(name, std::stoull(bin, &pos, 2));
+    this->black = std::stoull(
+        "11111111"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        &pos, 2);
 
-    file.close();
+    pos = 0;
+    this->white = std::stoull(
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "11111111",
+        &pos, 2);
+
+    pos = 0;
+    this->pawns = std::stoull(
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->towers = std::stoull(
+        "10000001"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "10000001",
+        &pos, 2);
+
+    pos = 0;
+    this->towers = std::stoull(
+        "01000010"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "01000010",
+        &pos, 2);
+
+    pos = 0;
+    this->kings = std::stoull(
+        "00001000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00001000",
+        &pos, 2);
+
+    pos = 0;
+    this->queens = std::stoull(
+        "00010000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00010000",
+        &pos, 2);
+
+    pos = 0;
+    this->bishops = std::stoull(
+        "00100100"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00100100",
+        &pos, 2);
+
+    pos = 0;
+    this->r8 = std::stoull(
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r7 = std::stoull(
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r6 = std::stoull(
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r5 = std::stoull(
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r4 = std::stoull(
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r3 = std::stoull(
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r2 = std::stoull(
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000",
+        &pos, 2);
+
+    pos = 0;
+    this->r1 = std::stoull(
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111",
+        &pos, 2);
+
+    pos = 0;
+    this->a = std::stoull(
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000",
+        &pos, 2);
+
+    pos = 0;
+    this->b = std::stoull(
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000",
+        &pos, 2);
+
+    pos = 0;
+    this->c = std::stoull(
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000",
+        &pos, 2);
+
+    pos = 0;
+    this->d = std::stoull(
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000",
+        &pos, 2);
+
+    pos = 0;
+    this->e = std::stoull(
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000",
+        &pos, 2);
+
+    pos = 0;
+    this->f = std::stoull(
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100",
+        &pos, 2);
+
+    pos = 0;
+    this->g = std::stoull(
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010",
+        &pos, 2);
+
+    pos = 0;
+    this->h = std::stoull(
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001",
+        &pos, 2);
 }
 
 uint64_t BitBoardLoader::GetBlack()
