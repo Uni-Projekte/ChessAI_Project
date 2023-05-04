@@ -11,7 +11,6 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     BitBoardLoader loader = BitBoardLoader("./bitboards.txt");
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
     std::cout << board.ToString(loader);
-    board.ToHTML(loader,"out.html");
     EXPECT_EQ(board.GetBlackPawns(), 0xff000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x800000000000000);
@@ -24,6 +23,9 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     EXPECT_EQ(board.GetWhiteBishops(), 0x24);
     EXPECT_EQ(board.GetWhiteKnights(), 0x42);
     EXPECT_EQ(board.GetWhiteTowers(), 0x81);
+    board.DoMove(3,1,0b00011010); //E2 - E3
+    board.ToHTML(loader, "out.html");
+    std::cout << std::endl << board.ToString(loader);
 }
 
 TEST(BoardTest, FromFENTestRandomBoard1) {

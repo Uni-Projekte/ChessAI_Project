@@ -40,7 +40,8 @@ Board::Board(std::string fen)
  * @brief Get the bitboard of all pieces
  * @return new complete bit-board-collection
  */
-uint64_t Board::GetAllPieces() const {
+uint64_t Board::GetAllPieces() const
+{
     return this->black | this->white;
 }
 
@@ -48,7 +49,8 @@ uint64_t Board::GetAllPieces() const {
  * @brief Get the bitboard of all white pieces
  * @return new complete bit-board-collection
  */
-uint64_t Board::GetWhitePieces() const {
+uint64_t Board::GetWhitePieces() const
+{
     return this->white;
 }
 
@@ -56,7 +58,8 @@ uint64_t Board::GetWhitePieces() const {
  * @brief Get the bitboard of all black pieces
  * @return new complete bit-board-collection
  */
-uint64_t Board::GetBlackPieces() const {
+uint64_t Board::GetBlackPieces() const
+{
     return this->black;
 }
 
@@ -580,4 +583,120 @@ uint8_t Board::GetPosition(string position) const
     uint8_t row = position[1] - '1';
 
     return (row << 3) | col;
+}
+
+#define KING_SIDE 0b00000010U
+#define QUEEN_SIDE 0b001000000U
+#define CAPTURE 0b10000000U
+#define CASTLING 0b01000000U
+#define LAST_MOVE 0b11000000U
+#define MOVE_X_MASK 0b00111000U
+#define MOVE_Y_MASK 0b00000111U
+#define NO_WHITE_CASTLING 0b00111111U
+#define NO_BLACK_CASTLING 0b11001111U
+#define WHITE_KINGSIDE_TOWER (1ULL << 56ULL)
+#define WHITE_QUEENSIDE_TOWER (1ULL << 63ULL)
+#define BLACK_KINGSIDE_TOWER (1ULL)
+#define BLACK_QUEENSIDE_TOWER (1ULL << 7ULL)
+#define WHITE_KINGSIDE_TOWER_AFTER (1ULL << 58ULL)
+#define WHITE_QUEENSIDE_TOWER_AFTER (1ULL << 60ULL)
+#define BLACK_KINGSIDE_TOWER_AFTER (1ULL << 3ULL)
+#define BLACK_QUEENSIDE_TOWER_AFTER (1ULL << 5ULL)
+
+void Board::DoMove(uint8_t x, uint8_t y, uint8_t move)
+{
+    const uint64_t pieceBoard = 1ULL << (uint64_t(x) + (uint64_t(y) << 3ULL));
+    const uint64_t newX = (move & MOVE_X_MASK) >> 3;
+    const uint64_t newY = move & MOVE_Y_MASK;
+    const uint64_t newPieceBoard = 1ULL << (newX + (newY << 3ULL));
+    const uint8_t capture = move & CAPTURE;
+    const uint64_t allPieces = this->white | this->black;
+    const uint64_t white = this->white;
+    const uint64_t black = this->black;
+    const uint64_t pawns = this->pawns;
+    const uint64_t bishops = this->bishops;
+    const uint64_t queens = this->queens;
+    const uint64_t kings = this->kings;
+    const uint64_t towers = this->towers;
+    const uint64_t knights = this->knights;
+
+    std::cout << uint64_t(x) << std::endl;
+    std::cout << uint64_t(y) << std::endl;
+    std::cout << newX << std::endl;
+    std::cout << newY << std::endl;
+    std::cout << pieceBoard << std::endl;
+    std::cout << newPieceBoard << std::endl;
+
+    // COMMENT: EN_PASSENTE IS MISSING
+
+    // clear CASTLING and CAPTURE if both set, because it is a LAST_MOVE
+    move = move & ~(LAST_MOVE * bool(move & LAST_MOVE));
+
+    // change player turn
+    this->move_rights = this->move_rights ^ 0b1;
+
+    // disable white castling when king moved
+    this->move_rights = this->move_rights & (NO_WHITE_CASTLING | (!bool(white & this->kings & pieceBoard) << 6) | (!bool(white & this->kings & pieceBoard) << 7));
+    // disable black castling when king moved
+    this->move_rights = this->move_rights & (NO_BLACK_CASTLING | (!bool(black & this->kings & pieceBoard) << 4) | (!bool(black & this->kings & pieceBoard) << 5));
+
+    // disable white kingside castling when white kingside-tower moved
+    this->move_rights = this->move_rights & (bool(white & this->towers & pieceBoard & WHITE_KINGSIDE_TOWER) << 7);
+    // disable white queenside castling when white queenside-tower moved
+    this->move_rights = this->move_rights & (bool(white & this->towers & pieceBoard & WHITE_QUEENSIDE_TOWER) << 6);
+    // disable black kingside castling when black kingside-tower moved
+    this->move_rights = this->move_rights & (bool(black & this->towers & pieceBoard & BLACK_KINGSIDE_TOWER) << 5);
+    // disable black queenside castling when black queenside-tower moved
+    this->move_rights = this->move_rights & (bool(black & this->towers & pieceBoard & BLACK_QUEENSIDE_TOWER) << 4);
+
+    // delete moved tower old pos when castling
+    this->towers = this->towers & ~(BLACK_KINGSIDE_TOWER * ((newPieceBoard & KING_SIDE) && y == 0 && (move & CASTLING)));
+    this->towers = this->towers & ~(BLACK_QUEENSIDE_TOWER * ((newPieceBoard & QUEEN_SIDE) && y == 0 && (move & CASTLING)));
+    this->towers = this->towers & ~(WHITE_KINGSIDE_TOWER * ((newPieceBoard & KING_SIDE) && y == 7 && (move & CASTLING)));
+    this->towers = this->towers & ~(WHITE_QUEENSIDE_TOWER * ((newPieceBoard & QUEEN_SIDE) && y == 7 && (move & CASTLING)));
+    // add moved tower new pos when castling
+    this->towers = this->towers | (((BLACK_KINGSIDE_TOWER_AFTER * ((newPieceBoard & KING_SIDE) && y == 0)) | (BLACK_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & QUEEN_SIDE) && y == 0)) | (WHITE_KINGSIDE_TOWER_AFTER * ((newPieceBoard & KING_SIDE) && y == 7)) | (WHITE_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & QUEEN_SIDE) && y == 7))) * (move & CASTLING));
+
+    // add moved piece new pos
+    this->black = this->black | (newPieceBoard * bool(black & pieceBoard));
+    // delete captured piece pos
+    this->black = this->black & ~(newPieceBoard * ((capture && (white & pieceBoard))));
+    // delete moved piece old pos
+    this->black = this->black & ~pieceBoard;
+
+    this->white = this->white | (newPieceBoard * bool(white & pieceBoard));
+    this->white = this->white & ~(newPieceBoard * ((capture && (black & pieceBoard))));
+    this->white = this->white & ~pieceBoard;
+
+    this->pawns = this->pawns | (newPieceBoard * bool(pawns & pieceBoard));
+    this->pawns = this->pawns & ~(newPieceBoard * ((capture && ((allPieces & ~pawns) & pieceBoard))));
+    this->pawns = this->pawns & ~pieceBoard;
+
+    this->bishops = this->bishops | (newPieceBoard * bool(bishops & pieceBoard));
+    this->bishops = this->bishops & ~(newPieceBoard * ((capture && ((allPieces & ~bishops) & pieceBoard))));
+    this->bishops = this->bishops & ~pieceBoard;
+
+    this->queens = this->queens | (newPieceBoard * bool(queens & pieceBoard));
+    this->queens = this->queens & ~(newPieceBoard * ((capture && ((allPieces & ~queens) & pieceBoard))));
+    this->queens = this->queens & ~pieceBoard;
+
+    this->kings = this->kings | (newPieceBoard * bool(kings & pieceBoard));
+    this->kings = this->kings & ~(newPieceBoard * ((capture && ((allPieces & ~kings) & pieceBoard))));
+    this->kings = this->kings & ~pieceBoard;
+
+    this->towers = this->towers | (newPieceBoard * bool(towers & pieceBoard));
+    this->towers = this->towers & ~(newPieceBoard * ((capture && ((allPieces & ~towers) & pieceBoard))));
+    this->towers = this->towers & ~pieceBoard;
+
+    this->knights = this->knights | (newPieceBoard * bool(knights & pieceBoard));
+    this->knights = this->knights & ~(newPieceBoard * ((capture && ((allPieces & ~knights) & pieceBoard))));
+    this->knights = this->knights & ~pieceBoard;
+
+    // add half-move clock move every move
+    this->halfmove_clock = this->halfmove_clock + 1;
+    // reset half-move clock when pawn moved or a piece was captured
+    this->halfmove_clock = this->halfmove_clock * bool(this->pawns & pieceBoard | capture);
+
+    // add full-move when black moved
+    this->fullmove_number = this->fullmove_number + bool(this->black & pieceBoard);
 }

@@ -3,6 +3,11 @@
 // Maximum number of possible moves for a bishop is 13.
 #define MAX_MOVES 13
 
+//abxxxyyy
+//a - schlagzug
+//b - rochade
+//a&b - ende array
+
 void bishop::possibleMoves(uint8_t possibleMoves[MAX_MOVES], uint64_t interferedBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y)
 {
     uint8_t newX = x + 1;

@@ -33,6 +33,7 @@ private:
     // number representing the full moves played in the game
     // 1 is the starting value.
     uint16_t fullmove_number;
+
 public:
     // Constructor that initializes the chessboard to the standard starting position
     Board(BitBoardLoader &loader);
@@ -105,6 +106,7 @@ public:
 
     uint8_t GetPosition(std::string position) const;
 
+    void DoMove(uint8_t x, uint8_t y, uint8_t move);
 };
 
 #endif // BOARD_H
