@@ -23,7 +23,12 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     EXPECT_EQ(board.GetWhiteBishops(), 0x24);
     EXPECT_EQ(board.GetWhiteKnights(), 0x42);
     EXPECT_EQ(board.GetWhiteTowers(), 0x81);
-    board.DoMove(3,1,0b00011010); //E2 - E3
+    board.DoMove(3, 1, 3, 2, 0b00000000); // E2 - E3
+    board.DoMove(4, 0, 1, 3, 0b00000000); // D1 - G4
+    board.DoMove(6,1,6,3,0b00000000); //B2 - B4
+    board.DoMove(6, 0, 7, 2, 0b00000000); // B1 - A3
+    board.DoMove(5, 0, 6, 1, 0b00000000); // C1 - B2
+    board.DoMove(3, 0, 5, 0, 0b01000000); // C1 - B2
     board.ToHTML(loader, "out.html");
     std::cout << std::endl << board.ToString(loader);
 }

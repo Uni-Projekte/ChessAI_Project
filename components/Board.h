@@ -106,7 +106,7 @@ public:
 
     uint8_t GetPosition(std::string position) const;
 
-    void DoMove(uint8_t x, uint8_t y, uint8_t move);
+    void DoMove(uint8_t x, uint8_t y, uint8_t newX, uint8_t newY, uint8_t flags);
 };
 
 #endif // BOARD_H
