@@ -5,11 +5,7 @@
 
 int main()
 {
-    BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("8/8/8/2k5/4K3/8/8/8");
-
-    std::cout << board.ToString(loader);
-
     std::cout << "Hello World!\n";
 }
 

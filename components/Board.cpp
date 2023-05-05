@@ -2,6 +2,8 @@
 #include "Board.h"
 #include <stdexcept>
 #include <utility>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -10,16 +12,16 @@ using namespace std;
  * @param loader: standard start configuration
  * @return new complete bit-board-collection
  */
-Board::Board(BitBoardLoader &loader)
+Board::Board()
 {
-    this->black = loader.GetBlack();
-    this->white = loader.GetWhite();
-    this->bishops = loader.GetBishops();
-    this->queens = loader.GetQueens();
-    this->towers = loader.GetTowers();
-    this->pawns = loader.GetPawns();
-    this->kings = loader.GetKings();
-    this->knights = loader.GetKnights();
+    this->black = StartBoardBlack;
+    this->white = StartBoardWhite;
+    this->bishops = StartBoardBishops;
+    this->queens = StartBoardQueens;
+    this->towers = StartBoardTowers;
+    this->pawns = StartBoardPawns;
+    this->kings = StartBoardKings;
+    this->knights = StartBoardKnights;
 }
 
 Board::Board(std::string fen)
@@ -34,6 +36,66 @@ Board::Board(std::string fen)
     this->knights = 0;
 
     this->fromFEN(std::move(fen));
+}
+
+uint8_t Board::GetEnPassant() const
+{
+    return this->en_passant;
+}
+
+uint8_t Board::GetMoveRights() const
+{
+    return this->move_rights;
+}
+
+uint8_t Board::GetHalfMoveClock() const
+{
+    return this->halfmove_clock;
+}
+
+uint16_t Board::GetFullMoveNumber() const
+{
+    return this->fullmove_number;
+}
+
+uint64_t Board::GetWhite() const
+{
+    return this->white;
+}
+
+uint64_t Board::GetBlack() const
+{
+    return this->black;
+}
+
+uint64_t Board::GetKings() const
+{
+    return this->kings;
+}
+
+uint64_t Board::GetQueens() const
+{
+    return this->queens;
+}
+
+uint64_t Board::GetBishops() const
+{
+    return this->bishops;
+}
+
+uint64_t Board::GetKnights() const
+{
+    return this->knights;
+}
+
+uint64_t Board::GetTowers() const
+{
+    return this->towers;
+}
+
+uint64_t Board::GetPawns() const
+{
+    return this->pawns;
 }
 
 /**
@@ -184,262 +246,6 @@ uint64_t Board::IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_
     return player & piece & row & column;
 }
 
-/**
- * @brief multiply string
- * @param src: string to multiply
- * @param times: number of multiplication
- * @return new string src x times
- */
-string stringMultiply(string src, unsigned int times)
-{
-    string out = "";
-    for (int i = 0; i < times; i++)
-    {
-        out = out + src;
-    }
-    return out;
-}
-
-/**
- * @brief generate string representation of the board
- * @param loader: access to constant boards needed
- * @return new string string representation of the board
- */
-string Board::ToString(BitBoardLoader &loader)
-{
-    string board[64];
-    string output = "";
-
-    int maxWidth = 0;
-
-    for (int r = 0; r < 8; r++)
-    {
-        for (int c = 0; c < 8; c++)
-        {
-            int i = ((7 - r) << 3) + c;
-            if (this->IsOnField(this->white, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("WKING");
-            }
-            if (this->IsOnField(this->white, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("WQUEEN");
-            }
-            if (this->IsOnField(this->white, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("WPAWN");
-            }
-            if (this->IsOnField(this->white, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("WTOWER");
-            }
-            if (this->IsOnField(this->white, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("WKNIGHT");
-            }
-            if (this->IsOnField(this->white, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("WBISHOP");
-            }
-            if (this->IsOnField(this->black, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("BKING");
-            }
-            if (this->IsOnField(this->black, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("BQUEEN");
-            }
-            if (this->IsOnField(this->black, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("BPAWN");
-            }
-            if (this->IsOnField(this->black, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("BTOWER");
-            }
-            if (this->IsOnField(this->black, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("BKNIGHT");
-            }
-            if (this->IsOnField(this->black, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("BBISHOP");
-            }
-            if (board[i].length() > maxWidth)
-            {
-                maxWidth = board[i].length();
-            }
-        }
-    }
-
-    string line = stringMultiply("-", maxWidth + 2);
-    output = output + " +" + stringMultiply(line + "+", 7) + line + "+\r\n";
-    for (int r = 0; r < 7; r++)
-    {
-        output = output + std::to_string((7 - r) + 1);
-        for (int c = 0; c < 8; c++)
-        {
-
-            output = output + "| ";
-            output = output + stringMultiply(" ", (maxWidth - board[(r << 3) + c].length()) / 2);
-            output = output + board[(r << 3) + c];
-            output = output + stringMultiply(" ", (maxWidth - board[(r << 3) + c].length() + 1) / 2);
-            output = output + " ";
-        }
-        output = output + "|\r\n";
-
-        output = output + " +" + stringMultiply(line + "+", 7) + line + "+\r\n";
-    }
-    output = output + "1";
-    for (int c = 0; c < 8; c++)
-    {
-        output = output + "| ";
-        output = output + stringMultiply(" ", (maxWidth - board[(7 << 3) + c].length()) / 2);
-        output = output + board[(7 << 3) + c];
-        output = output + stringMultiply(" ", (maxWidth - board[(7 << 3) + c].length() + 1) / 2);
-        output = output + " ";
-    }
-    output = output + "|\r\n";
-    output = output + " +" + stringMultiply(line + "+", 7) + line + "+\r\n";
-    output = output + " ";
-    for (int c = 0; c < 8; c++)
-    {
-        output = output + stringMultiply(" ", (maxWidth + 3) / 2);
-        output = output + loader.GetColumnLetterFromIndex(c);
-        output = output + stringMultiply(" ", (maxWidth + 2) / 2);
-    }
-    output = output + " \r\n";
-    return output;
-}
-
-void Board::ToHTML(BitBoardLoader &loader, std::string filename)
-{
-    string board[64];
-    string output = "";
-
-    for (int r = 0; r < 8; r++)
-    {
-        for (int c = 0; c < 8; c++)
-        {
-            int i = ((7 - r) << 3) + c;
-            if (this->IsOnField(this->white, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♔");
-            }
-            if (this->IsOnField(this->white, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♕");
-            }
-            if (this->IsOnField(this->white, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♙");
-            }
-            if (this->IsOnField(this->white, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♖");
-            }
-            if (this->IsOnField(this->white, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♘");
-            }
-            if (this->IsOnField(this->white, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♗");
-            }
-            if (this->IsOnField(this->black, this->kings, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♚");
-            }
-            if (this->IsOnField(this->black, this->queens, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♛");
-            }
-            if (this->IsOnField(this->black, this->pawns, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♟");
-            }
-            if (this->IsOnField(this->black, this->towers, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♜");
-            }
-            if (this->IsOnField(this->black, this->knights, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♞");
-            }
-            if (this->IsOnField(this->black, this->bishops, loader.GetRowFromIndex(r), loader.GetColumnFromIndex(c)) > 0)
-            {
-                board[i] = board[i].append("♝");
-            }
-        }
-    }
-
-    ofstream file(filename);
-
-    file << "<!DOCTYPE html>" << std::endl;
-    file << " <html lang=\"en\">" << std::endl;
-    file << "<head>" << std::endl;
-    file << "<head>" << std::endl;
-    file << "<meta charset = \"UTF-8\">" << std::endl;
-    file << "<meta http-equiv = \"X-UA-Compatible\" content = \"IE=edge\">" << std::endl;
-    file << "<meta name=\"viewport\" content = \"width=device-width, initial-scale=1.0\">" << std::endl;
-    file << "<title> Document </title>" << std::endl;
-    file << "<style>" << std::endl;
-    file << "* {" << std::endl;
-    file << "box-sizing: border-box;" << std::endl;
-    file << "margin: 0;" << std::endl;
-    file << "padding: 0;" << std::endl;
-    file << "}" << std::endl;
-    file << ".board {" << std::endl;
-    file << "display: grid;" << std::endl;
-    file << "width: min(100vh,100vw);" << std::endl;
-    file << "height: min(100vh,100vw);" << std::endl;
-    file << "grid-template-columns: repeat(8, 1fr);" << std::endl;
-    file << "grid-template-rows: repeat(8, 1fr);" << std::endl;
-    file << "font-size: 64px;";
-    file << "}" << std::endl;
-    file << ".black {" << std::endl;
-    file << "background-color: #888888;" << std::endl;
-    file << "display: flex;" << std::endl;
-    file << "align-content: center;" << std::endl;
-    file << "justify-content: center;" << std::endl;
-    file << "}" << std::endl;
-    file << ".white {" << std::endl;
-    file << "display: flex;" << std::endl;
-    file << "align-content: center;" << std::endl;
-    file << "justify-content: center;" << std::endl;
-    file << "}" << std::endl;
-    file << "p {" << std::endl;
-    file << "align-self: center;" << std::endl;
-    file << "}" << std::endl;
-    file << "</style>" << std::endl;
-    file << "</head>" << std::endl;
-    file << "<body>" << std::endl;
-    file << "<div class=\"board\">" << std::endl;
-
-    for (int r = 0; r < 8; r++)
-    {
-        for (int c = 0; c < 8; c++)
-        {
-            string color = "white";
-            if ((~r & ~c & 0b1) | (r & c & 0b1))
-            {
-                color = "black";
-            }
-            int i = (r << 3) + c;
-            file << "<div class=\"" + color + "\">" << std::endl;
-            file << "<p>" << std::endl;
-            file << board[i];
-            file << "</p>" << std::endl;
-            file << "</div>" << std::endl;
-        }
-    }
-
-    file << "</div>";
-    file << "</body>";
-    file << "</html>";
-
-    file.close();
-}
 
 /**
  * @brief Converts a FEN string to a chessboard
@@ -610,7 +416,7 @@ void Board::DoMove(uint8_t x, uint8_t y, uint8_t newX, uint8_t newY, uint8_t fla
     const uint64_t pieceBoard = 1ULL << (uint64_t(x) + (uint64_t(y) << 3ULL));
     const uint64_t newPieceBoard = 1ULL << (newX + (newY << 3ULL));
     const uint8_t capture = flags & CAPTURE;
-    const uint8_t castling =  flags & CASTLING;
+    const uint8_t castling = flags & CASTLING;
     const uint64_t allPieces = this->white | this->black;
     const uint64_t white = this->white;
     const uint64_t black = this->black;
@@ -708,7 +514,7 @@ void Board::DoMove(uint8_t x, uint8_t y, uint8_t newX, uint8_t newY, uint8_t fla
     // add half-move clock move every move
     this->halfmove_clock = this->halfmove_clock + 1;
     // reset half-move clock when pawn moved or a piece was captured
-    this->halfmove_clock = this->halfmove_clock * bool(pawns & pieceBoard | capture);
+    this->halfmove_clock = this->halfmove_clock * bool((pawns & pieceBoard) | capture);
 
     // add full-move when black moved
     this->fullmove_number = this->fullmove_number + bool(black & pieceBoard);

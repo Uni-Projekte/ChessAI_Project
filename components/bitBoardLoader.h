@@ -1,72 +1,287 @@
+#include <stdexcept>
 #include <string>
-#include <iostream>
-#include <fstream>
-#include <vector>
 
-#ifndef BITBOARDLOADER_H
-#define BITBOARDLOADER_H
+#ifndef CONSTANTBITBOARDS
+#define CONSTANTBITBOARDS
 
-class BitBoardLoader {
-public:
-    BitBoardLoader(std::string filename);
+const uint64_t StartBoardBlack = std::stoull(
+    "11111111"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000",
+    nullptr,2);
 
-public:
-    uint64_t GetBlack();
-    uint64_t GetWhite();
-    uint64_t GetPawns();
-    uint64_t GetBishops();
-    uint64_t GetKings();
-    uint64_t GetQueens();
-    uint64_t GetKnights();
-    uint64_t GetTowers();
-    uint64_t GetR8();
-    uint64_t GetR7();
-    uint64_t GetR6();
-    uint64_t GetR5();
-    uint64_t GetR4();
-    uint64_t GetR3();
-    uint64_t GetR2();
-    uint64_t GetR1();
-    uint64_t GetA();
-    uint64_t GetB();
-    uint64_t GetC();
-    uint64_t GetD();
-    uint64_t GetE();
-    uint64_t GetF();
-    uint64_t GetG();
-    uint64_t GetH();
-    uint64_t GetRowFromIndex(int index);
-    uint64_t GetColumnFromIndex(int index);
-    std::string GetColumnLetterFromIndex(int index);
+const uint64_t StartBoardWhite = std::stoull(
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000",
+    nullptr, 2);
 
-private:
-    void setBitBoard(std::string name, uint64_t bin);
+const uint64_t StartBoardPawns = std::stoull(
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000",
+    nullptr, 2);
 
-private:
-    uint64_t black = 0;
-    uint64_t white = 0;
-    uint64_t pawns = 0;
-    uint64_t bishops = 0;
-    uint64_t kings = 0;
-    uint64_t queens = 0;
-    uint64_t knights = 0;
-    uint64_t towers = 0;
-    uint64_t r8 = 0;
-    uint64_t r7 = 0;
-    uint64_t r6 = 0;
-    uint64_t r5 = 0;
-    uint64_t r4 = 0;
-    uint64_t r3 = 0;
-    uint64_t r2 = 0;
-    uint64_t r1 = 0;
-    uint64_t a = 0;
-    uint64_t b = 0;
-    uint64_t c = 0;
-    uint64_t d = 0;
-    uint64_t e = 0;
-    uint64_t f = 0;
-    uint64_t g = 0;
-    uint64_t h = 0;
-};
+const uint64_t StartBoardTowers = std::stoull(
+    "10000001"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "10000001",
+    nullptr, 2);
 
-#endif // BITBOARDLOADER_H
+const uint64_t StartBoardKnights = std::stoull(
+    "01000010"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "01000010",
+    nullptr, 2);
+
+const uint64_t StartBoardBishops = std::stoull(
+    "00100100"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00100100",
+    nullptr, 2);
+
+const uint64_t StartBoardKings = std::stoull(
+    "00001000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00001000",
+    nullptr, 2);
+
+const uint64_t StartBoardQueens = std::stoull(
+    "00010000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00010000",
+    nullptr, 2);
+
+const uint64_t BoardRow8 = std::stoull(
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow7 = std::stoull(
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow6 = std::stoull(
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow5 = std::stoull(
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow4 = std::stoull(
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow3 = std::stoull(
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow2 = std::stoull(
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111"
+    "00000000",
+    nullptr, 2);
+
+const uint64_t BoardRow1 = std::stoull(
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "11111111",
+    nullptr, 2);
+
+const uint64_t BoardColumnA = std::stoull(
+    "10000000"
+    "10000000"
+    "10000000"
+    "10000000"
+    "10000000"
+    "10000000"
+    "10000000"
+    "10000000",
+    nullptr, 2);
+
+const uint64_t BoardColumnB = std::stoull(
+    "01000000"
+    "01000000"
+    "01000000"
+    "01000000"
+    "01000000"
+    "01000000"
+    "01000000"
+    "01000000",
+    nullptr, 2);
+
+const uint64_t BoardColumnC = std::stoull(
+    "00100000"
+    "00100000"
+    "00100000"
+    "00100000"
+    "00100000"
+    "00100000"
+    "00100000"
+    "00100000",
+    nullptr, 2);
+
+const uint64_t BoardColumnD = std::stoull(
+    "00010000"
+    "00010000"
+    "00010000"
+    "00010000"
+    "00010000"
+    "00010000"
+    "00010000"
+    "00010000",
+    nullptr, 2);
+
+const uint64_t BoardColumnE = std::stoull(
+    "00001000"
+    "00001000"
+    "00001000"
+    "00001000"
+    "00001000"
+    "00001000"
+    "00001000"
+    "00001000",
+    nullptr, 2);
+
+const uint64_t BoardColumnF = std::stoull(
+    "00000100"
+    "00000100"
+    "00000100"
+    "00000100"
+    "00000100"
+    "00000100"
+    "00000100"
+    "00000100",
+    nullptr, 2);
+
+const uint64_t BoardColumnG = std::stoull(
+    "00000010"
+    "00000010"
+    "00000010"
+    "00000010"
+    "00000010"
+    "00000010"
+    "00000010"
+    "00000010",
+    nullptr, 2);
+
+const uint64_t BoardColumnH = std::stoull(
+    "00000001"
+    "00000001"
+    "00000001"
+    "00000001"
+    "00000001"
+    "00000001"
+    "00000001"
+    "00000001",
+    nullptr, 2);
+
+uint64_t GetRowFromIndex(int index);
+
+uint64_t GetColumnFromIndex(int index);
+
+std::string GetColumnLetterFromIndex(int index);
+
+std::string StringMultiply(std::string src, unsigned int times);
+
+std::string Uint64ToString(uint64_t board);
+
+std::string Uint32ToString(uint32_t board);
+
+std::string Uint16ToString(uint16_t board);
+
+std::string Uint8ToString(uint8_t board);
+
+#endif //CONSTANTBITBOARDS

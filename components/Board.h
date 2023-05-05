@@ -17,14 +17,14 @@ private:
     uint64_t bishops;// bitboard representing all bishops
     uint64_t knights;// bitboard representing all knights
 
+    // bit sequence representing the en passant square.
+    // first 3 bits are the file, next 3 bits are the rank.
+    uint8_t en_passant;
+
     // bit sequence representing the turn and castling rights.
     // 1st bit is white kingside, 2nd bit is white queenside, 3rd bit is black kingside, 4th bit is black queenside.
     // Last bit is turn. 0 is white, 1 is black.
     uint8_t move_rights;
-
-    // bit sequence representing the en passant square.
-    // first 3 bits are the file, next 3 bits are the rank.
-    uint8_t en_passant;
 
     // number representing half-moves played since the last pawn move or capture of a piece
     // 0 is the starting value.
@@ -36,10 +36,23 @@ private:
 
 public:
     // Constructor that initializes the chessboard to the standard starting position
-    Board(BitBoardLoader &loader);
+    Board();
 
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
+
+    uint8_t GetEnPassant() const;
+    uint8_t GetMoveRights() const;
+    uint8_t GetHalfMoveClock() const;
+    uint16_t GetFullMoveNumber() const;
+    uint64_t GetWhite() const;
+    uint64_t GetBlack() const;
+    uint64_t GetKings() const;
+    uint64_t GetQueens() const;
+    uint64_t GetBishops() const;
+    uint64_t GetKnights() const;
+    uint64_t GetTowers() const;
+    uint64_t GetPawns() const;
 
     // Returns the bitboard representing all pieces
     uint64_t GetAllPieces() const;
@@ -85,12 +98,6 @@ public:
 
     // Returns the bitboard representing white towers
     uint64_t GetWhiteTowers() const;
-
-    // Converts the board to a string representation
-    std::string ToString(BitBoardLoader &loader);
-
-    // Converts the board to a string representation
-    void ToHTML(BitBoardLoader &loader, std::string filename);
 
     // Check if piece of player is on position with row and column
     uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);

@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "../components/Board.h"
+#include "../components/presenter.h"
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -8,9 +9,7 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     std::filesystem::path path = "./bitboards.txt";
     std::cout << "Current path is " << std::filesystem::current_path() << '\n';
     std::cout << "Absolute path for " << path << " is " << fs::absolute(path) << '\n';
-    BitBoardLoader loader = BitBoardLoader("./bitboards.txt");
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-    std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0xff000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x800000000000000);
@@ -29,14 +28,13 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     board.DoMove(6, 0, 7, 2, 0b00000000); // B1 - A3
     board.DoMove(5, 0, 6, 1, 0b00000000); // C1 - B2
     board.DoMove(3, 0, 5, 0, 0b01000000); // C1 - B2
-    board.ToHTML(loader, "out.html");
-    std::cout << std::endl << board.ToString(loader);
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+    presenter.HTMLFromBoard(board, "out.html");
 }
 
 TEST(BoardTest, FromFENTestRandomBoard1) {
-    //BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("2rq3k/pB1P2pp/8/5b2/4p3/1PQ5/P4PPP/6K1");
-    //std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0x83000008000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x100000000000000);
@@ -51,9 +49,7 @@ TEST(BoardTest, FromFENTestRandomBoard1) {
 }
 
 TEST(BoardTest, FromFENTestRandomBoard2) {
-    //BitBoardLoader loader = BitBoardLoader("bitboards.txt");
     Board board("6k1/p5pp/8/8/8/3r1q2/6PK/8 w - - 0 1");
-    //std::cout << board.ToString(loader);
     EXPECT_EQ(board.GetBlackPawns(), 0x83000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x40000);
     EXPECT_EQ(board.GetBlackKing(), 0x200000000000000);
