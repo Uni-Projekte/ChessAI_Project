@@ -578,6 +578,5 @@ uint8_t Board::GetPosition(string position) const
 {
     uint8_t col = position[0] - 'a';
     uint8_t row = position[1] - '1';
-
-    return (row << 3) | col;
+    return (col << 3) | row;
 }
