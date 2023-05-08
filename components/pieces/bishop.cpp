@@ -1,9 +1,5 @@
 #include "bishop.h"
-#include "../Board.h"
 #include "../bitBoardLoader.h"
-
-// Maximum number of possible moves for a bishop is 13.
-#define MAX_MOVES 13
 
 // Check for possible moves in the diagonal directions.
 void bishop::possibleMoves(std::vector<uint8_t> possibleMoves, uint64_t interferedBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y)
