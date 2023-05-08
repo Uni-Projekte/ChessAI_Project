@@ -1,85 +1,75 @@
 #include "bishop.h"
-
-// Maximum number of possible moves for a bishop is 13.
-#define MAX_MOVES 13
+#include "../bitBoardLoader.h"
 
 //abxxxyyy
 //a - schlagzug
 //b - rochade
 //a&b - ende array
 
-void bishop::possibleMoves(uint8_t possibleMoves[MAX_MOVES], uint64_t interferedBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y)
+// Check for possible moves in the diagonal directions.
+void bishop::possibleMoves(std::vector<uint8_t> possibleMoves, uint64_t interferedBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y)
 {
+    // diagonal north east
     uint8_t newX = x + 1;
     uint8_t newY = y + 1;
-
-    // Check for possible moves in the diagonal direction.
-
-    uint8_t moveCount = 0;
-    // diagonal north east
-
-    for (moveCount = moveCount; newX < 8 && newY < 8 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
+    while (newX < 8 && newY < 8 && !(ownColorBoard & SingleBitBoard(newX,newY)))
     {
-        possibleMoves[moveCount] = ((newX << 3) | newY);
-        if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
+        possibleMoves.push_back((newX << 3) | newY);
+        if (interferedBoard & ~ownColorBoard & SingleBitBoard(newX, newY))
+        {
             // Set the 8th bit to 1 to indicate that the move is a capture move.
-            possibleMoves[moveCount] |= 0b10000000;
-            moveCount++;
+            possibleMoves[0] |= (0b10000000);
             break;
         }
         newX++;
         newY++;
     }
 
+    // diagonal south east
     newX = x + 1;
     newY = y - 1;
-    // diagonal south east
-    for (moveCount = moveCount;  newX < 8 && newY < 255  && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
+    while (newX < 8 && newY < 255 && !(ownColorBoard & SingleBitBoard(newX, newY)))
     {
-        possibleMoves[moveCount] = (newX << 3) | newY;
-        if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
-            possibleMoves[moveCount] |= 0b10000000;
+        possibleMoves.push_back((newX << 3) | newY);
+        if (interferedBoard & ~ownColorBoard & SingleBitBoard(newX, newY))
+        {
+            possibleMoves[0] |= 0b10000000;
             // Set the 8th bit to 1 to indicate that the move is a capture move.
-            moveCount++;
             break;
         }
         newX++;
         newY--;
     }
 
+    // diagonal south west
     newX = x - 1;
     newY = y - 1;
-    // diagonal south west
-    for (moveCount = moveCount; newX < 255 && newY < 255 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
+    while (newX < 255 && newY < 255 && !(ownColorBoard & SingleBitBoard(newX, newY)))
     {
-        possibleMoves[moveCount] = (newX << 3) | newY;
-        if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
+        possibleMoves.push_back((newX << 3) | newY);
+        if (interferedBoard & ~ownColorBoard & SingleBitBoard(newX, newY))
+        {
             // Set the 8th bit to 1 to indicate that the move is a capture move.
-            possibleMoves[moveCount] |= 0b10000000;
-            moveCount++;
+            possibleMoves[0] |= 0b10000000;
             break;
         }
         newX--;
         newY--;
     }
 
+    // diagonal north west
     newX = x - 1;
     newY = y + 1;
-    // diagonal north west
-    for (moveCount = moveCount; newX < 255 && newY < 8 && !(ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))); moveCount++)
+    while (newX < 255 && newY < 8 && !(ownColorBoard & SingleBitBoard(newX, newY)))
     {
-        possibleMoves[moveCount] = (newX << 3) | newY;
-        if (interferedBoard & ~ownColorBoard & (1ULL << (newY * 8 + (7 - newX)))) {
+        possibleMoves.push_back((newX << 3) | newY);
+        if (interferedBoard & ~ownColorBoard & SingleBitBoard(newX, newY))
+        {
             // Set the 8th bit to 1 to indicate that the move is a capture move.
-            possibleMoves[moveCount] |= 0b10000000;
-            moveCount++;
+            possibleMoves[0] |= 0b10000000;
             break;
         }
         newX--;
         newY++;
-    }
-
-    if (moveCount < MAX_MOVES - 1) {
-        possibleMoves[moveCount] = 0b01000000;
     }
 }

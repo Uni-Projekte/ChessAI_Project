@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #ifndef CONSTANTBITBOARDS
 #define CONSTANTBITBOARDS
@@ -283,5 +284,11 @@ std::string Uint32ToString(uint32_t board);
 std::string Uint16ToString(uint16_t board);
 
 std::string Uint8ToString(uint8_t board);
+
+uint64_t inline SingleBitBoard(uint8_t x, uint8_t y);
+
+uint8_t inline FieldIndex(uint8_t x, uint8_t y);
+
+void inline TryMove(std::vector<uint8_t> moves, uint64_t allPiecesBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y);
 
 #endif //CONSTANTBITBOARDS

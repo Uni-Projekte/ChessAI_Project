@@ -386,7 +386,7 @@ uint64_t *Board::getColor(char piece)
 uint8_t Board::GetPosition(string position) const
 {
     uint8_t col = position[0] - 'a';
-    uint8_t row = position[1] - '1';
+    uint8_t row = '8' - position[1];
 
     return (row << 3) | col;
 }
