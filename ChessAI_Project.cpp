@@ -1,5 +1,5 @@
 #include "components/Board.h"
-#include "components/bitBoardLoader.h"
+#include "components/helper.h"
 #include <iostream>
 
 

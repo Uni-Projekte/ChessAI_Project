@@ -33,7 +33,7 @@ std::string Presenter::ToString(Board &board)
             {
                 boards[i] = boards[i].append("WPAWN");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetTowers(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetWhite(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
                 boards[i] = boards[i].append("WTOWER");
             }
@@ -57,7 +57,7 @@ std::string Presenter::ToString(Board &board)
             {
                 boards[i] = boards[i].append("BPAWN");
             }
-            if (board.IsOnField(board.GetBlack(), board.GetTowers(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetBlack(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
                 boards[i] = boards[i].append("BTOWER");
             }
@@ -138,7 +138,7 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
             {
                 boards[i] = boards[i].append("♙");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetTowers(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetWhite(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
                 boards[i] = boards[i].append("♖");
             }
@@ -162,7 +162,7 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
             {
                 boards[i] = boards[i].append("♟");
             }
-            if (board.IsOnField(board.GetBlack(), board.GetTowers(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetBlack(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
                 boards[i] = boards[i].append("♜");
             }
@@ -277,7 +277,7 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
     file << "<div class=\"border\">" << std::endl;
     file << "</div>" << std::endl;
 
-    uint64_t bitboards[8] = {board.GetBlack(), board.GetWhite(), board.GetKings(), board.GetQueens(), board.GetBishops(), board.GetKnights(), board.GetTowers(), board.GetPawns()};
+    uint64_t bitboards[8] = {board.GetBlack(), board.GetWhite(), board.GetKings(), board.GetQueens(), board.GetBishops(), board.GetKnights(), board.GetRooks(), board.GetPawns()};
 
     for (int c = 0; c < 8; c++)
     {
@@ -335,14 +335,24 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
         case 2:
             file << "<div class=\"right-info\">" << std::endl;
             file << "<p>" << std::endl;
-            file << "EN PASSANT" << std::endl;
+            file << "EN PASSANT WHITE" << std::endl;
             file << "</p>" << std::endl;
             file << "<p>" << std::endl;
-            file << Uint8ToString(board.GetEnPassant()) << std::endl;
+            file << Uint8ToString(board.GetEnPassantWhite()) << std::endl;
             file << "</p>" << std::endl;
             file << "</div>" << std::endl;
             break;
         case 3:
+            file << "<div class=\"right-info\">" << std::endl;
+            file << "<p>" << std::endl;
+            file << "EN PASSANT BLACK" << std::endl;
+            file << "</p>" << std::endl;
+            file << "<p>" << std::endl;
+            file << Uint8ToString(board.GetEnPassantBlack()) << std::endl;
+            file << "</p>" << std::endl;
+            file << "</div>" << std::endl;
+            break;
+        case 4:
             file << "<div class=\"right-info\">" << std::endl;
             file << "<p>" << std::endl;
             file << "HALF MOVE CLOCK" << std::endl;
@@ -352,7 +362,7 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
             file << "</p>" << std::endl;
             file << "</div>" << std::endl;
             break;
-        case 4:
+        case 5:
             file << "<div class=\"right-info\">" << std::endl;
             file << "<p>" << std::endl;
             file << "FULL MOVE NUMBER" << std::endl;

@@ -4,8 +4,8 @@ project(components)
 set(CMAKE_CXX_STANDARD 23)
 
 set(ChessAI_Project_Src
-    bitBoardLoader.cpp
-    bitBoardLoader.h
+    helper.cpp
+    helper.h
     Board.cpp
     Board.h
     presenter.cpp

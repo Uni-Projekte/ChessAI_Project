@@ -1,4 +1,4 @@
-#include "bitBoardLoader.h"
+#include "helper.h"
 
 uint64_t GetRowFromIndex(int index)
 {
@@ -155,28 +155,4 @@ std::string Uint8ToString(uint8_t board)
         board = board >> 1;
     }
     return out;
-}
-
-uint64_t SingleBitBoard(uint8_t x, uint8_t y)
-{
-    return (1ULL << ((uint64_t)y << 3) | (uint64_t)x);
-}
-
-uint8_t FieldIndex(uint8_t x, uint8_t y)
-{
-    return (((uint64_t)y << 3) | (uint64_t)x);
-}
-
-void TryMove(std::vector<uint8_t> moves, uint64_t allPiecesBoard, uint64_t ownColorBoard, uint8_t x, uint8_t y) {
-    if (x > 8 || y > 8) {
-        return;
-    }
-    if (SingleBitBoard(x, y) & allPiecesBoard & ~ownColorBoard)
-    {
-        moves.push_back(FieldIndex(x, y) | 0b10000000); // capture
-    }
-    else if (SingleBitBoard(x, y) & ~ownColorBoard)
-    {
-        moves.push_back(FieldIndex(x, y)); // normal move
-    }
 }
