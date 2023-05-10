@@ -6,7 +6,7 @@
 void knight::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
     //up right
-    TRY_ADD_MOVE(moves, allPieces, currentColor, x,y, x + 1, y + 2);
+    TRY_ADD_MOVE(moves, allPieces, currentColor, x, y, x + 1, y + 2);
     TRY_ADD_MOVE(moves, allPieces, currentColor, x, y, x + 1, y - 2);
     TRY_ADD_MOVE(moves, allPieces, currentColor, x, y, x - 1, y + 2);
     TRY_ADD_MOVE(moves, allPieces, currentColor, x, y, x - 1, y - 2);

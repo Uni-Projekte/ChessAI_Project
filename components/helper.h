@@ -297,8 +297,8 @@ typedef uint16_t MOVE;
 #define UPGRADE_KNIGHT 0b1101000000000000U
 #define UPGRADE_BISHOP 0b1110000000000000U
 #define UPGRADE_QUEEN 0b1111000000000000U
-#define MOVE_TO_X   0b0000000000000111U
-#define MOVE_TO_Y   0b0000000000111000U
+#define MOVE_TO_X 0b0000000000000111U
+#define MOVE_TO_Y 0b0000000000111000U
 #define MOVE_FROM_X 0b0000000111000000U
 #define MOVE_FROM_Y 0b0000111000000000U
 
@@ -315,7 +315,7 @@ typedef uint16_t MOVE;
 #define GET_SINGLE_BIT_BOARD_TO(M) SINGLE_BIT_BOARD(GET_MOVE_TO_X(M), GET_MOVE_TO_Y(M))
 #define GET_SINGLE_BIT_BOARD_FROM(M) SINGLE_BIT_BOARD(GET_MOVE_FROM_X(M), GET_MOVE_FROM_Y(M))
 #define PRINT_MOVE(M) std::cout << "FROM: X:" << GET_MOVE_FROM_X(M) << " Y:" << GET_MOVE_FROM_Y(M) \
-                                << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)\
+                                << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)      \
                                 << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
 
 #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
@@ -325,10 +325,10 @@ typedef uint16_t MOVE;
 #define CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
     (MOVE)(FLAGS | (FIELD_INDEX(X_FROM, Y_FROM) << 6) | FIELD_INDEX(X_TO, Y_TO))
 
-#define IF_IN_BOUNDS(X, Y, DO)                        \
+#define IF_IN_BOUNDS(X, Y, DO)                      \
     if ((X) < 8 && (Y) < 8 && (X) >= 0 && (Y) >= 0) \
-    {                                                 \
-        DO                                            \
+    {                                               \
+        DO                                          \
     }
 
 #define ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
@@ -336,18 +336,18 @@ typedef uint16_t MOVE;
 
 #define TRY_ADD_MOVE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)        \
     TRY_ADD_MOVE_NO_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-    else TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
+    TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
 
 #define TRY_ADD_MOVE_NO_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     IF_IN_BOUNDS(                                                                             \
         X_TO, Y_TO,                                                                           \
-        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ~ALL_PIECES){                     \
+        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
 
 #define TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     IF_IN_BOUNDS(                                                                               \
         X_TO, Y_TO,                                                                             \
-        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                       \
+        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
 
 #define H1 (1ULL)
