@@ -668,7 +668,7 @@ void Board::DoMove(MOVE move)
     const BOARD rook = this->rooks;
     const BOARD knights = this->knights;
 
-    // change player turn
+    // change player turn (x xor 1 = !x)
     this->move_rights = this->move_rights ^ 0b1;
 
     // disable white castling when king moved
