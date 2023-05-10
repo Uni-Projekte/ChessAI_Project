@@ -16,10 +16,24 @@ TEST(PiecesTest, BishopTest1) {
     Board board("8/8/8/4b3/8/8/8/8");
     Presenter presenter = Presenter();
     std::cout << std::endl<< presenter.ToString(board);
-    MOVE expectedMoves[13] = {0b00101101,0b00110110,0b00111111
-                                ,0b00101011,0b00110010,0b00111001
-                                ,0b00011011,0b00010010,0b00001001,0b00000000
-                                ,0b00011101,0b00010110,0b00001111};
+    MOVE expectedMoves[13] = {
+        CREATE_MOVE(),
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1,
+        0b1
+    };
 
     std::vector<MOVE> moves = std::vector<MOVE>();
     bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
