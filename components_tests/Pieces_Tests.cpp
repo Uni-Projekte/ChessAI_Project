@@ -16,8 +16,9 @@ TEST(PiecesTest, BishopTest1) {
     Board board("8/8/8/4b3/8/8/8/8 w - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl<< presenter.ToString(board);
+    presenter.HTMLFromBoard(board,"BishopTest1.html");
     MOVE expectedMoves[13] = {
-        CREATE_MOVE(),
+        CREATE_MOVE(4, 4, 7, 0, 0),
         0b1,
         0b1,
         0b1,
@@ -30,9 +31,6 @@ TEST(PiecesTest, BishopTest1) {
         0b1,
         0b1,
         0b1,
-        0b1,
-        0b1,
-        0b1
     };
 
     std::vector<MOVE> moves = std::vector<MOVE>();
@@ -44,7 +42,6 @@ TEST(PiecesTest, BishopTest1) {
 }
 
 TEST(PiecesTest, BishopTest2) {
-
     Board board("8/2r5/8/4b3/8/8/8/8 w - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -63,7 +60,6 @@ TEST(PiecesTest, BishopTest2) {
 }
 
 TEST(PiecesTest, BishopTest3) {
-
     Board board("8/8/8/8/3Q4/8/1b6/8 w - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -79,7 +75,6 @@ TEST(PiecesTest, BishopTest3) {
 }
 
 TEST(PiecesTest, QueenTest1) {
-
     Board board("8/8/8/4Q3/8/8/8/8 w - - 0 1");
 
     MOVE expectedMoves[27] = {board.GetPosition("f6"),board.GetPosition("g7"),board.GetPosition("h8"),
@@ -100,7 +95,6 @@ TEST(PiecesTest, QueenTest1) {
 }
 
 TEST(PiecesTest, QueenTest2) {
-
     uint8_t captured = 0b10000000;
     Board board("8/8/8/4Q3/8/8/4r3/8 w - - 0 1");
 
@@ -122,7 +116,6 @@ TEST(PiecesTest, QueenTest2) {
 }
 
 TEST(PiecesTest, QueenTest3) {
-
     uint8_t captured = 0b10000000;
     Board board("8/8/8/4Q3/8/8/4R3/8 w - - 0 1");
 
