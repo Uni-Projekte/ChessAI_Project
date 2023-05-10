@@ -1,6 +1,6 @@
 #include "pawn.h"
 
-void pawn::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color)
+void pawn::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante)
 {
     if (color == WHITE)
     {

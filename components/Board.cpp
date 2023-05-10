@@ -817,7 +817,7 @@ void Board::DoStep()
                 }
                 if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE);
+                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant_black);
                 }
                 if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
                 {
