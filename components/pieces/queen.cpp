@@ -1,7 +1,6 @@
 #include "queen.h"
 
-
-void queen::possibleMoves(std::vector<MOVE> moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void queen::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
     uint8_t newX = x + 1;
     uint8_t newY = y + 1;
