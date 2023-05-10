@@ -314,6 +314,9 @@ typedef uint16_t MOVE;
 #define GET_MOVE_FROM_Y(M) (((M)&MOVE_FROM_Y) >> 9)
 #define GET_SINGLE_BIT_BOARD_TO(M) SINGLE_BIT_BOARD(GET_MOVE_TO_X(M), GET_MOVE_TO_Y(M))
 #define GET_SINGLE_BIT_BOARD_FROM(M) SINGLE_BIT_BOARD(GET_MOVE_FROM_X(M), GET_MOVE_FROM_Y(M))
+#define PRINT_MOVE(M) std::cout << "FROM: X:" << GET_MOVE_FROM_X(M) << " Y:" << GET_MOVE_FROM_Y(M) \
+                                << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)\
+                                << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
 
 #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
 
