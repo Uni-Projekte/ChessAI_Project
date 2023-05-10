@@ -16,21 +16,21 @@ TEST(PiecesTest, BishopTest1) {
     Board board("8/8/8/4b3/8/8/8/8 w - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl<< presenter.ToString(board);
-    presenter.HTMLFromBoard(board,"BishopTest1.html");
+
     MOVE expectedMoves[13] = {
-        CREATE_MOVE(4, 4, 7, 0, 0),
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
-        0b1,
+        CREATE_MOVE(4, 4, 5, 5, 0),
+        CREATE_MOVE(4, 4, 6, 6, 0),
+        CREATE_MOVE(4, 4, 7, 7, 0),
+        CREATE_MOVE(4, 4, 5, 3, 0),
+        CREATE_MOVE(4, 4, 6, 2, 0),
+        CREATE_MOVE(4, 4, 7, 1, 0),
+        CREATE_MOVE(4, 4, 3, 3, 0),
+        CREATE_MOVE(4, 4, 2, 2, 0),
+        CREATE_MOVE(4, 4, 1, 1, 0),
+        CREATE_MOVE(4, 4, 0, 0, 0),
+        CREATE_MOVE(4, 4, 3, 5, 0),
+        CREATE_MOVE(4, 4, 2, 6, 0),
+        CREATE_MOVE(4, 4, 1, 7, 0),
     };
 
     std::vector<MOVE> moves = std::vector<MOVE>();
@@ -46,15 +46,24 @@ TEST(PiecesTest, BishopTest2) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[13] = {0b00101101,0b00110110,0b00111111
-                                ,0b00101011,0b00110010,0b00111001
-                                ,0b00011011,0b00010010,0b00001001,0b00000000
-                                ,0b00011101,0b01000000};
-    
+    MOVE expectedMoves[13] = {
+        CREATE_MOVE(4, 4, 5, 5, 0),
+        CREATE_MOVE(4, 4, 6, 6, 0),
+        CREATE_MOVE(4, 4, 7, 7, 0),
+        CREATE_MOVE(4, 4, 5, 3, 0),
+        CREATE_MOVE(4, 4, 6, 2, 0),
+        CREATE_MOVE(4, 4, 7, 1, 0),
+        CREATE_MOVE(4, 4, 3, 3, 0),
+        CREATE_MOVE(4, 4, 2, 2, 0),
+        CREATE_MOVE(4, 4, 1, 1, 0),
+        CREATE_MOVE(4, 4, 0, 0, 0),
+        CREATE_MOVE(4, 4, 3, 5, 0),
+    };
+
     std::vector<MOVE> moves = std::vector<MOVE>();
     bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
-    for (int i = 0; i < moves.size() && expectedMoves[i] != 0b01000000; ++i) {
+    for (int i = 0; i < moves.size(); ++i) {
         EXPECT_EQ(expectedMoves[i], moves[i])<<"differs at index"<<i;
     }
 }
@@ -63,12 +72,18 @@ TEST(PiecesTest, BishopTest3) {
     Board board("8/8/8/8/3Q4/8/1b6/8 w - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
-    MOVE expectedMoves[13] = {0b00010010, 0b10011011, 0b00010000, 0b00000000, 0b00000010, 0b01000000};
 
+    MOVE expectedMoves[13] = {
+        CREATE_MOVE(1, 1, 2, 2, 0),
+        CREATE_MOVE(1, 1, 3, 3, CAPTURE),
+        CREATE_MOVE(1, 1, 2, 0, 0),
+        CREATE_MOVE(1, 1, 0, 0, 0),
+        CREATE_MOVE(1, 1, 0, 2, 0),
+    };
     std::vector<MOVE> moves = std::vector<MOVE>();
     bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111);
 
-    for (int i = 0; i < moves.size() && expectedMoves[i] != 0b01000000; ++i)
+    for (int i = 0; i < moves.size(); ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "differs at index "<< i;
     }
@@ -90,6 +105,8 @@ TEST(PiecesTest, QueenTest1) {
 
     for (int i = 0; i < moves.size(); ++i)
     {
+        PRINT_MOVE(moves[i]);
+        PRINT_MOVE(expectedMoves[i]);
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
 }
