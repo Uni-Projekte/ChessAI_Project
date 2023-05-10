@@ -9,7 +9,7 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     std::filesystem::path path = "./bitboards.txt";
     std::cout << "Current path is " << std::filesystem::current_path() << '\n';
     std::cout << "Absolute path for " << path << " is " << fs::absolute(path) << '\n';
-    Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     EXPECT_EQ(board.GetBlackPawns(), 0xff000000000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x800000000000000);
@@ -34,7 +34,7 @@ TEST(BoardTest, FromFENTestInitalBoard) {
 }
 
 TEST(BoardTest, FromFENTestRandomBoard1) {
-    Board board("2rq3k/pB1P2pp/8/5b2/4p3/1PQ5/P4PPP/6K1");
+    Board board("2rq3k/pB1P2pp/8/5b2/4p3/1PQ5/P4PPP/6K1 w - - 0 1");
     EXPECT_EQ(board.GetBlackPawns(), 0x83000008000000);
     EXPECT_EQ(board.GetBlackQueen(), 0x1000000000000000);
     EXPECT_EQ(board.GetBlackKing(), 0x100000000000000);
