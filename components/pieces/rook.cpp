@@ -11,14 +11,14 @@ void rook::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curren
     // east
     while (newX < 8 && !(currentColor & SINGLE_BIT_BOARD(newX,y)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, newX, y, 0);
         }
         newX++;
     }
@@ -27,14 +27,14 @@ void rook::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curren
     //west
     while (newX < 255 && !(currentColor & SINGLE_BIT_BOARD(newX, y)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, newX, y, 0);
         }
         newX--;
     }
@@ -43,14 +43,14 @@ void rook::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curren
     //south
     while (newY < 255 && !(currentColor & SINGLE_BIT_BOARD(x, newY)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, x, newY, 0);
         }
         newY--;
     }
@@ -58,14 +58,14 @@ void rook::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curren
     newY = y+1;
     while (newY < 8 && !(currentColor & SINGLE_BIT_BOARD(x, newY)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, x, newY, 0);
         }
         newY++;
     }

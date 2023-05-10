@@ -79,14 +79,14 @@ void queen::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curre
     // east
     while (newX < 8 && !(currentColor & (1ULL << (y * 8 + (7 - newX)))))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, newX, y, 0);
         }
         newX++;
     }
@@ -95,14 +95,14 @@ void queen::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curre
     //west
     while (newX < 255 && !(currentColor & (1ULL << (y * 8 + (7 - newX)))))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, newX, y, 0);
         }
         newX--;
     }
@@ -111,14 +111,14 @@ void queen::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curre
     //south
     while (newY < 255 && !(currentColor & (1ULL << (newY * 8 + (7 - x)))))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, x, newY, 0);
         }
         newY--;
     }
@@ -126,14 +126,14 @@ void queen::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curre
     newY = y+1;
     while (newY < 8 && !(currentColor & (1ULL << (newY * 8 + (7 - x)))))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, newY, 0);
+            ADD_MOVE(moves, x, y, x, newY, 0);
         }
         newY++;
     }
