@@ -11,9 +11,9 @@ void pawn::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curren
             ADD_MOVE(moves, x, y, x, 0, UPGRADE_BISHOP);
             ADD_MOVE(moves, x, y, x, 0, UPGRADE_QUEEN);
         }
-        TRY_ADD_MOVE_NO_CAPTURE(moves, allPieces, currentColor, x, y, x, y - 1)
-        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x - 1, y - 1);
-        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x + 1, y - 1);
+        TRY_ADD_MOVE_NO_CAPTURE(moves, allPieces, currentColor, x, y, x, y + 1)
+        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x - 1, y + 1);
+        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x + 1, y + 1);
     }
     else
     {
@@ -24,8 +24,8 @@ void pawn::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD curren
             ADD_MOVE(moves, x, y, x, 7, UPGRADE_BISHOP);
             ADD_MOVE(moves, x, y, x, 7, UPGRADE_QUEEN);
         }
-        TRY_ADD_MOVE_NO_CAPTURE(moves, allPieces, currentColor, x, y, x, y + 1);
-        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x - 1, y + 1);
-        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x + 1, y + 1);
+        TRY_ADD_MOVE_NO_CAPTURE(moves, allPieces, currentColor, x, y, x, y - 1);
+        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x - 1, y - 1);
+        TRY_ADD_MOVE_ONLY_CAPTURE(moves, allPieces, currentColor, x, y, x + 1, y - 1);
     }
 }
