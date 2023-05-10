@@ -46,7 +46,7 @@ Board::Board(std::string fen)
     this->rooks = 0;
     this->bishops = 0;
     this->knights = 0;
-    this->move_rights = 0b11110000;
+    this->move_rights = 0b00000000;
     this->en_passant_white = 0b00000000;
     this->en_passant_black = 0b00000000;
     this->halfmove_clock = 0;
@@ -293,7 +293,7 @@ void Board::fromFEN(string fen)
     }
     else
     {
-        rows.push_back(fen);
+        throw std::invalid_argument("Invalid FEN string. Missing board information.");
     }
 
     // split the remaining part of the fen string into individual tokens
@@ -305,6 +305,91 @@ void Board::fromFEN(string fen)
         fen.erase(0, position + delimiter.length());
     }
     info.push_back(fen);
+
+    // store all the information about the board
+
+    // store the castling rights
+    if (info[0] == "w")
+    {
+        this->move_rights &= 0b11111110;
+    }
+    else if (info[0] == "b")
+    {
+        this->move_rights |= 0b00000001;
+    }
+    else
+    {
+        throw std::invalid_argument("Invalid FEN string. Missing turn information.");
+    }
+
+    if (info[1] == "-")
+    {
+        this->move_rights &= 0b00000001;
+    }
+    else
+    {
+        for (auto &c : info[1])
+        {
+            switch (c)
+            {
+            case 'K':
+                this->move_rights |= 0b10000000;
+                break;
+            case 'Q':
+                this->move_rights |= 0b01000000;
+                break;
+            case 'k':
+                this->move_rights |= 0b00100000;
+                break;
+            case 'q':
+                this->move_rights |= 0b00010000;
+                break;
+            default:
+                throw std::invalid_argument("Invalid FEN string. Invalid castling rights.");
+            }
+        }
+    }
+
+    // store the en passant square
+    if (info[2] == "-")
+    {
+        this->en_passant_white = 0;
+    }
+    else
+    {
+        // check if the en passant square position is valid
+        if (info[2].length() != 2)
+        {
+            throw std::invalid_argument("Invalid FEN string. Invalid en passant square.");
+        }
+        else
+        {
+            int row = info[2][1] - '0';
+            int col = 7 - (info[2][0] - 'a');
+
+            if (row < 1 || row > 8 || col < 0 || col > 8)
+            {
+                throw std::invalid_argument("Invalid FEN string. Invalid en passant square.");
+            }
+            else
+            {
+                if (move_rights & 1)
+                {
+                    this->en_passant_white = 0b00000000 | (row << 3) | col;
+                }
+                else
+                {
+                    this->en_passant_white = 0b10000000 | (row << 3) | col;
+                }
+            }
+        }
+    }
+
+    // store the halfmove clock
+    this->halfmove_clock = stoi(info[3]);
+
+    // store the fullmove number
+    this->fullmove_number = stoi(info[4]);
 
     // convert fen rows to board
     int col = 0;
@@ -351,6 +436,144 @@ void Board::fromFEN(string fen)
             throw std::invalid_argument("Invalid FEN string. Not enough columns in row.");
         }
     }
+}
+
+/**
+ * @brief Returns a FEN string representation of the current board
+ * @details The FEN string is a standard notation for describing a chess position.
+ *          For more information, see https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
+ * @return FEN string representation of the current board
+ */
+string Board::toFEN()
+{
+    string fen = "";
+    for (int i = 0; i < 64; ++i)
+    {
+        uint64_t pos = 1ULL << i;
+
+        if (pos & this->white)
+        {
+            if (pos & this->pawns)
+            {
+                fen.push_back('P');
+            }
+            else if (pos & this->queens)
+            {
+                fen.push_back('Q');
+            }
+            else if (pos & this->kings)
+            {
+                fen.push_back('K');
+            }
+            else if (pos & this->bishops)
+            {
+                fen.push_back('B');
+            }
+            else if (pos & this->knights)
+            {
+                fen.push_back('N');
+            }
+            else if (pos & this->rooks)
+            {
+                fen.push_back('R');
+            }
+        }
+        else if (pos & this->black)
+        {
+            if (pos & this->pawns)
+            {
+                fen.push_back('p');
+            }
+            else if (pos & this->queens)
+            {
+                fen.push_back('q');
+            }
+            else if (pos & this->kings)
+            {
+                fen.push_back('k');
+            }
+            else if (pos & this->bishops)
+            {
+                fen.push_back('b');
+            }
+            else if (pos & this->knights)
+            {
+                fen.push_back('n');
+            }
+            else if (pos & this->rooks)
+            {
+                fen.push_back('r');
+            }
+        }
+        if (i % 8 == 7 && i != 63)
+        {
+            fen.push_back('/');
+        }
+    }
+
+    fen.push_back(' ');
+    if (this->move_rights & 1)
+    {
+        fen.push_back('b');
+    }
+    else
+    {
+        fen.push_back('w');
+    }
+
+    if (this->move_rights & 0b10000000)
+    {
+        fen.push_back('K');
+    }
+    if (this->move_rights & 0b01000000)
+    {
+        fen.push_back('Q');
+    }
+    if (this->move_rights & 0b00100000)
+    {
+        fen.push_back('k');
+    }
+    if (this->move_rights & 0b00010000)
+    {
+        fen.push_back('q');
+    }
+
+    fen.push_back(' ');
+
+    if (this->en_passant_white & 0b10000000)
+    {
+        fen.push_back('a' + (this->en_passant_white & (7 - 0b00000111)));
+        fen.push_back('3');
+    }
+    else if (this->en_passant_black & 0b10000000)
+    {
+        fen.push_back('a' + (this->en_passant_black & (7 - 0b00000111)));
+        fen.push_back('6');
+    }
+    else
+    {
+        fen.push_back('-');
+    }
+
+    fen.push_back(' ');
+
+    string to_s = std::to_string(this->halfmove_clock);
+
+    for (auto &c : to_s)
+    {
+        fen.push_back(c);
+    }
+
+    fen.push_back(' ');
+
+    to_s = std::to_string(this->fullmove_number);
+
+    for (auto &c : to_s)
+    {
+        fen.push_back(c);
+    }
+
+    return fen;
 }
 
 /**
