@@ -19,13 +19,8 @@ private:
 
     // bit sequence representing the en passant square.
     // first 3 bits are the file, next 3 bits are the rank.
-    //on/off | | xxx | yyy
-    uint8_t en_passant_black;
-
-    // bit sequence representing the en passant square.
-    // first 3 bits are the file, next 3 bits are the rank.
-    // on/off | | xxx | yyy
-    uint8_t en_passant_white;
+    //on/off | c | xxx | yyy
+    uint8_t en_passant;
 
     // bit sequence representing the turn and castling rights.
     // 1st bit is white kingside, 2nd bit is white queenside, 3rd bit is black kingside, 4th bit is black queenside.
@@ -47,8 +42,7 @@ public:
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
 
-    uint8_t GetEnPassantBlack() const;
-    uint8_t GetEnPassantWhite() const;
+    uint8_t GetEnPassant() const;
     uint8_t GetMoveRights() const;
     uint8_t GetHalfMoveClock() const;
     uint16_t GetFullMoveNumber() const;
@@ -125,7 +119,11 @@ public:
 
     void DoMove(MOVE move);
 
-    void DoStep();
+    MOVE GetMove();
+
+    void PlayGame();
+
+    int End();
 };
 
 #endif // BOARD_H

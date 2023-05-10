@@ -11,6 +11,7 @@
 #include "pieces/pawn.h"
 #include "pieces/queen.h"
 #include "pieces/rook.h"
+#include "presenter.h"
 
 using namespace std;
 
@@ -30,8 +31,7 @@ Board::Board()
     this->kings = StartBoardKings;
     this->knights = StartBoardKnights;
     this->move_rights = 0b11110000;
-    this->en_passant_white = 0b00000000;
-    this->en_passant_black = 0b00000000;
+    this->en_passant = 0b00000000;
     this->halfmove_clock = 0;
     this->fullmove_number = 1;
 }
@@ -47,22 +47,16 @@ Board::Board(std::string fen)
     this->bishops = 0;
     this->knights = 0;
     this->move_rights = 0b00000000;
-    this->en_passant_white = 0b00000000;
-    this->en_passant_black = 0b00000000;
+    this->en_passant = 0b00000000;
     this->halfmove_clock = 0;
     this->fullmove_number = 1;
 
     this->fromFEN(std::move(fen));
 }
 
-uint8_t Board::GetEnPassantBlack() const
+uint8_t Board::GetEnPassant() const
 {
-    return this->en_passant_black;
-}
-
-uint8_t Board::GetEnPassantWhite() const
-{
-    return this->en_passant_white;
+    return this->en_passant;
 }
 
 uint8_t Board::GetMoveRights() const
@@ -353,7 +347,7 @@ void Board::fromFEN(string fen)
     // store the en passant square
     if (info[2] == "-")
     {
-        this->en_passant_white = 0;
+        this->en_passant = 0;
     }
     else
     {
@@ -375,11 +369,11 @@ void Board::fromFEN(string fen)
             {
                 if (move_rights & 1)
                 {
-                    this->en_passant_white = 0b00000000 | (row << 3) | col;
+                    this->en_passant = 0b00000000 | (row << 3) | col;
                 }
                 else
                 {
-                    this->en_passant_white = 0b10000000 | (row << 3) | col;
+                    this->en_passant = 0b10000000 | (row << 3) | col;
                 }
             }
         }
@@ -540,14 +534,14 @@ string Board::toFEN()
 
     fen.push_back(' ');
 
-    if (this->en_passant_white & 0b10000000)
+    if (this->en_passant & 0b10000000)
     {
-        fen.push_back('a' + (this->en_passant_white & (7 - 0b00000111)));
+        fen.push_back('a' + (this->en_passant & (7 - 0b00000111)));
         fen.push_back('3');
     }
-    else if (this->en_passant_black & 0b10000000)
+    else if (this->en_passant & 0b10000000)
     {
-        fen.push_back('a' + (this->en_passant_black & (7 - 0b00000111)));
+        fen.push_back('a' + (this->en_passant & (7 - 0b00000111)));
         fen.push_back('6');
     }
     else
@@ -654,8 +648,8 @@ uint8_t Board::GetPosition(string position) const
 
 void Board::DoMove(MOVE move)
 {
-    const BOARD pieceBoard = GET_SINGLE_BIT_BOARD_FROM(move);
-    const BOARD newPieceBoard = GET_SINGLE_BIT_BOARD_TO(move);
+    const BOARD from = GET_SINGLE_BIT_BOARD_FROM(move);
+    const BOARD to = GET_SINGLE_BIT_BOARD_TO(move);
     const bool capture = GET_CAPTURE(move);
     const bool castling = GET_CASTLING(move);
     const BOARD allPieces = this->white | this->black;
@@ -669,105 +663,108 @@ void Board::DoMove(MOVE move)
     const BOARD knights = this->knights;
 
     // change player turn (x xor 1 = !x)
-    this->move_rights = this->move_rights ^ 0b1;
+    this->move_rights = this->move_rights ^ 0b1U;
 
     // disable white castling when king moved
-    this->move_rights = this->move_rights & (NO_WHITE_CASTLING | (!bool(white & this->kings & pieceBoard) << 6) | (!bool(white & this->kings & pieceBoard) << 7));
+    this->move_rights = this->move_rights & (NO_WHITE_CASTLING | (!bool(white & this->kings & from) << 6) | (!bool(white & this->kings & from) << 7));
     // disable black castling when king moved
-    this->move_rights = this->move_rights & (NO_BLACK_CASTLING | (!bool(black & this->kings & pieceBoard) << 4) | (!bool(black & this->kings & pieceBoard) << 5));
+    this->move_rights = this->move_rights & (NO_BLACK_CASTLING | (!bool(black & this->kings & from) << 4) | (!bool(black & this->kings & from) << 5));
 
     // disable white kingside castling when white kingside-tower moved
-    this->move_rights = this->move_rights & (bool(white & this->rooks & pieceBoard & WHITE_KINGSIDE_TOWER) << 7);
+    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(white & this->rooks & from & WHITE_KINGSIDE_TOWER) << 7));
     // disable white queenside castling when white queenside-tower moved
-    this->move_rights = this->move_rights & (bool(white & this->rooks & pieceBoard & WHITE_QUEENSIDE_TOWER) << 6);
+    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(white & this->rooks & from & WHITE_QUEENSIDE_TOWER) << 6));
     // disable black kingside castling when black kingside-tower moved
-    this->move_rights = this->move_rights & (bool(black & this->rooks & pieceBoard & BLACK_KINGSIDE_TOWER) << 5);
+    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(black & this->rooks & from & BLACK_KINGSIDE_TOWER) << 5));
     // disable black queenside castling when black queenside-tower moved
-    this->move_rights = this->move_rights & (bool(black & this->rooks & pieceBoard & BLACK_QUEENSIDE_TOWER) << 4);
+    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(black & this->rooks & from & BLACK_QUEENSIDE_TOWER) << 4));
 
     // delete moved tower old pos when castling
-    this->rooks = this->rooks & ~(BLACK_KINGSIDE_TOWER * ((newPieceBoard & (KING_SIDE << 56)) && castling));
-    this->rooks = this->rooks & ~(BLACK_QUEENSIDE_TOWER * ((newPieceBoard & (QUEEN_SIDE << 56)) && castling));
-    this->rooks = this->rooks & ~(WHITE_KINGSIDE_TOWER * ((newPieceBoard & KING_SIDE) && castling));
-    this->rooks = this->rooks & ~(WHITE_QUEENSIDE_TOWER * ((newPieceBoard & QUEEN_SIDE) && castling));
-    this->white = this->white & ~(BLACK_KINGSIDE_TOWER * ((newPieceBoard & (KING_SIDE << 56)) && castling));
-    this->white = this->white & ~(BLACK_QUEENSIDE_TOWER * ((newPieceBoard & (QUEEN_SIDE << 56)) && castling));
-    this->white = this->white & ~(WHITE_KINGSIDE_TOWER * ((newPieceBoard & KING_SIDE) && castling));
-    this->white = this->white & ~(WHITE_QUEENSIDE_TOWER * ((newPieceBoard & QUEEN_SIDE) && castling));
-    this->black = this->black & ~(BLACK_KINGSIDE_TOWER * ((newPieceBoard & (KING_SIDE << 56)) && castling));
-    this->black = this->black & ~(BLACK_QUEENSIDE_TOWER * ((newPieceBoard & (QUEEN_SIDE << 56)) && castling));
-    this->black = this->black & ~(WHITE_KINGSIDE_TOWER * ((newPieceBoard & KING_SIDE) && castling));
-    this->black = this->black & ~(WHITE_QUEENSIDE_TOWER * ((newPieceBoard & QUEEN_SIDE) && castling));
+    this->rooks = this->rooks & ~(BLACK_KINGSIDE_TOWER * ((to & (KING_SIDE << 56)) && castling));
+    this->rooks = this->rooks & ~(BLACK_QUEENSIDE_TOWER * ((to & (QUEEN_SIDE << 56)) && castling));
+    this->rooks = this->rooks & ~(WHITE_KINGSIDE_TOWER * ((to & KING_SIDE) && castling));
+    this->rooks = this->rooks & ~(WHITE_QUEENSIDE_TOWER * ((to & QUEEN_SIDE) && castling));
+    this->white = this->white & ~(BLACK_KINGSIDE_TOWER * ((to & (KING_SIDE << 56)) && castling));
+    this->white = this->white & ~(BLACK_QUEENSIDE_TOWER * ((to & (QUEEN_SIDE << 56)) && castling));
+    this->white = this->white & ~(WHITE_KINGSIDE_TOWER * ((to & KING_SIDE) && castling));
+    this->white = this->white & ~(WHITE_QUEENSIDE_TOWER * ((to & QUEEN_SIDE) && castling));
+    this->black = this->black & ~(BLACK_KINGSIDE_TOWER * ((to & (KING_SIDE << 56)) && castling));
+    this->black = this->black & ~(BLACK_QUEENSIDE_TOWER * ((to & (QUEEN_SIDE << 56)) && castling));
+    this->black = this->black & ~(WHITE_KINGSIDE_TOWER * ((to & KING_SIDE) && castling));
+    this->black = this->black & ~(WHITE_QUEENSIDE_TOWER * ((to & QUEEN_SIDE) && castling));
     // add moved tower new pos when castling
-    this->rooks = this->rooks | (BLACK_KINGSIDE_TOWER_AFTER * ((newPieceBoard & (KING_SIDE << 56)) && castling));
-    this->rooks = this->rooks | (BLACK_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & (QUEEN_SIDE << 56)) && castling));
-    this->rooks = this->rooks | (WHITE_KINGSIDE_TOWER_AFTER * ((newPieceBoard & KING_SIDE) && castling));
-    this->rooks = this->rooks | (WHITE_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & QUEEN_SIDE) && castling));
-    this->white = this->white | (BLACK_KINGSIDE_TOWER_AFTER * ((newPieceBoard & (KING_SIDE << 56)) && castling && (pieceBoard & white)));
-    this->white = this->white | (BLACK_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & (QUEEN_SIDE << 56)) && castling && (pieceBoard & white)));
-    this->white = this->white | (WHITE_KINGSIDE_TOWER_AFTER * ((newPieceBoard & KING_SIDE) && castling && (pieceBoard & white)));
-    this->white = this->white | (WHITE_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & QUEEN_SIDE) && castling && (pieceBoard & white)));
-    this->black = this->black | (BLACK_KINGSIDE_TOWER_AFTER * ((newPieceBoard & (KING_SIDE << 56)) && castling && (pieceBoard & black)));
-    this->black = this->black | (BLACK_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & (QUEEN_SIDE << 56)) && castling && (pieceBoard & black)));
-    this->black = this->black | (WHITE_KINGSIDE_TOWER_AFTER * ((newPieceBoard & KING_SIDE) && castling && (pieceBoard & black)));
-    this->black = this->black | (WHITE_QUEENSIDE_TOWER_AFTER * ((newPieceBoard & QUEEN_SIDE) && castling && (pieceBoard & black)));
+    this->rooks = this->rooks | (BLACK_KINGSIDE_TOWER_AFTER * ((to & (KING_SIDE << 56)) && castling));
+    this->rooks = this->rooks | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & (QUEEN_SIDE << 56)) && castling));
+    this->rooks = this->rooks | (WHITE_KINGSIDE_TOWER_AFTER * ((to & KING_SIDE) && castling));
+    this->rooks = this->rooks | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & QUEEN_SIDE) && castling));
+    this->white = this->white | (BLACK_KINGSIDE_TOWER_AFTER * ((to & (KING_SIDE << 56)) && castling && (from & white)));
+    this->white = this->white | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & (QUEEN_SIDE << 56)) && castling && (from & white)));
+    this->white = this->white | (WHITE_KINGSIDE_TOWER_AFTER * ((to & KING_SIDE) && castling && (from & white)));
+    this->white = this->white | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & QUEEN_SIDE) && castling && (from & white)));
+    this->black = this->black | (BLACK_KINGSIDE_TOWER_AFTER * ((to & (KING_SIDE << 56)) && castling && (from & black)));
+    this->black = this->black | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & (QUEEN_SIDE << 56)) && castling && (from & black)));
+    this->black = this->black | (WHITE_KINGSIDE_TOWER_AFTER * ((to & KING_SIDE) && castling && (from & black)));
+    this->black = this->black | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & QUEEN_SIDE) && castling && (from & black)));
 
     // add moved piece new pos
-    this->black = this->black | (newPieceBoard * bool(black & pieceBoard));
+    this->black = this->black | (to * bool(black & from));
     // delete captured piece pos
-    this->black = this->black & ~(newPieceBoard * ((capture && (white & pieceBoard))));
+    this->black = this->black & ~(to * ((capture && (white & from))));
     // delete moved piece old pos
-    this->black = this->black & ~pieceBoard;
+    this->black = this->black & ~from;
 
-    this->white = this->white | (newPieceBoard * bool(white & pieceBoard));
-    this->white = this->white & ~(newPieceBoard * ((capture && (black & pieceBoard))));
-    this->white = this->white & ~pieceBoard;
+    this->white = this->white | (to * bool(white & from));
+    this->white = this->white & ~(to * ((capture && (black & from))));
+    this->white = this->white & ~from;
 
-    this->pawns = this->pawns | (newPieceBoard * bool(pawns & pieceBoard));
-    this->pawns = this->pawns & ~(newPieceBoard * ((capture && ((allPieces & ~pawns) & pieceBoard))));
-    this->pawns = this->pawns & ~pieceBoard;
+    this->pawns = this->pawns | (to * bool(pawns & from));
+    this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
+    this->pawns = this->pawns & ~from;
 
-    this->bishops = this->bishops | (newPieceBoard * bool(bishops & pieceBoard));
-    this->bishops = this->bishops & ~(newPieceBoard * ((capture && ((allPieces & ~bishops) & pieceBoard))));
-    this->bishops = this->bishops & ~pieceBoard;
+    this->bishops = this->bishops | (to * bool(bishops & from));
+    this->bishops = this->bishops & ~(to * ((capture && ((allPieces & ~bishops) & from))));
+    this->bishops = this->bishops & ~from;
 
-    this->queens = this->queens | (newPieceBoard * bool(queens & pieceBoard));
-    this->queens = this->queens & ~(newPieceBoard * ((capture && ((allPieces & ~queens) & pieceBoard))));
-    this->queens = this->queens & ~pieceBoard;
+    this->queens = this->queens | (to * bool(queens & from));
+    this->queens = this->queens & ~(to * ((capture && ((allPieces & ~queens) & from))));
+    this->queens = this->queens & ~from;
 
-    this->kings = this->kings | (newPieceBoard * bool(kings & pieceBoard));
-    this->kings = this->kings & ~(newPieceBoard * ((capture && ((allPieces & ~kings) & pieceBoard))));
-    this->kings = this->kings & ~pieceBoard;
+    this->kings = this->kings | (to * bool(kings & from));
+    this->kings = this->kings & ~(to * ((capture && ((allPieces & ~kings) & from))));
+    this->kings = this->kings & ~from;
 
-    this->rooks = this->rooks | (newPieceBoard * bool(rook & pieceBoard));
-    this->rooks = this->rooks & ~(newPieceBoard * ((capture && ((allPieces & ~rook) & pieceBoard))));
-    this->rooks = this->rooks & ~pieceBoard;
+    this->rooks = this->rooks | (to * bool(rook & from));
+    this->rooks = this->rooks & ~(to * ((capture && ((allPieces & ~rook) & from))));
+    this->rooks = this->rooks & ~from;
 
-    this->knights = this->knights | (newPieceBoard * bool(knights & pieceBoard));
-    this->knights = this->knights & ~(newPieceBoard * ((capture && ((allPieces & ~knights) & pieceBoard))));
-    this->knights = this->knights & ~pieceBoard;
+    this->knights = this->knights | (to * bool(knights & from));
+    this->knights = this->knights & ~(to * ((capture && ((allPieces & ~knights) & from))));
+    this->knights = this->knights & ~from;
 
     // add half-move clock move every move
     this->halfmove_clock = this->halfmove_clock + 1;
     // reset half-move clock when pawn moved or a piece was captured
-    this->halfmove_clock = this->halfmove_clock * bool((pawns & pieceBoard) | capture);
+    this->halfmove_clock = this->halfmove_clock * bool((pawns & from) | capture);
 
     // add full-move when black moved
-    this->fullmove_number = this->fullmove_number + bool(black & pieceBoard);
+    this->fullmove_number = this->fullmove_number + bool(black & from);
 
     // add queen if pawns reached one of the ends
-    this->queens = this->queens | (this->pawns & ROW_1_AND_8);
+    this->queens = this->queens | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_QUEEN));
+    // add knight if pawns reached one of the ends
+    this->knights = this->knights | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_KNIGHT));
+    // add bishop if pawns reached one of the ends
+    this->bishops = this->bishops | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_BISHOP));
+    // add rook if pawns reached one of the ends
+    this->rooks = this->rooks | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_ROOK));
     // delete pawns that reached one of the ends
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
 
-    // white en_passant
-    this->en_passant_white = (this->en_passant_white * bool(pieceBoard & black)) | ((0b10000000 | (pawns & pieceBoard & white)) * bool(pawns & pieceBoard & white));
-
-    // black en_passant
-    this->en_passant_black = (this->en_passant_white * bool(pieceBoard & white)) | ((0b10000000 | (pawns & pieceBoard & black)) * bool(pawns & pieceBoard & black));
+    // en_passant
+    this->en_passant = ((0b10000000 | (pawns & from & white)) * bool(pawns & from & white)) | ((0b11000000 | (pawns & from & black)) * bool(pawns & from & black));
 }
 
-void Board::DoStep()
+MOVE Board::GetMove()
 {
     std::vector<MOVE> moves = std::vector<MOVE>();
     for (uint8_t x = 0; x < 8; x = x + 1)
@@ -830,15 +827,50 @@ void Board::DoStep()
             }
         }
     }
-    std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
-    for (int i = 0; i < moves.size()-1; i++) {
-        std::cout << moves[i] << ", ";
-    }
-    std::cout << moves[moves.size()-1] << std::endl;
+    // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
+    // for (int i = 0; i < moves.size()-1; i++) {
+    //     std::cout << moves[i] << ", ";
+    // }
+    // std::cout << moves[moves.size()-1] << std::endl;
     MOVE move = moves[rand() % moves.size()];
-    std::cout << "PICKED MOVE: " << move << std::endl;
-    std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
-    std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
-    std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
-    this->DoMove(move);
+    // std::cout << "PICKED MOVE: " << move << std::endl;
+    // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
+    // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
+    // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
+    return move;
+}
+
+#define NO_END 0
+#define WHITE_WIN 1
+#define BLACK_WIN 2
+
+void Board::PlayGame() {
+    Presenter presenter = Presenter();
+    while (this->End() == NO_END)
+    {
+
+        this->DoMove(this->GetMove());
+        std::cout << presenter.ToString(*this) << std::endl;
+    }
+}
+
+int Board::End()
+{
+    if (KingWinPosition & this->kings & this->white)
+    {
+        return WHITE_WIN; // WHITE KING IN 4 WIN POSITION
+    }
+    if (KingWinPosition & this->kings & this->black)
+    {
+        return BLACK_WIN; // BLACK KING IN 4 WIN POSITION
+    }
+    if ((this->kings & this->black) == 0)
+    {
+        return WHITE_WIN; // BLACK KING IS NOT ON FIELD
+    }
+    if ((this->kings & this->white) == 0)
+    {
+        return BLACK_WIN; // WHITE KING IS NOT ON FIELD
+    }
+    return NO_END;
 }

@@ -51,3 +51,37 @@ TEST(BoardTest, FromFENTestRandomBoard2) {
     EXPECT_EQ(board.GetWhiteBishops(), 0x0);
     EXPECT_EQ(board.GetWhiteKnights(), 0x0);
 }
+
+TEST(BoardTest, PlayGame)
+{
+    Board board = Board();
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+    board.PlayGame();
+}
+
+TEST(BoardTest, DoMoveBenchmarkStart)
+{
+    Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
+    for (int i = 0; i < 10000; i++) {
+        board.GetMove();
+    }
+}
+
+TEST(BoardTest, DoMoveBenchmarkMiddle)
+{
+    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
+    for (int i = 0; i < 10000; i++)
+    {
+        board.GetMove();
+    }
+}
+
+TEST(BoardTest, DoMoveBenchmarkEnd)
+{
+    Board board("r3k3/5p1p/n7/6B1/8/8/P7/K1R5 w q - 0 1");
+    for (int i = 0; i < 10000; i++)
+    {
+        board.GetMove();
+    }
+}

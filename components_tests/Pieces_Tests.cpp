@@ -352,8 +352,6 @@ TEST(PiecesTest, KnightTest2) {
 
     for (int i = 0; i < moves.size(); ++i)
     {
-        PRINT_MOVE(moves[i]);
-        PRINT_MOVE(expectedMoves[i]);
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
 }

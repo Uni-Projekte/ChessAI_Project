@@ -18,13 +18,13 @@ const uint64_t StartBoardBlack = std::stoull(
 
 const uint64_t StartBoardWhite = std::stoull(
     "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
+    "00000000"
     "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000",
+    "11111111",
     nullptr, 2);
 
 const uint64_t StartBoardPawns = std::stoull(
@@ -267,6 +267,17 @@ const uint64_t BoardColumnH = std::stoull(
     "00000001"
     "00000001"
     "00000001",
+    nullptr, 2);
+
+const uint64_t KingWinPosition = std::stoull(
+    "00000000"
+    "00000000"
+    "00000000"
+    "00011000"
+    "00011000"
+    "00000000"
+    "00000000"
+    "00000000",
     nullptr, 2);
 
 uint64_t GetRowFromIndex(int index);
