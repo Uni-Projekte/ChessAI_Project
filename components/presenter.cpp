@@ -338,21 +338,11 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
             file << "EN PASSANT WHITE" << std::endl;
             file << "</p>" << std::endl;
             file << "<p>" << std::endl;
-            file << Uint8ToString(board.GetEnPassantWhite()) << std::endl;
+            file << Uint8ToString(board.GetEnPassant()) << std::endl;
             file << "</p>" << std::endl;
             file << "</div>" << std::endl;
             break;
         case 3:
-            file << "<div class=\"right-info\">" << std::endl;
-            file << "<p>" << std::endl;
-            file << "EN PASSANT BLACK" << std::endl;
-            file << "</p>" << std::endl;
-            file << "<p>" << std::endl;
-            file << Uint8ToString(board.GetEnPassantBlack()) << std::endl;
-            file << "</p>" << std::endl;
-            file << "</div>" << std::endl;
-            break;
-        case 4:
             file << "<div class=\"right-info\">" << std::endl;
             file << "<p>" << std::endl;
             file << "HALF MOVE CLOCK" << std::endl;
@@ -362,7 +352,7 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
             file << "</p>" << std::endl;
             file << "</div>" << std::endl;
             break;
-        case 5:
+        case 4:
             file << "<div class=\"right-info\">" << std::endl;
             file << "<p>" << std::endl;
             file << "FULL MOVE NUMBER" << std::endl;
