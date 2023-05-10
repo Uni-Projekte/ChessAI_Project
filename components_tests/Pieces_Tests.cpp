@@ -241,3 +241,52 @@ TEST(PiecesTest, KnightTest3) {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
 }
+
+TEST(PiecesTest, BishopTestManyMoves) {
+    const std::string game[27] = {
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1",
+            "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+            "rnbqkbnr/ppp1pppp/3p4/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+            "rnbqkb1r/ppp1pppp/3p1n2/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3",
+            "rnbqkb1r/ppp1pppp/3p1n2/8/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 2 3",
+            "r1bqkb1r/pppnpppp/3p1n2/8/3PP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 3 4",
+            "r1bqkb1r/pppnpppp/3p1n2/8/3PP3/3B1N2/PPP2PPP/RNBQK2R b KQkq - 4 4",
+            "r1bqkb1r/pppn1ppp/3p1n2/4p3/3PP3/3B1N2/PPP2PPP/RNBQK2R w KQkq - 0 5",
+            "r1bqkb1r/pppn1ppp/3p1n2/4P3/4P3/3B1N2/PPP2PPP/RNBQK2R b KQkq - 0 5",
+            "r1bqkb1r/pppn1ppp/5n2/4p3/4P3/3B1N2/PPP2PPP/RNBQK2R w KQkq - 0 6",
+            "r1bqkb1r/pppn1ppp/5n2/4p3/4P3/2NB1N2/PPP2PPP/R1BQK2R b KQkq - 1 6",
+            "r1bqk2r/pppn1ppp/3b1n2/4p3/4P3/2NB1N2/PPP2PPP/R1BQK2R w KQkq - 2 7",
+            "r1bqk2r/pppn1ppp/3b1n2/4p3/4P3/2NB1N2/PPP2PPP/R1BQ1RK1 b kq - 3 7",
+            "r1bq1rk1/pppn1ppp/3b1n2/4p3/4P3/2NB1N2/PPP2PPP/R1BQ1RK1 w - - 4 8",
+            "r1bq1rk1/pppn1ppp/3b1n2/4p3/4P3/2NB1N1P/PPP2PP1/R1BQ1RK1 b - - 0 8",
+            "r1bq1rk1/pppn1pp1/3b1n1p/4p3/4P3/2NB1N1P/PPP2PP1/R1BQ1RK1 w - - 0 9",
+            "r1bq1rk1/pppn1pp1/3b1n1p/4p3/4P3/2NBBN1P/PPP2PP1/R2Q1RK1 b - - 1 9",
+            "r1bq1rk1/ppp2pp1/3b1n1p/2n1p3/4P3/2NBBN1P/PPP2PP1/R2Q1RK1 w - - 2 10",
+            "r1bq1rk1/ppp2pp1/3b1n1p/2n1p3/4P3/2NBBN1P/PPP1QPP1/R4RK1 b - - 3 10",
+            "r1bq1rk1/ppp2pp1/3bnn1p/4p3/4P3/2NBBN1P/PPP1QPP1/R4RK1 w - - 4 11",
+            "r1bq1rk1/ppp2pp1/3bnn1p/4p3/4P3/2NBBN1P/PPPQ1PP1/R4RK1 b - - 5 11",
+            "r1bq1rk1/ppp2pp1/3b1n1p/4p3/4Pn2/2NBBN1P/PPPQ1PP1/R4RK1 w - - 6 12",
+            "r1bq1rk1/ppp2pp1/3b1n1p/4p3/4PB2/2NB1N1P/PPPQ1PP1/R4RK1 b - - 0 12",
+            "r1bq1rk1/ppp2pp1/3b1n1p/8/4Pp2/2NB1N1P/PPPQ1PP1/R4RK1 w - - 0 13",
+            "r1bq1rk1/ppp2pp1/3b1n1p/8/4PQ2/2NB1N1P/PPP2PP1/R4RK1 b - - 0 13",
+            "r1bq1rk1/ppp2pp1/5n1p/8/4Pb2/2NB1N1P/PPP2PP1/R4RK1 w - - 0 14",
+    };
+
+    Board board(game[0]);
+
+    MOVE expectedMoves[13] = {
+            CREATE_MOVE(4, 1, 4, 3, 0),
+            CREATE_MOVE(4, 4, 6, 6, 0),
+            CREATE_MOVE(4, 4, 7, 7, 0),
+            CREATE_MOVE(4, 4, 5, 3, 0),
+            CREATE_MOVE(4, 4, 6, 2, 0),
+            CREATE_MOVE(4, 4, 7, 1, 0),
+            CREATE_MOVE(4, 4, 3, 3, 0),
+            CREATE_MOVE(4, 4, 2, 2, 0),
+            CREATE_MOVE(4, 4, 1, 1, 0),
+            CREATE_MOVE(4, 4, 0, 0, 0),
+            CREATE_MOVE(4, 4, 3, 5, 0),
+    };
+
+}
