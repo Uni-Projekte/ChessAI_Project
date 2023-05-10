@@ -325,10 +325,10 @@ typedef uint16_t MOVE;
 #define CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
     (MOVE)(FLAGS | (FIELD_INDEX(X_FROM, Y_FROM) << 6) | FIELD_INDEX(X_TO, Y_TO))
 
-#define IF_IN_BOUNDS(X, Y, DO) \
-    if ((X) <= 8 && (Y) <= 8 && (X) > 0 && (Y) > 0)  \
-    {                          \
-        DO                     \
+#define IF_IN_BOUNDS(X, Y, DO)                        \
+    if ((X) < 8 && (Y) < 8 && (X) >= 0 && (Y) >= 0) \
+    {                                                 \
+        DO                                            \
     }
 
 #define ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
