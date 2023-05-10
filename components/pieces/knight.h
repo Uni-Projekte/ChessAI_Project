@@ -6,7 +6,7 @@
 
 class knight {
     public:
-        static void possibleMoves(std::vector<MOVE> moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
+        static void possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
 };
 
 

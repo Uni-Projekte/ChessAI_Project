@@ -22,13 +22,15 @@ TEST(BoardTest, FromFENTestInitalBoard) {
     EXPECT_EQ(board.GetWhiteBishops(), 0x24);
     EXPECT_EQ(board.GetWhiteKnights(), 0x42);
     EXPECT_EQ(board.GetWhiteRooks(), 0x81);
+    Presenter presenter = Presenter();
     board.DoMove(CREATE_MOVE(3, 1, 3, 2, 0)); // E2 - E3
     board.DoMove(CREATE_MOVE(4, 0, 1, 3, 0)); // D1 - G4
     board.DoMove(CREATE_MOVE(6,1,6,3,0)); //B2 - B4
     board.DoMove(CREATE_MOVE(6, 0, 7, 2, 0)); // B1 - A3
     board.DoMove(CREATE_MOVE(5, 0, 6, 1, 0)); // C1 - B2
     board.DoMove(CREATE_MOVE(3, 0, 5, 0, CASTLING)); // C1 - B2
-    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+    board.DoStep();
     std::cout << std::endl << presenter.ToString(board);
     presenter.HTMLFromBoard(board, "out.html");
 }

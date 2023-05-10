@@ -5,6 +5,12 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "pieces/bishop.h"
+#include "pieces/king.h"
+#include "pieces/knight.h"
+#include "pieces/pawn.h"
+#include "pieces/queen.h"
+#include "pieces/rook.h"
 
 using namespace std;
 
@@ -536,4 +542,80 @@ void Board::DoMove(MOVE move)
 
     // black en_passant
     this->en_passant_black = (this->en_passant_white * bool(pieceBoard & white)) | ((0b10000000 | (pawns & pieceBoard & black)) * bool(pawns & pieceBoard & black));
+}
+
+void Board::DoStep()
+{
+    std::vector<MOVE> moves = std::vector<MOVE>();
+    for (uint8_t x = 0; x < 8; x = x + 1)
+    {
+        for (uint8_t y = 0; y < 8; y = y + 1)
+        {
+            if (this->move_rights & 1)
+            {
+                if (this->bishops & this->black & SINGLE_BIT_BOARD(x, y))
+                {
+                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->kings & this->black & SINGLE_BIT_BOARD(x, y))
+                {
+                    king::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->knights & this->black & SINGLE_BIT_BOARD(x, y))
+                {
+                    knight::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
+                {
+                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK);
+                }
+                if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
+                {
+                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->queens & this->black & SINGLE_BIT_BOARD(x, y))
+                {
+                    queen::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+            }
+            else
+            {
+                if (this->bishops & this->white & SINGLE_BIT_BOARD(x, y))
+                {
+                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->kings & this->white & SINGLE_BIT_BOARD(x, y))
+                {
+                    king::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->knights & this->white & SINGLE_BIT_BOARD(x, y))
+                {
+                    knight::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
+                {
+                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE);
+                }
+                if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
+                {
+                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->queens & this->white & SINGLE_BIT_BOARD(x, y))
+                {
+                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+            }
+        }
+    }
+    std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
+    for (int i = 0; i < moves.size()-1; i++) {
+        std::cout << moves[i] << ", ";
+    }
+    std::cout << moves[moves.size()-1] << std::endl;
+    MOVE move = moves[rand() % moves.size()];
+    std::cout << "PICKED MOVE: " << move << std::endl;
+    std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
+    std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
+    std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
+    this->DoMove(move);
 }

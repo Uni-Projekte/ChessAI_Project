@@ -7,7 +7,7 @@
 class bishop
 {
 public:
-    static void possibleMoves(std::vector<MOVE> moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
+    static void possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
 };
 
 #endif //CHESSAI_PROJECT_BISHOP_H

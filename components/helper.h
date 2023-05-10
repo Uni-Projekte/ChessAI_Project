@@ -323,7 +323,7 @@ typedef uint16_t MOVE;
     (MOVE)(FLAGS | (FIELD_INDEX(X_FROM, Y_FROM) << 6) | FIELD_INDEX(X_TO, Y_TO))
 
 #define IF_IN_BOUNDS(X, Y, DO) \
-    if ((X) <= 8 && (Y) <= 8)  \
+    if ((X) <= 8 && (Y) <= 8 && (X) > 0 && (Y) > 0)  \
     {                          \
         DO                     \
     }
@@ -344,7 +344,7 @@ typedef uint16_t MOVE;
 #define TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     IF_IN_BOUNDS(                                                                               \
         X_TO, Y_TO,                                                                             \
-        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ~ALL_PIECES){                       \
+        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                       \
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
 
 #define H1 (1ULL)

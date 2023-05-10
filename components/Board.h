@@ -121,6 +121,8 @@ public:
     uint8_t GetPosition(std::string position) const;
 
     void DoMove(MOVE move);
+
+    void DoStep();
 };
 
 #endif // BOARD_H
