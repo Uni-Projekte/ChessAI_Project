@@ -112,6 +112,9 @@ public:
     // Converts a FEN string to a board configuration
     void fromFEN(std::string fen);
 
+    // Converts a board configuration to a FEN string
+    std::string toFEN();
+
     // Gets the piece variable from a piece as character
     uint64_t *getPiece(char piece);
 
