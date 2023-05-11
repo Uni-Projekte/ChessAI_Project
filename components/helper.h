@@ -296,11 +296,14 @@ std::string Uint16ToString(uint16_t board);
 
 std::string Uint8ToString(uint8_t board);
 
-#define WHITE true
-#define BLACK false
+#define WHITE false
+#define BLACK true
+
+#define MAX_MOVES (8 * 8 * 16)
 
 typedef uint64_t BOARD;
 typedef uint16_t MOVE;
+typedef MOVE MOVE_ARRAY[MAX_MOVES];
 
 #define CAPTURE 0b1000000000000000U
 #define CASTLING 0b0100000000000000U
@@ -329,6 +332,9 @@ typedef uint16_t MOVE;
                                 << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)      \
                                 << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
 
+#define NEW_MOVE_ARRAY(VARNAME) MOVE_ARRAY VARNAME; \
+    VARNAME[0] = 1;
+
 #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
 
 #define SINGLE_BIT_BOARD(X, Y) (1ULL << (FIELD_INDEX(X, Y)))
@@ -343,7 +349,8 @@ typedef uint16_t MOVE;
     }
 
 #define ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-    MOVES.push_back(CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS));
+    MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
+    MOVES[0] = MOVES[0] + 1;
 
 #define TRY_ADD_MOVE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)        \
     TRY_ADD_MOVE_NO_CAPTURE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \

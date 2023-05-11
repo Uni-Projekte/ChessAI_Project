@@ -766,7 +766,7 @@ void Board::DoMove(MOVE move)
 
 MOVE Board::GetMove()
 {
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     for (uint8_t x = 0; x < 8; x = x + 1)
     {
         for (uint8_t y = 0; y < 8; y = y + 1)
@@ -832,7 +832,7 @@ MOVE Board::GetMove()
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
-    MOVE move = moves[rand() % moves.size()];
+    MOVE move = moves[rand() % moves[0]];
     // std::cout << "PICKED MOVE: " << move << std::endl;
     // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
     // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;

@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Check for possible moves in the diagonal directions.
-void bishop::possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
     // diagonal north east
     uint8_t newX = x + 1;
