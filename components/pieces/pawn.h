@@ -7,7 +7,7 @@
 class pawn
 {
 public:
-    static void possibleMoves(std::vector<MOVE> &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color);
+    static void possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color);
 };
 
 #endif //CHESSAI_PROJECT_PAWN_H

@@ -17,7 +17,8 @@ TEST(PiecesTest, BishopTest1) {
     Presenter presenter = Presenter();
     std::cout << std::endl<< presenter.ToString(board);
 
-    MOVE expectedMoves[13] = {
+    MOVE expectedMoves[14] = {
+        14,
         CREATE_MOVE(4, 4, 5, 5, 0),
         CREATE_MOVE(4, 4, 6, 6, 0),
         CREATE_MOVE(4, 4, 7, 7, 0),
@@ -33,10 +34,10 @@ TEST(PiecesTest, BishopTest1) {
         CREATE_MOVE(4, 4, 1, 7, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i) {
+    for (int i = 0; i < moves[0]; ++i) {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
 }
@@ -46,7 +47,8 @@ TEST(PiecesTest, BishopTest2) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[13] = {
+    MOVE expectedMoves[12] = {
+        12,
         CREATE_MOVE(4, 4, 5, 5, 0),
         CREATE_MOVE(4, 4, 6, 6, 0),
         CREATE_MOVE(4, 4, 7, 7, 0),
@@ -60,10 +62,10 @@ TEST(PiecesTest, BishopTest2) {
         CREATE_MOVE(4, 4, 3, 5, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i) {
+    for (int i = 0; i < moves[0]; ++i) {
         EXPECT_EQ(expectedMoves[i], moves[i])<<"differs at index"<<i;
     }
 }
@@ -73,17 +75,18 @@ TEST(PiecesTest, BishopTest3) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[13] = {
+    MOVE expectedMoves[6] = {
+        6,
         CREATE_MOVE(1, 1, 2, 2, 0),
         CREATE_MOVE(1, 1, 3, 3, CAPTURE),
         CREATE_MOVE(1, 1, 2, 0, 0),
         CREATE_MOVE(1, 1, 0, 0, 0),
         CREATE_MOVE(1, 1, 0, 2, 0),
     };
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "differs at index "<< i;
     }
@@ -94,7 +97,8 @@ TEST(PiecesTest, QueenTest1) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[27] = {
+    MOVE expectedMoves[28] = {
+        28,
         CREATE_MOVE(4, 4, 5, 5, 0),
         CREATE_MOVE(4, 4, 6, 6, 0),
         CREATE_MOVE(4, 4, 7, 7, 0),
@@ -124,10 +128,10 @@ TEST(PiecesTest, QueenTest1) {
         CREATE_MOVE(4, 4, 4, 7, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -139,6 +143,7 @@ TEST(PiecesTest, QueenTest2) {
     std::cout << std::endl << presenter.ToString(board);
 
     MOVE expectedMoves[27] = {
+        27,
         CREATE_MOVE(4, 4, 5, 5, 0),
         CREATE_MOVE(4, 4, 6, 6, 0),
         CREATE_MOVE(4, 4, 7, 7, 0),
@@ -167,10 +172,10 @@ TEST(PiecesTest, QueenTest2) {
         CREATE_MOVE(4, 4, 4, 7, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -181,7 +186,8 @@ TEST(PiecesTest, QueenTest3) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[27] = {
+    MOVE expectedMoves[26] = {
+        26,
         CREATE_MOVE(4, 4, 5, 5, 0),
         CREATE_MOVE(4, 4, 6, 6, 0),
         CREATE_MOVE(4, 4, 7, 7, 0),
@@ -209,10 +215,10 @@ TEST(PiecesTest, QueenTest3) {
         CREATE_MOVE(4, 4, 4, 7, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -223,7 +229,8 @@ TEST(PiecesTest, RookTest1) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[14] = {
+    MOVE expectedMoves[15] = {
+        15,
         CREATE_MOVE(0, 7, 1, 7, 0),
         CREATE_MOVE(0, 7, 2, 7, 0),
         CREATE_MOVE(0, 7, 3, 7, 0),
@@ -240,10 +247,10 @@ TEST(PiecesTest, RookTest1) {
         CREATE_MOVE(0, 7, 0, 0, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -254,7 +261,8 @@ TEST(PiecesTest, RookTest2) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[14] = {
+    MOVE expectedMoves[15] = {
+        15,
         CREATE_MOVE(0, 7, 1, 7, 0),
         CREATE_MOVE(0, 7, 2, 7, 0),
         CREATE_MOVE(0, 7, 3, 7, 0),
@@ -271,10 +279,10 @@ TEST(PiecesTest, RookTest2) {
         CREATE_MOVE(0, 7, 0, 0, CAPTURE),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -286,6 +294,7 @@ TEST(PiecesTest, RookTest3) {
     std::cout << std::endl << presenter.ToString(board);
 
     MOVE expectedMoves[14] = {
+        14,
         CREATE_MOVE(0, 7, 1, 7, 0),
         CREATE_MOVE(0, 7, 2, 7, 0),
         CREATE_MOVE(0, 7, 3, 7, 0),
@@ -301,10 +310,10 @@ TEST(PiecesTest, RookTest3) {
         CREATE_MOVE(0, 7, 0, 1, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -315,7 +324,8 @@ TEST(PiecesTest, KnightTest1) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[8] = {
+    MOVE expectedMoves[9] = {
+        9,
         CREATE_MOVE(4, 3, 5, 5, 0),
         CREATE_MOVE(4, 3, 5, 1, 0),
         CREATE_MOVE(4, 3, 3, 5, 0),
@@ -326,10 +336,10 @@ TEST(PiecesTest, KnightTest1) {
         CREATE_MOVE(4, 3, 2, 2, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e4") >> 3, board.GetPosition("e4") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -340,17 +350,18 @@ TEST(PiecesTest, KnightTest2) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[8] = {
+    MOVE expectedMoves[5] = {
+        5,
         CREATE_MOVE(1, 6, 2, 4, CAPTURE),
         CREATE_MOVE(1, 6, 0, 4, 0),
         CREATE_MOVE(1, 6, 3, 7, 0),
         CREATE_MOVE(1, 6, 3, 5, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b7") >> 3, board.GetPosition("b7") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
@@ -361,16 +372,17 @@ TEST(PiecesTest, KnightTest3) {
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    MOVE expectedMoves[8] = {
+    MOVE expectedMoves[4] = {
+        4,
         CREATE_MOVE(6, 1, 7, 3, 0),
         CREATE_MOVE(6, 1, 5, 3, 0),
         CREATE_MOVE(6, 1, 4, 0, 0),
     };
 
-    std::vector<MOVE> moves = std::vector<MOVE>();
+    NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
 
-    for (int i = 0; i < moves.size(); ++i)
+    for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }

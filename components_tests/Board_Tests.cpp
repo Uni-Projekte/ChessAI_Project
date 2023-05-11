@@ -63,7 +63,7 @@ TEST(BoardTest, PlayGame)
 TEST(BoardTest, DoMoveBenchmarkStart)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 100000; i++) {
         board.GetMove();
     }
 }
@@ -71,7 +71,7 @@ TEST(BoardTest, DoMoveBenchmarkStart)
 TEST(BoardTest, DoMoveBenchmarkMiddle)
 {
     Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < 100000; i++)
     {
         board.GetMove();
     }
@@ -80,7 +80,7 @@ TEST(BoardTest, DoMoveBenchmarkMiddle)
 TEST(BoardTest, DoMoveBenchmarkEnd)
 {
     Board board("r3k3/5p1p/n7/6B1/8/8/P7/K1R5 w q - 0 1");
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < 100000; i++)
     {
         board.GetMove();
     }
