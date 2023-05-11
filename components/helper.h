@@ -332,7 +332,8 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
                                 << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)      \
                                 << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
 
-#define NEW_MOVE_ARRAY(VARNAME) MOVE_ARRAY VARNAME; \
+#define NEW_MOVE_ARRAY(VARNAME) \
+    MOVE_ARRAY VARNAME;         \
     VARNAME[0] = 1;
 
 #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
@@ -348,7 +349,7 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
         DO                                          \
     }
 
-#define ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
+#define ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)              \
     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
     MOVES[0] = MOVES[0] + 1;
 
@@ -369,9 +370,9 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
 
 #define TRY_ADD_MOVE_UPGRADE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-    IF_IN_BOUNDS(X_TO, Y_TO, \
-        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR) \
-        { \
+    IF_IN_BOUNDS(                                                                          \
+        X_TO, Y_TO,                                                                        \
+        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR) { \
             if (Y_TO % 7 < 2) \
         { \
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_ROOK); \
@@ -382,7 +383,7 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
         else \
         { \
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE); \
-        })
+        } })
 
 #define H1 (1ULL)
 #define G1 (1ULL << 1)
