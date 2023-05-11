@@ -534,12 +534,12 @@ string Board::toFEN()
 
     fen.push_back(' ');
 
-    if (this->en_passant & 0b10000000)
+    if ((this->en_passant & 0b10000000) && !(this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (this->en_passant & (7 - 0b00000111)));
         fen.push_back('3');
     }
-    else if (this->en_passant & 0b10000000)
+    else if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (this->en_passant & (7 - 0b00000111)));
         fen.push_back('6');
@@ -787,7 +787,7 @@ MOVE Board::GetMove()
                 }
                 if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK);
+                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
                 if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
                 {
@@ -814,7 +814,7 @@ MOVE Board::GetMove()
                 }
                 if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant_black);
+                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
                 }
                 if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
                 {

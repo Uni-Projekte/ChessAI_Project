@@ -361,6 +361,22 @@ typedef uint16_t MOVE;
         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
             ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
 
+#define TRY_ADD_MOVE_UPGRADE(MOVES, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
+    IF_IN_BOUNDS(X_TO, Y_TO, \
+        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR) \
+        { \
+            if (Y_TO % 7 < 2) \
+        { \
+            ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_ROOK); \
+            ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_KNIGHT); \
+            ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_BISHOP); \
+            ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_QUEEN); \
+        } \
+        else \
+        { \
+            ADD_MOVE(MOVES, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE); \
+        })
+
 #define H1 (1ULL)
 #define G1 (1ULL << 1)
 #define F1 (1ULL << 2)
