@@ -24,6 +24,8 @@ Board::Board()
 {
     this->black = StartBoardBlack;
     this->white = StartBoardWhite;
+    this->attackedFromWhite=0;
+    this->attackedFromBlack=0;
     this->bishops = StartBoardBishops;
     this->queens = StartBoardQueens;
     this->rooks = StartBoardRooks;
@@ -40,6 +42,8 @@ Board::Board(std::string fen)
 {
     this->black = 0;
     this->white = 0;
+    this->attackedFromWhite=0;
+    this->attackedFromBlack=0;
     this->pawns = 0;
     this->kings = 0;
     this->queens = 0;
@@ -250,6 +254,24 @@ uint64_t Board::GetWhiteRooks() const
 }
 
 /**
+ * @brief 
+ * @return bitboard of white rook as uint64_t
+ */
+uint64_t& Board::GetFromWhiteAttackedFields()
+{
+    return this->attackedFromWhite;
+}
+
+/**
+ * @brief get bitboard of white rook
+ * @return bitboard of white rook as uint64_t
+ */
+uint64_t& Board::GetFromBlackAttackedFields()
+{
+    return this->attackedFromBlack;
+}
+
+/**
  * @brief check if player's piece is on position with row and column
  * @param player: bit-board (white or black)
  * @param piece: bit-board (one of kings/queens/bishops/rook/knights/pawns)
@@ -441,68 +463,93 @@ void Board::fromFEN(string fen)
 string Board::toFEN()
 {
     string fen = "";
-    for (int i = 0; i < 64; ++i)
+    int emptyCounter = 0;
+    for (int i = 7; i >= 0; --i)
     {
-        uint64_t pos = 1ULL << i;
+        for (int j = 7; j >= 0; --j)
+        {
+            uint64_t pos = 1ULL << (i * 8 + j);
 
-        if (pos & this->white)
-        {
-            if (pos & this->pawns)
+            if (pos & this->white)
             {
-                fen.push_back('P');
+                if (emptyCounter > 0)
+                {
+                    fen += to_string(emptyCounter);
+                    emptyCounter = 0;
+                }
+                if (pos & this->pawns)
+                {
+                    fen.push_back('P');
+                }
+                else if (pos & this->queens)
+                {
+                    fen.push_back('Q');
+                }
+                else if (pos & this->kings)
+                {
+                    fen.push_back('K');
+                }
+                else if (pos & this->bishops)
+                {
+                    fen.push_back('B');
+                }
+                else if (pos & this->knights)
+                {
+                    fen.push_back('N');
+                }
+                else if (pos & this->rooks)
+                {
+                    fen.push_back('R');
+                }
             }
-            else if (pos & this->queens)
+            else if (pos & this->black)
             {
-                fen.push_back('Q');
+                if (emptyCounter > 0)
+                {
+                    fen += to_string(emptyCounter);
+                    emptyCounter = 0;
+                }
+                if (pos & this->pawns)
+                {
+                    fen.push_back('p');
+                }
+                else if (pos & this->queens)
+                {
+                    fen.push_back('q');
+                }
+                else if (pos & this->kings)
+                {
+                    fen.push_back('k');
+                }
+                else if (pos & this->bishops)
+                {
+                    fen.push_back('b');
+                }
+                else if (pos & this->knights)
+                {
+                    fen.push_back('n');
+                }
+                else if (pos & this->rooks)
+                {
+                    fen.push_back('r');
+                }
             }
-            else if (pos & this->kings)
+            else
             {
-                fen.push_back('K');
+                ++emptyCounter;
             }
-            else if (pos & this->bishops)
+            if (emptyCounter > 0 && j == 0)
             {
-                fen.push_back('B');
+                fen += to_string(emptyCounter);
+                emptyCounter = 0;
             }
-            else if (pos & this->knights)
+            if (j == 0 && i != 0)
             {
-                fen.push_back('N');
-            }
-            else if (pos & this->rooks)
-            {
-                fen.push_back('R');
+
+                fen.push_back('/');
             }
         }
-        else if (pos & this->black)
-        {
-            if (pos & this->pawns)
-            {
-                fen.push_back('p');
-            }
-            else if (pos & this->queens)
-            {
-                fen.push_back('q');
-            }
-            else if (pos & this->kings)
-            {
-                fen.push_back('k');
-            }
-            else if (pos & this->bishops)
-            {
-                fen.push_back('b');
-            }
-            else if (pos & this->knights)
-            {
-                fen.push_back('n');
-            }
-            else if (pos & this->rooks)
-            {
-                fen.push_back('r');
-            }
-        }
-        if (i % 8 == 7 && i != 63)
-        {
-            fen.push_back('/');
-        }
+
     }
 
     fen.push_back(' ');
@@ -514,6 +561,8 @@ string Board::toFEN()
     {
         fen.push_back('w');
     }
+
+    fen.push_back(' ');
 
     if (this->move_rights & 0b10000000)
     {
@@ -531,17 +580,21 @@ string Board::toFEN()
     {
         fen.push_back('q');
     }
+    if (!(this->move_rights & 0b11110000))
+    {
+        fen.push_back('-');
+    }
 
     fen.push_back(' ');
-
+    cout << (int)this->en_passant << endl;
     if ((this->en_passant & 0b10000000) && !(this->en_passant & 0b01000000))
     {
-        fen.push_back('a' + (this->en_passant & (7 - 0b00000111)));
+        fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
         fen.push_back('3');
     }
     else if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
     {
-        fen.push_back('a' + (this->en_passant & (7 - 0b00000111)));
+        fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
         fen.push_back('6');
     }
     else
@@ -718,7 +771,7 @@ void Board::DoMove(MOVE move)
     this->white = this->white & ~from;
 
     this->pawns = this->pawns | (to * bool(pawns & from));
-    this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
+    this->pawns = this->pawns & ~((to | (GET_SINGLE_BIT_BOARD_FROM(this->en_passant) * (this->en_passant & 0b10000000))) * ((capture && ((allPieces & ~pawns) & from))));
     this->pawns = this->pawns & ~from;
 
     this->bishops = this->bishops | (to * bool(bishops & from));
@@ -744,7 +797,7 @@ void Board::DoMove(MOVE move)
     // add half-move clock move every move
     this->halfmove_clock = this->halfmove_clock + 1;
     // reset half-move clock when pawn moved or a piece was captured
-    this->halfmove_clock = this->halfmove_clock * bool((pawns & from) | capture);
+    this->halfmove_clock = this->halfmove_clock * !bool((pawns & from) | capture);
 
     // add full-move when black moved
     this->fullmove_number = this->fullmove_number + bool(black & from);
@@ -761,7 +814,9 @@ void Board::DoMove(MOVE move)
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
 
     // en_passant
-    this->en_passant = ((0b10000000 | (pawns & from & white)) * bool(pawns & from & white)) | ((0b11000000 | (pawns & from & black)) * bool(pawns & from & black));
+    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && (((pawns & (to << 1)) && (to != A4 && to != A5) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) << ((((move & 0b111111) >  31) * 2 - 1) * 8)));
+
+
 }
 
 MOVE Board::GetMove()
@@ -775,54 +830,54 @@ MOVE Board::GetMove()
             {
                 if (this->bishops & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    bishop::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
                 if (this->kings & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    king::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    king::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
                 if (this->knights & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    knight::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    knight::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
                 if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
                 if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    rook::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
                 if (this->queens & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    queen::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    queen::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
             }
             else
             {
                 if (this->bishops & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    bishop::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->kings & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    king::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    king::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->knights & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    knight::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    knight::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
                 }
                 if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    rook::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->queens & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    queen::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
             }
         }
@@ -832,6 +887,7 @@ MOVE Board::GetMove()
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
+    srand((unsigned int)time(NULL));
     MOVE move = moves[rand() % moves[0]];
     // std::cout << "PICKED MOVE: " << move << std::endl;
     // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;

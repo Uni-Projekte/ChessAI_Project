@@ -10,12 +10,14 @@ class Board {
 private:
     uint64_t black;  // bitboard representing black pieces
     uint64_t white;  // bitboard representing white pieces
+    uint64_t attackedFromWhite; // bitboard representing from White attacked fields
+    uint64_t attackedFromBlack; // bitboard representing from Black attacked fields
     uint64_t pawns;  // bitboard representing all pawns
     uint64_t kings;  // bitboard representing all kings
     uint64_t queens; // bitboard representing all queens
     uint64_t rooks; // bitboard representing all rook
     uint64_t bishops;// bitboard representing all bishops
-    uint64_t knights;// bitboard representing all knights
+    uint64_t knights;// bitboard representing all knight
 
     // bit sequence representing the en passant square.
     // first 3 bits are the file, next 3 bits are the rank.
@@ -99,6 +101,12 @@ public:
 
     // Returns the bitboard representing white rook
     uint64_t GetWhiteRooks() const;
+
+    // Returns the bitboard representing from White attacked fields
+    uint64_t& GetFromWhiteAttackedFields();
+
+    // Returns the bitboard representing from Black attacked fields
+    uint64_t& GetFromBlackAttackedFields();
 
     // Check if piece of player is on position with row and column
     uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);

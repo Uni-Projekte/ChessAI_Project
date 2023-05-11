@@ -1,12 +1,13 @@
 #include "components/Board.h"
 #include "components/helper.h"
+#include "components/presenter.h"
 #include <iostream>
 
 
 int main()
 {
-    Board board("8/8/8/2k5/4K3/8/8/8");
-    std::cout << "Hello World!\n";
+    Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    board.PlayGame();
 }
 
 // Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"

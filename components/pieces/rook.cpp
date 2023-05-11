@@ -1,6 +1,6 @@
 #include "rook.h"
 
-void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsWhite , BOARD &attackedFieldsBlack , BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
     uint8_t newX = x + 1;
     uint8_t newY = y + 1;
@@ -13,12 +13,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, x, y, newX, y, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, y, 0);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, newX, y, 0);
         }
         newX++;
     }
@@ -29,12 +29,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, x, y, newX, y, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, newX, y, 0);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, newX, y, 0);
         }
         newX--;
     }
@@ -45,12 +45,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, x, y, x, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, x, newY, 0);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, x, newY, 0);
         }
         newY--;
     }
@@ -60,12 +60,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, x, y, x, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, x, y, x, newY, 0);
+            ADD_MOVE(moves, attackedFieldsWhite, attackedFieldsBlack, x, y, x, newY, 0);
         }
         newY++;
     }

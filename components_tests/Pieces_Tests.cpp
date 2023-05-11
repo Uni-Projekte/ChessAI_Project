@@ -35,7 +35,7 @@ TEST(PiecesTest, BishopTest1) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    bishop::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i) {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
@@ -63,7 +63,7 @@ TEST(PiecesTest, BishopTest2) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    bishop::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i) {
         EXPECT_EQ(expectedMoves[i], moves[i])<<"differs at index"<<i;
@@ -84,7 +84,7 @@ TEST(PiecesTest, BishopTest3) {
         CREATE_MOVE(1, 1, 0, 2, 0),
     };
     NEW_MOVE_ARRAY(moves);
-    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111);
+    bishop::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -129,7 +129,7 @@ TEST(PiecesTest, QueenTest1) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    queen::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    queen::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -173,7 +173,7 @@ TEST(PiecesTest, QueenTest2) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    queen::possibleMoves(moves, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    queen::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -216,7 +216,7 @@ TEST(PiecesTest, QueenTest3) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    queen::possibleMoves(moves, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    queen::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -248,7 +248,7 @@ TEST(PiecesTest, RookTest1) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
+    rook::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -280,7 +280,7 @@ TEST(PiecesTest, RookTest2) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
+    rook::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -311,7 +311,7 @@ TEST(PiecesTest, RookTest3) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
+    rook::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -337,7 +337,7 @@ TEST(PiecesTest, KnightTest1) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    knight::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e4") >> 3, board.GetPosition("e4") & 0b111);
+    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e4") >> 3, board.GetPosition("e4") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -359,7 +359,7 @@ TEST(PiecesTest, KnightTest2) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    knight::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b7") >> 3, board.GetPosition("b7") & 0b111);
+    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b7") >> 3, board.GetPosition("b7") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -380,12 +380,36 @@ TEST(PiecesTest, KnightTest3) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    knight::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
+    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
         EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
     }
+}
+
+TEST(PiecesTest, PawnEatsPawnTest)
+{
+    Board board("3k4/8/8/3p4/4P3/8/8/4K3 w - - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    board.DoMove(CREATE_MOVE(4, 3, 3, 4, CAPTURE));
+    std::cout << std::endl << presenter.ToString(board);
+    EXPECT_EQ("3k4/8/8/3P4/8/8/8/4K3 b - - 0 1", board.toFEN());
+}
+
+TEST(PiecesTest, EnPassantTest)
+{
+    Board board("2k5/8/8/8/6p1/8/5P2/3K4 w - - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    board.DoMove(CREATE_MOVE(5, 1, 5, 3, 0));
+    EXPECT_EQ("2k5/8/8/8/5Pp1/8/8/3K4 b - f3 0 1", board.toFEN());
+    board.DoMove(CREATE_MOVE(6, 3, 5, 2, CAPTURE));
+    std::cout << std::endl << presenter.ToString(board);
+    EXPECT_EQ("2k5/8/8/8/8/5p2/8/3K4 w - - 0 2", board.toFEN());
 }
 
 TEST(PiecesTest, BishopTestManyMoves) {
