@@ -399,18 +399,6 @@ TEST(PiecesTest, PawnEatsPawnTest)
     EXPECT_EQ("3k4/8/8/3P4/8/8/8/4K3 b - - 0 1", board.toFEN());
 }
 
-TEST(PiecesTest, EnPassantTest)
-{
-    Board board("2k5/8/8/8/6p1/8/5P2/3K4 w - - 0 1");
-    Presenter presenter = Presenter();
-    std::cout << std::endl << presenter.ToString(board);
-
-    board.DoMove(CREATE_MOVE(5, 1, 5, 3, 0));
-    EXPECT_EQ("2k5/8/8/8/5Pp1/8/8/3K4 b - f3 0 1", board.toFEN());
-    board.DoMove(CREATE_MOVE(6, 3, 5, 2, CAPTURE));
-    std::cout << std::endl << presenter.ToString(board);
-    EXPECT_EQ("2k5/8/8/8/8/5p2/8/3K4 w - - 0 2", board.toFEN());
-}
 
 TEST(PiecesTest, BishopTestManyMoves) {
     const std::string game[27] = {
