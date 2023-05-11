@@ -41,3 +41,4 @@ If you want to implement a new feature or fix a bug, please create a new branch 
 git chechkout -b {branch-name} development
 ```
 Once you have finished implementing your changes, you can merge your branch with the development branch. However, please ensure that you have thoroughly tested your changes, written appropriate tests, and documented your code before merging your branch.
+ 
