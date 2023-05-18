@@ -6,7 +6,7 @@
 
 class king {
 public:
-    static void possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsWhite , BOARD &attackedFieldsBlack , BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
+    static void possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD &attackedFieldsEnemy , BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
 };
 
 

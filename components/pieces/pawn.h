@@ -8,7 +8,7 @@ class pawn
 {
 public:
 
-    static void possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsWhite, BOARD &attackedFieldsBlack, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante);
+    static void possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante);
 
 };
 

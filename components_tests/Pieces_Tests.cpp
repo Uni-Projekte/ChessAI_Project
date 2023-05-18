@@ -399,11 +399,38 @@ TEST(PiecesTest, PawnEatsPawnTest)
     EXPECT_EQ("3k4/8/8/3P4/8/8/8/4K3 b - - 0 1", board.toFEN());
 }
 
+TEST(PiecesTest, EnPassantTest)
+{
+    Board board("2k5/8/8/8/6p1/8/5P2/3K4 w - - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    board.DoMove(CREATE_MOVE(5, 1, 5, 3, 0));
+    EXPECT_EQ("2k5/8/8/8/5Pp1/8/8/3K4 b - f3 0 1", board.toFEN());
+    board.DoMove(CREATE_MOVE(6, 3, 5, 2, CAPTURE));
+    std::cout << std::endl << presenter.ToString(board);
+    EXPECT_EQ("2k5/8/8/8/8/5p2/8/3K4 w - - 0 2", board.toFEN());
+}
+
+TEST(PiecesTest, EnPassantTest2)
+{
+    Board board("rnbqkbnr/1ppppppp/p7/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    board.DoMove(CREATE_MOVE(5, 6, 5, 4, 0));
+    EXPECT_EQ("rnbqkbnr/1pppp1pp/p7/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", board.toFEN());
+
+    board.DoMove(CREATE_MOVE(4, 4, 5, 5, CAPTURE));
+    std::cout << std::endl << presenter.ToString(board);
+    EXPECT_EQ("rnbqkbnr/1pppp1pp/p4P2/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3", board.toFEN());
+}
 
 TEST(PiecesTest, BishopTestManyMoves) {
     const std::string game[27] = {
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1",
+            "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
             "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
             "rnbqkbnr/ppp1pppp/3p4/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
             "rnbqkb1r/ppp1pppp/3p1n2/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3",
@@ -433,18 +460,23 @@ TEST(PiecesTest, BishopTestManyMoves) {
 
     Board board(game[0]);
 
-    MOVE expectedMoves[13] = {
+    MOVE moves[13] = {
             CREATE_MOVE(4, 1, 4, 3, 0),
-            CREATE_MOVE(4, 4, 6, 6, 0),
-            CREATE_MOVE(4, 4, 7, 7, 0),
-            CREATE_MOVE(4, 4, 5, 3, 0),
-            CREATE_MOVE(4, 4, 6, 2, 0),
-            CREATE_MOVE(4, 4, 7, 1, 0),
-            CREATE_MOVE(4, 4, 3, 3, 0),
-            CREATE_MOVE(4, 4, 2, 2, 0),
-            CREATE_MOVE(4, 4, 1, 1, 0),
-            CREATE_MOVE(4, 4, 0, 0, 0),
-            CREATE_MOVE(4, 4, 3, 5, 0),
+            CREATE_MOVE(3, 6, 3, 5, 0),
+            CREATE_MOVE(3, 1, 3, 3, 0),
+            CREATE_MOVE(6, 7, 5, 5, 0),
+            CREATE_MOVE(6, 0, 5, 2, 0),
+            CREATE_MOVE(1, 7, 3, 6, 0),
+            CREATE_MOVE(5, 0, 3, 2, 0),
+            CREATE_MOVE(4, 6, 4, 4, 0),
+            CREATE_MOVE(3, 3, 4, 4, CAPTURE),
+            CREATE_MOVE(3, 5, 4, 4, CAPTURE),
+            CREATE_MOVE(1, 0, 2, 2, 0),
     };
+
+    for (int i = 0; i < 11; i++) {
+        EXPECT_EQ(board.toFEN(), game[i]) << "Move " << i << " failed";
+        board.DoMove(moves[i]);
+    }
 
 }

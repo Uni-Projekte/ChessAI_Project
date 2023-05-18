@@ -589,12 +589,12 @@ string Board::toFEN()
 
     fen.push_back(' ');
     cout << (int)this->en_passant << endl;
-    if ((this->en_passant & 0b10000000) && !(this->en_passant & 0b01000000))
+    if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
         fen.push_back('3');
     }
-    else if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
+    else if ((this->en_passant & 0b10000000) && !(this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
         fen.push_back('6');
@@ -702,6 +702,8 @@ uint8_t Board::GetPosition(string position) const
 #define WHITE_QUEENSIDE_TOWER_AFTER (1ULL << 4ULL)
 #define ROW_1_AND_8 0xff000000000000ffULL
 #define NOT_ROW_1_AND_8 0x00ffffffffffff00ULL
+#include <bitset>
+
 
 void Board::DoMove(MOVE move)
 {
@@ -718,6 +720,7 @@ void Board::DoMove(MOVE move)
     const BOARD kings = this->kings;
     const BOARD rook = this->rooks;
     const BOARD knights = this->knights;
+    const BOARD ownPieces = GET_COLOR(move) ?  this->white : this->black;
 
     // change player turn (x xor 1 = !x)
     this->move_rights = this->move_rights ^ 0b1U;
@@ -767,16 +770,20 @@ void Board::DoMove(MOVE move)
     this->black = this->black | (to * bool(black & from));
     // delete captured piece pos
     this->black = this->black & ~(to * ((capture && (white & from))));
+    this->black = this->black & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     // delete moved piece old pos
     this->black = this->black & ~from;
 
     this->white = this->white | (to * bool(white & from));
     this->white = this->white & ~(to * ((capture && (black & from))));
+    this->white = this->white & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->white = this->white & ~from;
 
     this->pawns = this->pawns | (to * bool(pawns & from)); // add moved pawn new pos
-    this->pawns = this->pawns & ~((to | (GET_SINGLE_BIT_BOARD_FROM(this->en_passant) * bool(this->en_passant & 0b10000000))) * ((capture && ((allPieces & ~pawns) & from))));
+    this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
+    this->pawns = this->pawns & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->pawns = this->pawns & ~from;
+    cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
 
     this->bishops = this->bishops | (to * bool(bishops & from));
     this->bishops = this->bishops & ~(to * ((capture && ((allPieces & ~bishops) & from))));
@@ -818,7 +825,7 @@ void Board::DoMove(MOVE move)
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
 
     // en_passant
-    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && (((pawns & (to << 1)) && (to != A4 && to != A5) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) << ((((move & 0b111111) >  31) * 2 - 1) * 8)));
+    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) >  31) * 2 - 1) * 8)) | (bool(white & from) << 6));
 
 
 }
