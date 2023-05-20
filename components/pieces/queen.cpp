@@ -1,6 +1,6 @@
 #include "queen.h"
 
-void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &enemyKing, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
     uint8_t newX = x + 1;
     uint8_t newY = y + 1;
@@ -10,12 +10,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX++;
         newY++;
@@ -28,12 +28,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX++;
         newY--;
@@ -46,12 +46,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX--;
         newY--;
@@ -64,12 +64,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX--;
         newY++;
@@ -81,12 +81,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, y, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, y, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, 0);
         }
         newX++;
     }
@@ -97,12 +97,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, y))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, y, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, y, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, 0);
         }
         newX--;
     }
@@ -113,12 +113,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, x, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, x, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, 0);
         }
         newY--;
     }
@@ -128,12 +128,12 @@ void queen::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &at
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(x, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, x, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, x, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, 0);
         }
         newY++;
     }

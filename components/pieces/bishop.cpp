@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Check for possible moves in the diagonal directions.
-void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &enemyKing, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
     // diagonal north east
     uint8_t newX = x + 1;
@@ -11,10 +11,10 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &a
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         } else {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX++;
         newY++;
@@ -27,12 +27,12 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &a
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX++;
         newY--;
@@ -45,12 +45,12 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &a
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX--;
         newY--;
@@ -63,12 +63,12 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD &a
     {
         if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, CAPTURE);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
             break;
         }
         else
         {
-            ADD_MOVE(moves, attackedFieldsOwn, attackedFieldsEnemy, x, y, newX, newY, 0);
+            ADD_MOVE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
         }
         newX--;
         newY++;

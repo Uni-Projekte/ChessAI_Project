@@ -720,7 +720,6 @@ void Board::DoMove(MOVE move)
     const BOARD kings = this->kings;
     const BOARD rook = this->rooks;
     const BOARD knights = this->knights;
-    const BOARD ownPieces = GET_COLOR(move) ?  this->white : this->black;
 
     // change player turn (x xor 1 = !x)
     this->move_rights = this->move_rights ^ 0b1U;
