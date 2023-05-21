@@ -337,7 +337,7 @@ TEST(PiecesTest, KnightTest1) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e4") >> 3, board.GetPosition("e4") & 0b111);
+    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e4") >> 3, board.GetPosition("e4") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -359,7 +359,7 @@ TEST(PiecesTest, KnightTest2) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b7") >> 3, board.GetPosition("b7") & 0b111);
+    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b7") >> 3, board.GetPosition("b7") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -380,7 +380,7 @@ TEST(PiecesTest, KnightTest3) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
+    knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
     {

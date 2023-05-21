@@ -840,7 +840,7 @@ MOVE Board::GetMove()
             {
                 if (this->bishops & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    bishop::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
                 if (this->kings & this->black & SINGLE_BIT_BOARD(x, y))
                 {
@@ -848,46 +848,46 @@ MOVE Board::GetMove()
                 }
                 if (this->knights & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    knight::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y);
                 }
                 if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromBlack,  this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
                 if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    rook::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
                 if (this->queens & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    queen::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
             }
             else
             {
                 if (this->bishops & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    bishop::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
                 if (this->kings & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    king::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    king::possibleMoves(moves, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->knights & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    knight::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
                 }
                 if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    rook::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
                 if (this->queens & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    queen::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
             }
         }

@@ -351,51 +351,51 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
         DO;                                          \
     }
 
-#define ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-    ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO)                   ;                                                                            \
+#define ADD_MOVE_SLIDING_PIECE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
+    ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO)                   ;                      \
     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
     MOVES[0] = MOVES[0] + 1;
 
-#define TRY_ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-    TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING , ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-    TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING ,ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
+#define ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
+    MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
+    MOVES[0] = MOVES[0] + 1;
 
-#define TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
+#define TRY_ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
+    TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
+    TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
+
+#define TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     IF_IN_BOUNDS(                                                                             \
         X_TO, Y_TO,                                                                                                         \
-        BOARD to = SINGLE_BIT_BOARD(X_TO, Y_TO);\
-        if (to & ENEMYKING && metKing){                                                                                  \
-            ATTACKEDFIELDSOWN |= to;\
-        }\
-        else if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
+        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
 
-#define TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
+#define TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     IF_IN_BOUNDS(                                                                               \
         X_TO, Y_TO,                                                                             \
         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
 
-#define TRY_ADD_MOVE_UPGRADE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
+#define TRY_ADD_MOVE_UPGRADE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     IF_IN_BOUNDS(                                                                          \
         X_TO, Y_TO,                                                                         \
         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR) { \
             if (Y_TO % 7 < 2) \
         { \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_ROOK); \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_KNIGHT); \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_BISHOP); \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_QUEEN); \
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_ROOK); \
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_KNIGHT); \
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_BISHOP); \
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_QUEEN); \
         } \
         else \
         { \
-            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE); \
+            ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE); \
         } })
 
 
 // Operations for King
 
-#define TRY_ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \ \
+#define TRY_ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)  \
     TRY_ADD_MOVE_NO_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
     TRY_ADD_MOVE_ONLY_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY,ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
 
@@ -403,7 +403,6 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
     IF_IN_BOUNDS(                                                                                                                          \
         X_TO, Y_TO,                                                                                                                        \
         ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO);                                                                                 \
-        if (SINGLE_BIT_BOARD(X_TO, Y_TO) & )\
         if (~ATTACKEDFIELDSENEMY & SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
             ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
 
