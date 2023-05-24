@@ -12,6 +12,8 @@
 #include "pieces/queen.h"
 #include "pieces/rook.h"
 #include "presenter.h"
+#include <ctime>
+
 
 using namespace std;
 
@@ -587,12 +589,12 @@ string Board::toFEN()
 
     fen.push_back(' ');
     cout << (int)this->en_passant << endl;
-    if ((this->en_passant & 0b10000000) && !(this->en_passant & 0b01000000))
+    if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
         fen.push_back('3');
     }
-    else if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
+    else if ((this->en_passant & 0b10000000) && !(this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
         fen.push_back('6');
@@ -682,8 +684,10 @@ uint8_t Board::GetPosition(string position) const
     return (col << 3) | row;
 }
 
-#define KING_SIDE 0b00000010U
-#define QUEEN_SIDE 0b00100000U
+#define WHITE_KING_SIDE 0b00000010U
+#define WHITE_QUEEN_SIDE 0b00100000U
+#define BLACK_KING_SIDE (WHITE_KING_SIDE << 56ULL)
+#define BLACK_QUEEN_SIDE (WHITE_QUEEN_SIDE << 56ULL)
 #define MOVE_X_MASK 0b00111000U
 #define MOVE_Y_MASK 0b00000111U
 #define NO_WHITE_CASTLING 0b00111111U
@@ -698,6 +702,8 @@ uint8_t Board::GetPosition(string position) const
 #define WHITE_QUEENSIDE_TOWER_AFTER (1ULL << 4ULL)
 #define ROW_1_AND_8 0xff000000000000ffULL
 #define NOT_ROW_1_AND_8 0x00ffffffffffff00ULL
+#include <bitset>
+
 
 void Board::DoMove(MOVE move)
 {
@@ -724,55 +730,59 @@ void Board::DoMove(MOVE move)
     this->move_rights = this->move_rights & (NO_BLACK_CASTLING | (!bool(black & this->kings & from) << 4) | (!bool(black & this->kings & from) << 5));
 
     // disable white kingside castling when white kingside-tower moved
-    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(white & this->rooks & from & WHITE_KINGSIDE_TOWER) << 7));
+    this->move_rights = this->move_rights & ~(bool(white & this->rooks & from & WHITE_KINGSIDE_TOWER) << 7);
     // disable white queenside castling when white queenside-tower moved
-    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(white & this->rooks & from & WHITE_QUEENSIDE_TOWER) << 6));
+    this->move_rights = this->move_rights & ~(bool(white & this->rooks & from & WHITE_QUEENSIDE_TOWER) << 6);
     // disable black kingside castling when black kingside-tower moved
-    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(black & this->rooks & from & BLACK_KINGSIDE_TOWER) << 5));
+    this->move_rights = this->move_rights & ~(bool(black & this->rooks & from & BLACK_KINGSIDE_TOWER) << 5);
     // disable black queenside castling when black queenside-tower moved
-    this->move_rights = (this->move_rights & 0b1U) | (this->move_rights & (bool(black & this->rooks & from & BLACK_QUEENSIDE_TOWER) << 4));
+    this->move_rights = this->move_rights & ~(bool(black & this->rooks & from & BLACK_QUEENSIDE_TOWER) << 4);
 
     // delete moved tower old pos when castling
-    this->rooks = this->rooks & ~(BLACK_KINGSIDE_TOWER * ((to & (KING_SIDE << 56)) && castling));
-    this->rooks = this->rooks & ~(BLACK_QUEENSIDE_TOWER * ((to & (QUEEN_SIDE << 56)) && castling));
-    this->rooks = this->rooks & ~(WHITE_KINGSIDE_TOWER * ((to & KING_SIDE) && castling));
-    this->rooks = this->rooks & ~(WHITE_QUEENSIDE_TOWER * ((to & QUEEN_SIDE) && castling));
-    this->white = this->white & ~(BLACK_KINGSIDE_TOWER * ((to & (KING_SIDE << 56)) && castling));
-    this->white = this->white & ~(BLACK_QUEENSIDE_TOWER * ((to & (QUEEN_SIDE << 56)) && castling));
-    this->white = this->white & ~(WHITE_KINGSIDE_TOWER * ((to & KING_SIDE) && castling));
-    this->white = this->white & ~(WHITE_QUEENSIDE_TOWER * ((to & QUEEN_SIDE) && castling));
-    this->black = this->black & ~(BLACK_KINGSIDE_TOWER * ((to & (KING_SIDE << 56)) && castling));
-    this->black = this->black & ~(BLACK_QUEENSIDE_TOWER * ((to & (QUEEN_SIDE << 56)) && castling));
-    this->black = this->black & ~(WHITE_KINGSIDE_TOWER * ((to & KING_SIDE) && castling));
-    this->black = this->black & ~(WHITE_QUEENSIDE_TOWER * ((to & QUEEN_SIDE) && castling));
+    this->rooks = this->rooks & ~(BLACK_KINGSIDE_TOWER * ((to & BLACK_KING_SIDE) && castling)); // ~(((to & BLACK_KING_SIDE) & (castling << 57)));
+    this->rooks = this->rooks & ~(BLACK_QUEENSIDE_TOWER * ((to & BLACK_QUEEN_SIDE) && castling));
+    this->rooks = this->rooks & ~(WHITE_KINGSIDE_TOWER * ((to & WHITE_KING_SIDE) && castling));
+    this->rooks = this->rooks & ~(WHITE_QUEENSIDE_TOWER * ((to & WHITE_QUEEN_SIDE) && castling));
+    this->white = this->white & ~(BLACK_KINGSIDE_TOWER * ((to & BLACK_KING_SIDE) && castling));
+    this->white = this->white & ~(BLACK_QUEENSIDE_TOWER * ((to & BLACK_QUEEN_SIDE) && castling));
+    this->white = this->white & ~(WHITE_KINGSIDE_TOWER * ((to & WHITE_KING_SIDE) && castling));
+    this->white = this->white & ~(WHITE_QUEENSIDE_TOWER * ((to & WHITE_QUEEN_SIDE) && castling));
+    this->black = this->black & ~(BLACK_KINGSIDE_TOWER * ((to & BLACK_KING_SIDE) && castling));
+    this->black = this->black & ~(BLACK_QUEENSIDE_TOWER * ((to & BLACK_QUEEN_SIDE) && castling));
+    this->black = this->black & ~(WHITE_KINGSIDE_TOWER * ((to & WHITE_KING_SIDE) && castling));
+    this->black = this->black & ~(WHITE_QUEENSIDE_TOWER * ((to & WHITE_QUEEN_SIDE) && castling));
     // add moved tower new pos when castling
-    this->rooks = this->rooks | (BLACK_KINGSIDE_TOWER_AFTER * ((to & (KING_SIDE << 56)) && castling));
-    this->rooks = this->rooks | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & (QUEEN_SIDE << 56)) && castling));
-    this->rooks = this->rooks | (WHITE_KINGSIDE_TOWER_AFTER * ((to & KING_SIDE) && castling));
-    this->rooks = this->rooks | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & QUEEN_SIDE) && castling));
-    this->white = this->white | (BLACK_KINGSIDE_TOWER_AFTER * ((to & (KING_SIDE << 56)) && castling && (from & white)));
-    this->white = this->white | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & (QUEEN_SIDE << 56)) && castling && (from & white)));
-    this->white = this->white | (WHITE_KINGSIDE_TOWER_AFTER * ((to & KING_SIDE) && castling && (from & white)));
-    this->white = this->white | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & QUEEN_SIDE) && castling && (from & white)));
-    this->black = this->black | (BLACK_KINGSIDE_TOWER_AFTER * ((to & (KING_SIDE << 56)) && castling && (from & black)));
-    this->black = this->black | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & (QUEEN_SIDE << 56)) && castling && (from & black)));
-    this->black = this->black | (WHITE_KINGSIDE_TOWER_AFTER * ((to & KING_SIDE) && castling && (from & black)));
-    this->black = this->black | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & QUEEN_SIDE) && castling && (from & black)));
+    this->rooks = this->rooks | (BLACK_KINGSIDE_TOWER_AFTER * ((to & BLACK_KING_SIDE) && castling));
+    this->rooks = this->rooks | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & BLACK_QUEEN_SIDE) && castling));
+    this->rooks = this->rooks | (WHITE_KINGSIDE_TOWER_AFTER * ((to & WHITE_KING_SIDE) && castling));
+    this->rooks = this->rooks | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & WHITE_QUEEN_SIDE) && castling));
+    this->white = this->white | (BLACK_KINGSIDE_TOWER_AFTER * ((to & BLACK_KING_SIDE) && castling && (from & white)));
+    this->white = this->white | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & BLACK_QUEEN_SIDE) && castling && (from & white)));
+    this->white = this->white | (WHITE_KINGSIDE_TOWER_AFTER * ((to & WHITE_KING_SIDE) && castling && (from & white)));
+    this->white = this->white | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & WHITE_QUEEN_SIDE) && castling && (from & white)));
+    this->black = this->black | (BLACK_KINGSIDE_TOWER_AFTER * ((to & BLACK_KING_SIDE) && castling && (from & black)));
+    this->black = this->black | (BLACK_QUEENSIDE_TOWER_AFTER * ((to & BLACK_QUEEN_SIDE) && castling && (from & black)));
+    this->black = this->black | (WHITE_KINGSIDE_TOWER_AFTER * ((to & WHITE_KING_SIDE) && castling && (from & black)));
+    this->black = this->black | (WHITE_QUEENSIDE_TOWER_AFTER * ((to & WHITE_QUEEN_SIDE) && castling && (from & black)));
 
     // add moved piece new pos
     this->black = this->black | (to * bool(black & from));
     // delete captured piece pos
     this->black = this->black & ~(to * ((capture && (white & from))));
+    this->black = this->black & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     // delete moved piece old pos
     this->black = this->black & ~from;
 
     this->white = this->white | (to * bool(white & from));
     this->white = this->white & ~(to * ((capture && (black & from))));
+    this->white = this->white & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->white = this->white & ~from;
 
-    this->pawns = this->pawns | (to * bool(pawns & from));
-    this->pawns = this->pawns & ~((to | (GET_SINGLE_BIT_BOARD_FROM(this->en_passant) * (this->en_passant & 0b10000000))) * ((capture && ((allPieces & ~pawns) & from))));
+    this->pawns = this->pawns | (to * bool(pawns & from)); // add moved pawn new pos
+    this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
+    this->pawns = this->pawns & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->pawns = this->pawns & ~from;
+    cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
 
     this->bishops = this->bishops | (to * bool(bishops & from));
     this->bishops = this->bishops & ~(to * ((capture && ((allPieces & ~bishops) & from))));
@@ -814,7 +824,7 @@ void Board::DoMove(MOVE move)
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
 
     // en_passant
-    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && (((pawns & (to << 1)) && (to != A4 && to != A5) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) << ((((move & 0b111111) >  31) * 2 - 1) * 8)));
+    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) >  31) * 2 - 1) * 8)) | (bool(white & from) << 6));
 
 
 }
@@ -830,7 +840,7 @@ MOVE Board::GetMove()
             {
                 if (this->bishops & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    bishop::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
                 if (this->kings & this->black & SINGLE_BIT_BOARD(x, y))
                 {
@@ -838,46 +848,46 @@ MOVE Board::GetMove()
                 }
                 if (this->knights & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    knight::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y);
                 }
                 if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromBlack,  this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
                 if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    rook::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
                 if (this->queens & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    queen::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
             }
             else
             {
                 if (this->bishops & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    bishop::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
                 if (this->kings & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    king::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    king::possibleMoves(moves, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->knights & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    knight::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
                 }
                 if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    rook::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
                 if (this->queens & this->white & SINGLE_BIT_BOARD(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    queen::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
             }
         }

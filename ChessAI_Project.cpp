@@ -2,12 +2,20 @@
 #include "components/helper.h"
 #include "components/presenter.h"
 #include <iostream>
-
+  
 
 int main()
 {
-    Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    board.PlayGame();
+    Board board("rnbqkbnr/1ppppppp/p7/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2");
+    std::cout << board.toFEN() << std::endl;
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+    board.DoMove(CREATE_MOVE(5, 6, 5, 4, 0));
+    std::cout << board.toFEN() << std::endl;
+    std::cout << std::endl << presenter.ToString(board);
+    board.DoMove(CREATE_MOVE(4, 4, 5, 5, CAPTURE));
+    std::cout << board.toFEN() << std::endl;
+    std::cout << std::endl << presenter.ToString(board);
 }
 
 // Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"
