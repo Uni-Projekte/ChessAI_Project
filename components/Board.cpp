@@ -1081,6 +1081,104 @@ int Board::AlphaBetaMin(
     return best;
 }
 
+
+
+MOVE Board::MiniMaxIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
+{
+    int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count();
+
+    unsigned int searchDepth = 1;
+    MOVE result;
+
+    int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count();
+
+    while (true)
+    {
+        this->AlphaBetaMax(searchDepth, moves, INT_MIN, INT_MAX, &result, player);
+        searchDepth = searchDepth + 1;
+        int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch())
+                .count();
+
+        PRINT_MOVE(result);
+        std::cout << searchDepth << std::endl;
+        std::cout << end - start << std::endl;
+        std::cout << maxTime << std::endl;
+        if (end - start > maxTime)
+        {
+            break;
+        }
+    }
+
+    std::cout << "time is over iterations to depth:" << searchDepth << std::endl;
+
+    return result;
+}
+
+int Board::MiniMaxMax(
+        int searchDepth,
+        MOVE_ARRAY moves,
+        MOVE *result,
+        PLAYER player)
+{
+    if (searchDepth <= 0)
+    {
+        return BoardRanking(player);
+    }
+
+    int best = INT_MIN;
+
+    for (int i = 1; i < moves[0]; i++)
+    {
+        Board copyBoard = Board(this); // copy board, because we have no move undo
+        copyBoard.DoMove(moves[i]);    // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+        copyBoard.GetMoves(nextMoves);  // get all moves possible
+        int val = copyBoard.MiniMaxMin(searchDepth - 1, nextMoves, NULL, player);
+        if (val > best && result != NULL)
+        {
+            *result = moves[i];
+            std::cout << i << std::endl;
+        }
+        best = max(best, val);
+    }
+    return best;
+}
+
+int Board::MiniMaxMin(
+        int searchDepth,
+        MOVE_ARRAY moves,
+        MOVE *result,
+        PLAYER player)
+{
+    if (searchDepth <= 0)
+    {
+        return BoardRanking(player);
+    }
+
+    int best = INT_MAX;
+
+    for (int i = 1; i < moves[0]; i++)
+    {
+        Board copyBoard = Board(this); // copy board, because we have no move undo
+        copyBoard.DoMove(moves[i]);    // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+        copyBoard.GetMoves(nextMoves); // get all moves possible
+        int val = copyBoard.MiniMaxMax(searchDepth - 1, nextMoves, NULL, player);
+        if (val < best && result != NULL)
+        {
+            *result = moves[i];
+            std::cout << i << std::endl;
+        }
+        best = min(best, val);
+    }
+    return best;
+}
+
 #define NO_END 0
 #define WHITE_WIN 1
 #define BLACK_WIN 2

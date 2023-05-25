@@ -156,6 +156,20 @@ public:
                      int beta,
                      MOVE *result,
                      PLAYER player);
+
+    MOVE MiniMaxIterative(MOVE_ARRAY moves,
+                            int maxTime,
+                            PLAYER player);
+
+    int MiniMaxMax(int searchDepth,
+                     MOVE_ARRAY moves,
+                     MOVE *result,
+                     PLAYER player);
+
+    int MiniMaxMin(int searchDepth,
+                     MOVE_ARRAY moves,
+                     MOVE *result,
+                     PLAYER player);
 };
 
 #endif // BOARD_H

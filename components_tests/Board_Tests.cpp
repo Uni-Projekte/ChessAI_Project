@@ -105,4 +105,16 @@ TEST(BoardTest, DoMoveBenchmarkEnd)
     }
 }
 
+TEST(BoardTest, GetMoveAlphaBetaBenchmark)
+{
+Board board("r3k3/5p1p/n7/6B1/8/8/P7/K1R5 w q - 0 1");
+Presenter presenter = Presenter();
+std::cout << std::endl
+<< presenter.ToString(board);
+for (int i = 0; i < 1; i++)
+{
+board.GetMove();
+}
+}
+
 
