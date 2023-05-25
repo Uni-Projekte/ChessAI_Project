@@ -12,8 +12,7 @@
 #include "pieces/queen.h"
 #include "pieces/rook.h"
 #include "presenter.h"
-#include <ctime>
-
+#include <chrono>
 
 using namespace std;
 
@@ -38,6 +37,24 @@ Board::Board()
     this->en_passant = 0b00000000;
     this->halfmove_clock = 0;
     this->fullmove_number = 1;
+}
+
+Board::Board(Board *board)
+{
+    this->black = board->black;
+    this->white = board->white;
+    this->attackedFromWhite = board->attackedFromWhite;
+    this->attackedFromBlack = board->attackedFromBlack;
+    this->bishops = board->bishops;
+    this->queens = board->queens;
+    this->rooks = board->rooks;
+    this->pawns = board->pawns;
+    this->kings = board->kings;
+    this->knights = board->knights;
+    this->move_rights = board->move_rights;
+    this->en_passant = board->en_passant;
+    this->halfmove_clock = board->halfmove_clock;
+    this->fullmove_number = board->fullmove_number;
 }
 
 Board::Board(std::string fen)
@@ -588,7 +605,7 @@ string Board::toFEN()
     }
 
     fen.push_back(' ');
-    cout << (int)this->en_passant << endl;
+    //cout << (int)this->en_passant << endl;
     if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
@@ -782,7 +799,7 @@ void Board::DoMove(MOVE move)
     this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
     this->pawns = this->pawns & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->pawns = this->pawns & ~from;
-    cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
+    //cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
 
     this->bishops = this->bishops | (to * bool(bishops & from));
     this->bishops = this->bishops & ~(to * ((capture && ((allPieces & ~bishops) & from))));
@@ -829,9 +846,8 @@ void Board::DoMove(MOVE move)
 
 }
 
-MOVE Board::GetMove()
+void Board::GetMoves(MOVE_ARRAY &moves)
 {
-    NEW_MOVE_ARRAY(moves);
     for (uint8_t x = 0; x < 8; x = x + 1)
     {
         for (uint8_t y = 0; y < 8; y = y + 1)
@@ -892,18 +908,166 @@ MOVE Board::GetMove()
             }
         }
     }
+}
+
+MOVE Board::GetMove() {
     // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
     // for (int i = 0; i < moves.size()-1; i++) {
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
-    srand((unsigned int)time(NULL));
-    MOVE move = moves[rand() % moves[0]];
+    NEW_MOVE_ARRAY(moves);
+    this->GetMoves(moves);
+    MOVE move = 0;
+    if (this->move_rights & 1)
+    {
+        move = this->AlphaBetaIterative(moves, 1000 * 10, BLACK);
+    }
+    else
+    {
+        move = this->AlphaBetaIterative(moves, 1000 * 10, WHITE);
+    }
     // std::cout << "PICKED MOVE: " << move << std::endl;
     // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
     // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
     // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
     return move;
+}
+
+int CountPiece(BOARD coloredPiece) {
+    int num = 1;
+    for (int i = 0; i < 64; i = i + 1)
+    {
+        if ((coloredPiece << i) & 1)
+        {
+            num = num + 1;
+        }
+    }
+    return num;
+}
+
+int Board::BoardRanking(PLAYER player) {
+    int ranking = 0;
+
+    ranking = ranking + 1000 * CountPiece(this->GetWhiteKing());
+    ranking = ranking + 50 * CountPiece(this->GetWhiteQueen());
+    ranking = ranking + 20 * CountPiece(this->GetWhiteRooks());
+    ranking = ranking + 15 * CountPiece(this->GetWhiteBishops());
+    ranking = ranking + 10 * CountPiece(this->GetWhiteKnights());
+    ranking = ranking + 2 * CountPiece(this->GetWhitePawns());
+
+    ranking = ranking - 1000*CountPiece(this->GetBlackKing());
+    ranking = ranking - 50*CountPiece(this->GetBlackQueen());
+    ranking = ranking - 20*CountPiece(this->GetBlackRooks());
+    ranking = ranking - 15*CountPiece(this->GetBlackBishops());
+    ranking = ranking - 10*CountPiece(this->GetBlackKnights());
+    ranking = ranking - 2*CountPiece(this->GetBlackPawns());
+
+    if (player == WHITE) {
+        return ranking;
+    }
+    return -ranking;
+}
+
+MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player) {
+    int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()).count();
+    
+    unsigned int searchDepth = 1;
+    MOVE result;
+
+    int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()).count();
+
+    while (true)
+    {
+        this->AlphaBetaMax(searchDepth, moves, INT_MIN, INT_MAX, &result,player);
+        searchDepth = searchDepth + 1;
+        int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
+                          std::chrono::system_clock::now().time_since_epoch())
+                          .count();
+
+        PRINT_MOVE(result);
+        std::cout << searchDepth << std::endl;
+        std::cout << end - start << std::endl;
+        std::cout << maxTime << std::endl;
+        if (end - start > maxTime) {
+            break;
+        }
+    }
+
+    std::cout << "time is over iterations to depth:" << searchDepth << std::endl;
+
+    return result;
+}
+
+int Board::AlphaBetaMax(
+    int searchDepth,
+    MOVE_ARRAY moves,
+    int alpha,
+    int beta,
+    MOVE *result,
+    PLAYER player)
+{
+    if (searchDepth <= 0) {
+        return BoardRanking(player);
+    }
+
+    int best = INT_MIN;
+
+    for (int i = 1; i < moves[0]; i++)
+    {
+        Board copyBoard = Board(this); //copy board, because we have no move undo
+        copyBoard.DoMove(moves[i]); //do move with index i
+        NEW_MOVE_ARRAY(nextMoves); //allocate memory for next moves
+        this->GetMoves(nextMoves); //get all moves possible
+        int val = AlphaBetaMin(searchDepth - 1, nextMoves, alpha, beta, NULL, player);
+        if (val > best && result != NULL) {
+            *result = moves[i];
+        }
+        best = max(best, val);
+        alpha = max(alpha, best);
+
+        if (beta <= alpha) {
+            break;
+        }
+    }
+    return best;
+}
+
+int Board::AlphaBetaMin(
+    int searchDepth,
+    MOVE_ARRAY moves,
+    int alpha,
+    int beta,
+    MOVE *result,
+    PLAYER player)
+{
+    if (searchDepth <= 0) {
+        return BoardRanking(player);
+    }
+
+    int best = INT_MAX;
+
+    for (int i = 1; i < moves[0]; i++)
+    {
+        Board copyBoard = Board(this); // copy board, because we have no move undo
+        copyBoard.DoMove(moves[i]);    // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+        this->GetMoves(nextMoves);     // get all moves possible
+        int val = AlphaBetaMax(searchDepth - 1, nextMoves, alpha, beta, NULL, player);
+        if (val < best && result != NULL)
+        {
+            *result = moves[i];
+        }
+        best = min(best, val);
+        beta = min(beta, best);
+
+        if (beta <= alpha) {
+            break;
+        }
+    }
+    return best;
 }
 
 #define NO_END 0

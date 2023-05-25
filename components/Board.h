@@ -41,6 +41,8 @@ public:
     // Constructor that initializes the chessboard to the standard starting position
     Board();
 
+    Board(Board *board);
+
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
 
@@ -127,11 +129,33 @@ public:
 
     void DoMove(MOVE move);
 
+    void GetMoves(MOVE_ARRAY &moves);
+
     MOVE GetMove();
 
     void PlayGame();
 
     int End();
+
+    int BoardRanking(PLAYER player);
+
+    MOVE AlphaBetaIterative(MOVE_ARRAY moves,
+                         int maxTime,
+                            PLAYER player);
+
+    int AlphaBetaMax(int searchDepth,
+                  MOVE_ARRAY moves,
+                  int alpha,
+                  int beta,
+                  MOVE *result,
+                  PLAYER player);
+
+    int AlphaBetaMin(int searchDepth,
+                     MOVE_ARRAY moves,
+                     int alpha,
+                     int beta,
+                     MOVE *result,
+                     PLAYER player);
 };
 
 #endif // BOARD_H

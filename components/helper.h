@@ -296,6 +296,7 @@ std::string Uint16ToString(uint16_t board);
 
 std::string Uint8ToString(uint8_t board);
 
+#define PLAYER bool
 #define WHITE false
 #define BLACK true
 
@@ -304,7 +305,6 @@ std::string Uint8ToString(uint8_t board);
 typedef uint64_t BOARD;
 typedef uint16_t MOVE;
 typedef MOVE MOVE_ARRAY[MAX_MOVES];
-
 
 
 #define CAPTURE 0b1000000000000000U
