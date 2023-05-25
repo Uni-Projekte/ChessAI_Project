@@ -60,6 +60,16 @@ TEST(BoardTest, PlayGame)
     //board.PlayGame();
 }
 
+TEST(BoardTest, StartRanking)
+{
+    Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    std::cout << board.BoardRanking(WHITE) << std::endl;
+}
+
+
 TEST(BoardTest, DoMoveBenchmarkStart)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
@@ -71,14 +81,6 @@ TEST(BoardTest, DoMoveBenchmarkStart)
     }
 }
 
-TEST(BoardTest, StartRanking)
-{
-    Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
-    Presenter presenter = Presenter();
-    std::cout << std::endl
-              << presenter.ToString(board);
-    std::cout << board.BoardRanking(WHITE) << std::endl;
-}
 
 TEST(BoardTest, DoMoveBenchmarkMiddle)
 {
@@ -105,16 +107,41 @@ TEST(BoardTest, DoMoveBenchmarkEnd)
     }
 }
 
-TEST(BoardTest, GetMoveAlphaBetaBenchmark)
+TEST(BoardTest, BenchmarkStartMinMax)
 {
-Board board("r3k3/5p1p/n7/6B1/8/8/P7/K1R5 w q - 0 1");
+Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
 Presenter presenter = Presenter();
 std::cout << std::endl
 << presenter.ToString(board);
-for (int i = 0; i < 1; i++)
-{
-board.GetMove();
+for (int i = 0; i < 1; i++) {
+board.GetMoveMinMax();
 }
+}
+
+
+TEST(BoardTest, BenchmarkMiddleMinMax)
+{
+    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    for (int i = 0; i < 1; i++)
+    {
+        board.GetMoveMinMax();
+    }
+    std::cout << board.GetMoveMinMax();
+}
+
+TEST(BoardTest, DoMoveBenchmarkEndMinMax)
+{
+    Board board("r3k3/5p1p/n7/6B1/8/8/P7/K1R5 w q - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    for (int i = 0; i < 1; i++)
+    {
+        board.GetMoveMinMax();
+    }
 }
 
 

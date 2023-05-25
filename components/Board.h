@@ -133,6 +133,8 @@ public:
 
     MOVE GetMove();
 
+    MOVE GetMoveMinMax();
+
     void PlayGame();
 
     int End();

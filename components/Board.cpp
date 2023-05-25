@@ -931,6 +931,32 @@ MOVE Board::GetMove()
     return move;
 }
 
+MOVE Board::GetMoveMinMax()
+{
+    // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
+    // for (int i = 0; i < moves.size()-1; i++) {
+    //     std::cout << moves[i] << ", ";
+    // }
+    // std::cout << moves[moves.size()-1] << std::endl;
+    NEW_MOVE_ARRAY(moves);
+    this->GetMoves(moves);
+    MOVE move = 0;
+    if (this->move_rights & 1)
+    {
+        move = this->MiniMaxIterative(moves, 1000 * 10, BLACK);
+    }
+    else
+    {
+        move = this->MiniMaxIterative(moves, 1000 * 10, WHITE);
+    }
+    // std::cout << "PICKED MOVE: " << move << std::endl;
+    // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
+    // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
+    // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
+    return move;
+}
+
+
 int CountPiece(BOARD coloredPiece)
 {
     int num = 0;
@@ -991,7 +1017,7 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
                           .count();
 
         PRINT_MOVE(result);
-        std::cout << searchDepth << std::endl;
+        std::cout << searchDepth-1 << std::endl;
         std::cout << end - start << std::endl;
         std::cout << maxTime << std::endl;
         if (end - start > maxTime)
@@ -1105,7 +1131,7 @@ MOVE Board::MiniMaxIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
                 .count();
 
         PRINT_MOVE(result);
-        std::cout << searchDepth << std::endl;
+        std::cout << searchDepth-1 << std::endl;
         std::cout << end - start << std::endl;
         std::cout << maxTime << std::endl;
         if (end - start > maxTime)
