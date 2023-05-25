@@ -72,7 +72,7 @@ TEST(BoardTest, StartRanking)
 
 TEST(BoardTest, DoMoveBenchmarkStart)
 {
-    Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
+    Board board("r2qr1k1/p4ppp/2Q1b3/4N3/5B2/3BnP2/PP4PP/R4RK1 w - - 0 19");
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);

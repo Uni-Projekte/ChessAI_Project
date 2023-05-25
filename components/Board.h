@@ -147,6 +147,7 @@ public:
 
     int AlphaBetaMax(int searchDepth,
                   MOVE_ARRAY moves,
+                  int &states,
                   int alpha,
                   int beta,
                   MOVE *result,
@@ -154,6 +155,7 @@ public:
 
     int AlphaBetaMin(int searchDepth,
                      MOVE_ARRAY moves,
+                     int &states,
                      int alpha,
                      int beta,
                      MOVE *result,
@@ -165,11 +167,13 @@ public:
 
     int MiniMaxMax(int searchDepth,
                      MOVE_ARRAY moves,
+                     int &states,
                      MOVE *result,
                      PLAYER player);
 
     int MiniMaxMin(int searchDepth,
                      MOVE_ARRAY moves,
+                     int &states,
                      MOVE *result,
                      PLAYER player);
 };
