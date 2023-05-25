@@ -25,8 +25,8 @@ Board::Board()
 {
     this->black = StartBoardBlack;
     this->white = StartBoardWhite;
-    this->attackedFromWhite=0;
-    this->attackedFromBlack=0;
+    this->attackedFromWhite = 0;
+    this->attackedFromBlack = 0;
     this->bishops = StartBoardBishops;
     this->queens = StartBoardQueens;
     this->rooks = StartBoardRooks;
@@ -61,8 +61,8 @@ Board::Board(std::string fen)
 {
     this->black = 0;
     this->white = 0;
-    this->attackedFromWhite=0;
-    this->attackedFromBlack=0;
+    this->attackedFromWhite = 0;
+    this->attackedFromBlack = 0;
     this->pawns = 0;
     this->kings = 0;
     this->queens = 0;
@@ -273,10 +273,10 @@ uint64_t Board::GetWhiteRooks() const
 }
 
 /**
- * @brief 
+ * @brief
  * @return bitboard of white rook as uint64_t
  */
-uint64_t& Board::GetFromWhiteAttackedFields()
+uint64_t &Board::GetFromWhiteAttackedFields()
 {
     return this->attackedFromWhite;
 }
@@ -285,7 +285,7 @@ uint64_t& Board::GetFromWhiteAttackedFields()
  * @brief get bitboard of white rook
  * @return bitboard of white rook as uint64_t
  */
-uint64_t& Board::GetFromBlackAttackedFields()
+uint64_t &Board::GetFromBlackAttackedFields()
 {
     return this->attackedFromBlack;
 }
@@ -568,7 +568,6 @@ string Board::toFEN()
                 fen.push_back('/');
             }
         }
-
     }
 
     fen.push_back(' ');
@@ -605,7 +604,7 @@ string Board::toFEN()
     }
 
     fen.push_back(' ');
-    //cout << (int)this->en_passant << endl;
+    // cout << (int)this->en_passant << endl;
     if ((this->en_passant & 0b10000000) && (this->en_passant & 0b01000000))
     {
         fen.push_back('a' + (7 - (this->en_passant & 0b00000111)));
@@ -721,7 +720,6 @@ uint8_t Board::GetPosition(string position) const
 #define NOT_ROW_1_AND_8 0x00ffffffffffff00ULL
 #include <bitset>
 
-
 void Board::DoMove(MOVE move)
 {
     const BOARD from = GET_SINGLE_BIT_BOARD_FROM(move);
@@ -786,20 +784,20 @@ void Board::DoMove(MOVE move)
     this->black = this->black | (to * bool(black & from));
     // delete captured piece pos
     this->black = this->black & ~(to * ((capture && (white & from))));
-    this->black = this->black & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->black = this->black & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     // delete moved piece old pos
     this->black = this->black & ~from;
 
     this->white = this->white | (to * bool(white & from));
     this->white = this->white & ~(to * ((capture && (black & from))));
-    this->white = this->white & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->white = this->white & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->white = this->white & ~from;
 
     this->pawns = this->pawns | (to * bool(pawns & from)); // add moved pawn new pos
     this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
-    this->pawns = this->pawns & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) >  31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->pawns = this->pawns & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->pawns = this->pawns & ~from;
-    //cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
+    // cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
 
     this->bishops = this->bishops | (to * bool(bishops & from));
     this->bishops = this->bishops & ~(to * ((capture && ((allPieces & ~bishops) & from))));
@@ -841,9 +839,7 @@ void Board::DoMove(MOVE move)
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
 
     // en_passant
-    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) >  31) * 2 - 1) * 8)) | (bool(white & from) << 6));
-
-
+    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
 }
 
 void Board::GetMoves(MOVE_ARRAY &moves)
@@ -868,7 +864,7 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 }
                 if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack,  this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
                 if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
                 {
@@ -910,7 +906,8 @@ void Board::GetMoves(MOVE_ARRAY &moves)
     }
 }
 
-MOVE Board::GetMove() {
+MOVE Board::GetMove()
+{
     // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
     // for (int i = 0; i < moves.size()-1; i++) {
     //     std::cout << moves[i] << ", ";
@@ -934,11 +931,12 @@ MOVE Board::GetMove() {
     return move;
 }
 
-int CountPiece(BOARD coloredPiece) {
-    int num = 1;
+int CountPiece(BOARD coloredPiece)
+{
+    int num = 0;
     for (int i = 0; i < 64; i = i + 1)
     {
-        if ((coloredPiece << i) & 1)
+        if ((coloredPiece >> i) & 1)
         {
             num = num + 1;
         }
@@ -946,42 +944,47 @@ int CountPiece(BOARD coloredPiece) {
     return num;
 }
 
-int Board::BoardRanking(PLAYER player) {
+int Board::BoardRanking(PLAYER player)
+{
     int ranking = 0;
 
-    ranking = ranking + 1000 * CountPiece(this->GetWhiteKing());
-    ranking = ranking + 50 * CountPiece(this->GetWhiteQueen());
-    ranking = ranking + 20 * CountPiece(this->GetWhiteRooks());
-    ranking = ranking + 15 * CountPiece(this->GetWhiteBishops());
-    ranking = ranking + 10 * CountPiece(this->GetWhiteKnights());
-    ranking = ranking + 2 * CountPiece(this->GetWhitePawns());
+    ranking = ranking + 10000 * CountPiece(this->GetWhiteKing());
+    ranking = ranking + 900 * CountPiece(this->GetWhiteQueen());
+    ranking = ranking + 500 * CountPiece(this->GetWhiteRooks());
+    ranking = ranking + 300 * CountPiece(this->GetWhiteBishops());
+    ranking = ranking + 300 * CountPiece(this->GetWhiteKnights());
+    ranking = ranking + 100 * CountPiece(this->GetWhitePawns());
 
-    ranking = ranking - 1000*CountPiece(this->GetBlackKing());
-    ranking = ranking - 50*CountPiece(this->GetBlackQueen());
-    ranking = ranking - 20*CountPiece(this->GetBlackRooks());
-    ranking = ranking - 15*CountPiece(this->GetBlackBishops());
-    ranking = ranking - 10*CountPiece(this->GetBlackKnights());
-    ranking = ranking - 2*CountPiece(this->GetBlackPawns());
+    ranking = ranking - 10000 * CountPiece(this->GetBlackKing());
+    ranking = ranking - 900 * CountPiece(this->GetBlackQueen());
+    ranking = ranking - 500 * CountPiece(this->GetBlackRooks());
+    ranking = ranking - 300 * CountPiece(this->GetBlackBishops());
+    ranking = ranking - 300 * CountPiece(this->GetBlackKnights());
+    ranking = ranking - 100 * CountPiece(this->GetBlackPawns());
 
-    if (player == WHITE) {
+    if (player == WHITE)
+    {
         return ranking;
     }
     return -ranking;
 }
 
-MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player) {
+MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
+{
     int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::system_clock::now().time_since_epoch()).count();
-    
+                        std::chrono::system_clock::now().time_since_epoch())
+                        .count();
+
     unsigned int searchDepth = 1;
     MOVE result;
 
     int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::system_clock::now().time_since_epoch()).count();
+                      std::chrono::system_clock::now().time_since_epoch())
+                      .count();
 
     while (true)
     {
-        this->AlphaBetaMax(searchDepth, moves, INT_MIN, INT_MAX, &result,player);
+        this->AlphaBetaMax(searchDepth, moves, INT_MIN, INT_MAX, &result, player);
         searchDepth = searchDepth + 1;
         int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
                           std::chrono::system_clock::now().time_since_epoch())
@@ -991,7 +994,8 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player) {
         std::cout << searchDepth << std::endl;
         std::cout << end - start << std::endl;
         std::cout << maxTime << std::endl;
-        if (end - start > maxTime) {
+        if (end - start > maxTime)
+        {
             break;
         }
     }
@@ -1009,7 +1013,8 @@ int Board::AlphaBetaMax(
     MOVE *result,
     PLAYER player)
 {
-    if (searchDepth <= 0) {
+    if (searchDepth <= 0)
+    {
         return BoardRanking(player);
     }
 
@@ -1017,18 +1022,21 @@ int Board::AlphaBetaMax(
 
     for (int i = 1; i < moves[0]; i++)
     {
-        Board copyBoard = Board(this); //copy board, because we have no move undo
-        copyBoard.DoMove(moves[i]); //do move with index i
-        NEW_MOVE_ARRAY(nextMoves); //allocate memory for next moves
-        this->GetMoves(nextMoves); //get all moves possible
-        int val = AlphaBetaMin(searchDepth - 1, nextMoves, alpha, beta, NULL, player);
-        if (val > best && result != NULL) {
+        Board copyBoard = Board(this); // copy board, because we have no move undo
+        copyBoard.DoMove(moves[i]);    // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+        copyBoard.GetMoves(nextMoves);  // get all moves possible
+        int val = copyBoard.AlphaBetaMin(searchDepth - 1, nextMoves, alpha, beta, NULL, player);
+        if (val > best && result != NULL)
+        {
             *result = moves[i];
+            std::cout << i << std::endl;
         }
         best = max(best, val);
         alpha = max(alpha, best);
 
-        if (beta <= alpha) {
+        if (beta <= alpha)
+        {
             break;
         }
     }
@@ -1043,7 +1051,8 @@ int Board::AlphaBetaMin(
     MOVE *result,
     PLAYER player)
 {
-    if (searchDepth <= 0) {
+    if (searchDepth <= 0)
+    {
         return BoardRanking(player);
     }
 
@@ -1054,16 +1063,18 @@ int Board::AlphaBetaMin(
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        this->GetMoves(nextMoves);     // get all moves possible
-        int val = AlphaBetaMax(searchDepth - 1, nextMoves, alpha, beta, NULL, player);
+        copyBoard.GetMoves(nextMoves); // get all moves possible
+        int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, alpha, beta, NULL, player);
         if (val < best && result != NULL)
         {
             *result = moves[i];
+            std::cout << i << std::endl;
         }
         best = min(best, val);
         beta = min(beta, best);
 
-        if (beta <= alpha) {
+        if (beta <= alpha)
+        {
             break;
         }
     }
@@ -1074,7 +1085,8 @@ int Board::AlphaBetaMin(
 #define WHITE_WIN 1
 #define BLACK_WIN 2
 
-void Board::PlayGame() {
+void Board::PlayGame()
+{
     Presenter presenter = Presenter();
     while (this->End() == NO_END)
     {

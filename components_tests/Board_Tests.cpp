@@ -71,6 +71,15 @@ TEST(BoardTest, DoMoveBenchmarkStart)
     }
 }
 
+TEST(BoardTest, StartRanking)
+{
+    Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    std::cout << board.BoardRanking(WHITE) << std::endl;
+}
+
 TEST(BoardTest, DoMoveBenchmarkMiddle)
 {
     Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
