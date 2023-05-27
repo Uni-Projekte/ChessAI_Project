@@ -3,6 +3,8 @@
 #include <utility>
 #include <string>
 #include <fstream>
+#include <bitset>
+#include <iostream>
 
 /**
  * @brief generate string representation of the board
@@ -392,4 +394,36 @@ void Presenter::HTMLFromBoard(Board &board, std::string filename)
     file << "</html>" << std::endl;
 
     file.close();
+}
+
+
+void Presenter::displayUINT64(uint64_t number) {
+    std::bitset<64> bits(number);
+
+    // Display column letters
+    std::cout << "    A   B   C   D   E   F   G   H" << std::endl;
+
+    std::cout << "  - - - - - - - - - - - - - - - - -" << std::endl;
+    for (int row = 7; row >= 0; --row) {
+        // Display row number
+        std::cout << row + 1 << " ";
+
+        std::cout << "| ";
+        for (int col = 0; col < 8; ++col) {
+            int index = row * 8 + col;
+            if (bits.test(index)) {
+                std::cout << "1 ";
+            } else {
+                std::cout << "0 ";
+            }
+
+            // Display grid
+            std::cout << "| ";
+        }
+
+        std::cout << std::endl;
+
+        // Display grid
+        std::cout << "  - - - - - - - - - - - - - - - - -" << std::endl;
+    }
 }

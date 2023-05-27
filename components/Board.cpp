@@ -989,11 +989,7 @@ int Board::BoardRanking(PLAYER player)
     ranking = ranking - 300 * CountPiece(this->GetBlackKnights());
     ranking = ranking - 100 * CountPiece(this->GetBlackPawns());
 
-    if (player == WHITE)
-    {
-        return ranking;
-    }
-    return -ranking;
+    return ranking;
 }
 
 MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)

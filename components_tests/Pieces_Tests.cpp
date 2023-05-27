@@ -7,6 +7,7 @@
 #include "../components/pieces/queen.h"
 #include "../components/pieces/rook.h"
 #include "../components/pieces/knight.h"
+#include "../components/pieces/king.h"
 #include <filesystem>
 #include <bitset>
 #include <string>
@@ -427,12 +428,82 @@ TEST(PiecesTest, EnPassantTest2)
     EXPECT_EQ("rnbqkbnr/1pppp1pp/p4P2/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3", board.toFEN());
 }
 
+TEST(PiecesTest, KingMoveInCheckedField1)
+{
+    Board board("4r3/8/8/8/8/3K4/8/8 w - - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[6] = {
+            6,
+            CREATE_MOVE(3, 2, 3, 3, 0),
+            CREATE_MOVE(3, 2, 3, 1, 0),
+            CREATE_MOVE(3, 2, 2, 1, 0),
+            CREATE_MOVE(3, 2, 2, 2, 0),
+            CREATE_MOVE(3, 2, 2, 3, 0),
+    };
+
+    NEW_MOVE_ARRAY(moves1);
+    rook::possibleMoves(moves1, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+
+    std::cout<< std::endl;
+
+
+    presenter.displayUINT64(board.GetFromBlackAttackedFields());
+}
+
+TEST(PiecesTest, KingMoveInCheckedField2)
+{
+    Board board("4r3/8/8/8/2q5/3K4/8/8 w - - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[3] = {
+            3,
+            CREATE_MOVE(3, 2, 3, 1, 0),
+            CREATE_MOVE(3, 2, 2, 3, CAPTURE),
+    };
+
+    NEW_MOVE_ARRAY(moves1);
+    rook::possibleMoves(moves1, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8")>>3, board.GetPosition("e8") & 0b111);
+
+
+    NEW_MOVE_ARRAY(moves2);
+    queen::possibleMoves(moves2, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("c4")>>3, board.GetPosition("c4") & 0b111);
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+        PRINT_MOVE(moves[i]);
+    }
+
+    std::cout<< std::endl;
+
+
+    presenter.displayUINT64(board.GetFromBlackAttackedFields());
+}
+
+
 TEST(PiecesTest, BishopTestManyMoves) {
     const std::string game[27] = {
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
             "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
             "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
-            "rnbqkbnr/ppp1pppp/3p4/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+            "rnbqkbnr/ppp1pppp/3p4/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 2",
             "rnbqkb1r/ppp1pppp/3p1n2/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3",
             "rnbqkb1r/ppp1pppp/3p1n2/8/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 2 3",
             "r1bqkb1r/pppnpppp/3p1n2/8/3PP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 3 4",
