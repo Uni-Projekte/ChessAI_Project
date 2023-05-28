@@ -10,10 +10,10 @@ int main()
     std::cout << board.toFEN() << std::endl;
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
-    board.DoMove(CREATE_MOVE(5, 6, 5, 4, 0));
+    board.DoMove(CreateMove(5, 6, 5, 4, 0));
     std::cout << board.toFEN() << std::endl;
     std::cout << std::endl << presenter.ToString(board);
-    board.DoMove(CREATE_MOVE(4, 4, 5, 5, CAPTURE));
+    board.DoMove(CreateMove(4, 4, 5, 5, CAPTURE));
     std::cout << board.toFEN() << std::endl;
     std::cout << std::endl << presenter.ToString(board);
 }

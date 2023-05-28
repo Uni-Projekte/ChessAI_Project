@@ -6,39 +6,39 @@ void pawn::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD allP
     {
         if (y == 6)
         {
-            if (SINGLE_BIT_BOARD(x, 0) & ~allPieces)
+            if (SingleBitBoard(x, 0) & ~allPieces)
             {
-                ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 0, UPGRADE_ROOK);
-                ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 0, UPGRADE_KNIGHT);
-                ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 0, UPGRADE_BISHOP);
-                ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 0, UPGRADE_QUEEN);
+                AddMove(&moves, x, y, x, 0, UPGRADE_ROOK);
+                AddMove(&moves, x, y, x, 0, UPGRADE_KNIGHT);
+                AddMove(&moves, x, y, x, 0, UPGRADE_BISHOP);
+                AddMove(&moves, x, y, x, 0, UPGRADE_QUEEN);
             }
-            TRY_ADD_MOVE_UPGRADE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x - 1, y + 1);
-            TRY_ADD_MOVE_UPGRADE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x + 1, y + 1);
+            TryAddMoveOnlyCaptureUpgrade(&moves, allPieces, currentColor, x, y, x - 1, y + 1);
+            TryAddMoveOnlyCaptureUpgrade(&moves, allPieces, currentColor, x, y, x + 1, y + 1);
         }
         else
         {
-            TRY_ADD_MOVE_NO_CAPTURE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x, y + 1);
-            TRY_ADD_MOVE_ONLY_CAPTURE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x - 1, y + 1);
-            TRY_ADD_MOVE_ONLY_CAPTURE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x + 1, y + 1);
-            if ((GET_MOVE_TO_X(en_passante) == x - 1 || GET_MOVE_TO_X(en_passante) == x + 1) && GET_MOVE_TO_Y(en_passante) == y + 1)
+            TryAddMoveNoCapture(&moves, allPieces, currentColor, x, y, x, y + 1);
+            TryAddMoveOnlyCapture(&moves, allPieces, currentColor, x, y, x - 1, y + 1);
+            TryAddMoveOnlyCapture(&moves, allPieces, currentColor, x, y, x + 1, y + 1);
+            if ((GetToX(en_passante) == x - 1 || GetToX(en_passante) == x + 1) && GetToY(en_passante) == y + 1)
             {
-                ADD_MOVE(moves, attackedFieldsOwn, x, y, GET_MOVE_TO_X(en_passante), y + 1, CAPTURE);
+                AddMove(&moves, x, y, GetToX(en_passante), y + 1, CAPTURE);
             }
 
         }
     }
     else
     {
-        if ((y == 6) && (SINGLE_BIT_BOARD(x, 7) & ~currentColor & ~allPieces))
+        if ((y == 6) && (SingleBitBoard(x, 7) & ~currentColor & ~allPieces))
         {
-            ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 7, UPGRADE_ROOK);
-            ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 7, UPGRADE_KNIGHT);
-            ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 7, UPGRADE_BISHOP);
-            ADD_MOVE(moves, attackedFieldsOwn, x, y, x, 7, UPGRADE_QUEEN);
+            AddMove(&moves, x, y, x, 7, UPGRADE_ROOK);
+            AddMove(&moves, x, y, x, 7, UPGRADE_KNIGHT);
+            AddMove(&moves, x, y, x, 7, UPGRADE_BISHOP);
+            AddMove(&moves, x, y, x, 7, UPGRADE_QUEEN);
         }
-        TRY_ADD_MOVE_NO_CAPTURE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x, y - 1);
-        TRY_ADD_MOVE_ONLY_CAPTURE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x - 1, y - 1);
-        TRY_ADD_MOVE_ONLY_CAPTURE(moves, attackedFieldsOwn, allPieces, currentColor, x, y, x + 1, y - 1);
+        TryAddMoveNoCapture(&moves, allPieces, currentColor, x, y, x, y - 1);
+        TryAddMoveOnlyCapture(&moves, allPieces, currentColor, x, y, x - 1, y - 1);
+        TryAddMoveOnlyCapture(&moves, allPieces, currentColor, x, y, x + 1, y - 1);
     }
 }

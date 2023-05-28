@@ -8,23 +8,23 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
     uint8_t newX = x + 1;
     uint8_t newY = y + 1;
     bool metKing = false;
-    while (newX < 8 && newY < 8 && !(currentColor & SINGLE_BIT_BOARD(newX, newY)))
+    while (newX < 8 && newY < 8 && !(currentColor & SingleBitBoard(newX, newY)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
         {
-            if (SINGLE_BIT_BOARD(newX, newY) & enemyKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+            if (SingleBitBoard(newX, newY) & enemyKing){
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
                 metKing = true;
             }
             else if (!metKing){
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         } else {
             if (metKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX++;
@@ -35,25 +35,25 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
     newX = x + 1;
     newY = y - 1;
     metKing = false;
-    while (newX < 8 && newY < 255 && !(currentColor & SINGLE_BIT_BOARD(newX, newY)))
+    while (newX < 8 && newY < 255 && !(currentColor & SingleBitBoard(newX, newY)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
         {
-            if (SINGLE_BIT_BOARD(newX, newY) & enemyKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+            if (SingleBitBoard(newX, newY) & enemyKing){
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
                 metKing = true;
             }
             else if (!metKing){
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         }
         else
         {
             if (metKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX++;
@@ -64,23 +64,23 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
     newX = x - 1;
     newY = y - 1;
     metKing = false;
-    while (newX < 255 && newY < 255 && !(currentColor & SINGLE_BIT_BOARD(newX, newY)))
+    while (newX < 255 && newY < 255 && !(currentColor & SingleBitBoard(newX, newY)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
         {
-            if (SINGLE_BIT_BOARD(newX, newY) & enemyKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+            if (SingleBitBoard(newX, newY) & enemyKing){
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
                 metKing = true;
             }
             else if (!metKing){
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         } else {
             if (metKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX--;
@@ -91,23 +91,23 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
     newX = x - 1;
     newY = y + 1;
     metKing = false;
-    while (newX < 255 && newY < 8 && !(currentColor & SINGLE_BIT_BOARD(newX, newY)))
+    while (newX < 255 && newY < 8 && !(currentColor & SingleBitBoard(newX, newY)))
     {
-        if (allPieces & ~currentColor & SINGLE_BIT_BOARD(newX, newY))
+        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
         {
-            if (SINGLE_BIT_BOARD(newX, newY) & enemyKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+            if (SingleBitBoard(newX, newY) & enemyKing){
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
                 metKing = true;
             }
             else if (!metKing){
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         } else {
             if (metKing){
-                attackedFieldsOwn |= SINGLE_BIT_BOARD(newX, newY);
+                attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                ADD_MOVE_SLIDING_PIECE(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX--;

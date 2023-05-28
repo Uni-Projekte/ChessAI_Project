@@ -722,10 +722,10 @@ uint8_t Board::GetPosition(string position) const
 
 void Board::DoMove(MOVE move)
 {
-    const BOARD from = GET_SINGLE_BIT_BOARD_FROM(move);
-    const BOARD to = GET_SINGLE_BIT_BOARD_TO(move);
-    const bool capture = GET_CAPTURE(move);
-    const bool castling = GET_CASTLING(move);
+    const BOARD from = GetSingleBitBoardFrom(move);
+    const BOARD to = GetSingleBitBoardTo(move);
+    const bool capture = GetCapture(move);
+    const bool castling = GetCastling(move);
     const BOARD allPieces = this->white | this->black;
     const BOARD white = this->white;
     const BOARD black = this->black;
@@ -784,18 +784,18 @@ void Board::DoMove(MOVE move)
     this->black = this->black | (to * bool(black & from));
     // delete captured piece pos
     this->black = this->black & ~(to * ((capture && (white & from))));
-    this->black = this->black & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->black = this->black & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     // delete moved piece old pos
     this->black = this->black & ~from;
 
     this->white = this->white | (to * bool(white & from));
     this->white = this->white & ~(to * ((capture && (black & from))));
-    this->white = this->white & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->white = this->white & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->white = this->white & ~from;
 
     this->pawns = this->pawns | (to * bool(pawns & from)); // add moved pawn new pos
     this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
-    this->pawns = this->pawns & ~((uint64_t)(GET_SINGLE_BIT_BOARD_TO(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->pawns = this->pawns & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
     this->pawns = this->pawns & ~from;
     // cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
 
@@ -850,54 +850,54 @@ void Board::GetMoves(MOVE_ARRAY &moves)
         {
             if (this->move_rights & 1)
             {
-                if (this->bishops & this->black & SINGLE_BIT_BOARD(x, y))
+                if (this->bishops & this->black & SingleBitBoard(x, y))
                 {
                     bishop::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
-                if (this->kings & this->black & SINGLE_BIT_BOARD(x, y))
+                if (this->kings & this->black & SingleBitBoard(x, y))
                 {
                     king::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
-                if (this->knights & this->black & SINGLE_BIT_BOARD(x, y))
+                if (this->knights & this->black & SingleBitBoard(x, y))
                 {
                     knight::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y);
                 }
-                if (this->pawns & this->black & SINGLE_BIT_BOARD(x, y))
+                if (this->pawns & this->black & SingleBitBoard(x, y))
                 {
                     pawn::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
-                if (this->rooks & this->black & SINGLE_BIT_BOARD(x, y))
+                if (this->rooks & this->black & SingleBitBoard(x, y))
                 {
                     rook::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
-                if (this->queens & this->black & SINGLE_BIT_BOARD(x, y))
+                if (this->queens & this->black & SingleBitBoard(x, y))
                 {
                     queen::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
                 }
             }
             else
             {
-                if (this->bishops & this->white & SINGLE_BIT_BOARD(x, y))
+                if (this->bishops & this->white & SingleBitBoard(x, y))
                 {
                     bishop::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
-                if (this->kings & this->white & SINGLE_BIT_BOARD(x, y))
+                if (this->kings & this->white & SingleBitBoard(x, y))
                 {
                     king::possibleMoves(moves, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
-                if (this->knights & this->white & SINGLE_BIT_BOARD(x, y))
+                if (this->knights & this->white & SingleBitBoard(x, y))
                 {
                     knight::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
-                if (this->pawns & this->white & SINGLE_BIT_BOARD(x, y))
+                if (this->pawns & this->white & SingleBitBoard(x, y))
                 {
                     pawn::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
                 }
-                if (this->rooks & this->white & SINGLE_BIT_BOARD(x, y))
+                if (this->rooks & this->white & SingleBitBoard(x, y))
                 {
                     rook::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
-                if (this->queens & this->white & SINGLE_BIT_BOARD(x, y))
+                if (this->queens & this->white & SingleBitBoard(x, y))
                 {
                     queen::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
                 }
@@ -913,17 +913,17 @@ MOVE Board::GetMove()
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
-    NEW_MOVE_ARRAY(moves);
-    this->GetMoves(moves);
+    MOVE_ARRAY *moves = NewMoveArray();
+    this->GetMoves(*moves);
 
     MOVE move = 0;
     if (this->move_rights & 1)
     {
-        move = this->AlphaBetaIterative(moves, 1000 * 10, BLACK);
+        move = this->AlphaBetaIterative(*moves, 1000 * 10, BLACK);
     }
     else
     {
-        move = this->AlphaBetaIterative(moves, 1000 * 10, WHITE);
+        move = this->AlphaBetaIterative(*moves, 1000 * 10, WHITE);
     }
     // std::cout << "PICKED MOVE: " << move << std::endl;
     // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
@@ -939,16 +939,16 @@ MOVE Board::GetMoveMinMax()
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
-    NEW_MOVE_ARRAY(moves);
-    this->GetMoves(moves);
+    MOVE_ARRAY *moves = NewMoveArray();
+    this->GetMoves(*moves);
     MOVE move = 0;
     if (this->move_rights & 1)
     {
-        move = this->MiniMaxIterative(moves, 1000 * 10, BLACK);
+        move = this->MiniMaxIterative(*moves, 1000 * 10, BLACK);
     }
     else
     {
-        move = this->MiniMaxIterative(moves, 1000 * 10, WHITE);
+        move = this->MiniMaxIterative(*moves, 1000 * 10, WHITE);
     }
     // std::cout << "PICKED MOVE: " << move << std::endl;
     // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
@@ -1014,7 +1014,7 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
                           std::chrono::system_clock::now().time_since_epoch())
                           .count();
 
-        PRINT_MOVE(result);
+        PrintMove(result);
         std::cout << searchDepth-1 << std::endl;
         std::cout << end - start << std::endl;
         std::cout << maxTime << std::endl;
@@ -1053,9 +1053,9 @@ int Board::AlphaBetaMax(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves);  // get all moves possible
-        int val = copyBoard.AlphaBetaMin(searchDepth - 1, nextMoves, states,alpha, beta, NULL, player);
+        MOVE_ARRAY *nextMoves = NewMoveArray();     // allocate memory for next moves
+        copyBoard.GetMoves(*nextMoves);             // get all moves possible
+        int val = copyBoard.AlphaBetaMin(searchDepth - 1, *nextMoves, states, alpha, beta, NULL, player);
         if (val > best && result != NULL)
         {
             *result = moves[i];
@@ -1094,9 +1094,9 @@ int Board::AlphaBetaMin(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves); // get all moves possible
-        int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
+        MOVE_ARRAY *nextMoves = NewMoveArray(); // allocate memory for next moves
+        copyBoard.GetMoves(*nextMoves); // get all moves possible
+        int val = copyBoard.AlphaBetaMax(searchDepth - 1, *nextMoves, states, alpha, beta, NULL, player);
         if (val < best && result != NULL)
         {
             *result = moves[i];
@@ -1112,7 +1112,6 @@ int Board::AlphaBetaMin(
     }
     return best;
 }
-
 
 
 MOVE Board::MiniMaxIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
@@ -1137,7 +1136,7 @@ MOVE Board::MiniMaxIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
 
-        PRINT_MOVE(result);
+        PrintMove(result);
         std::cout << searchDepth-1 << std::endl;
         std::cout << end - start << std::endl;
         std::cout << maxTime << std::endl;
@@ -1173,9 +1172,9 @@ int Board::MiniMaxMax(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves);  // get all moves possible
-        int val = copyBoard.MiniMaxMin(searchDepth - 1, nextMoves, states,NULL, player);
+        MOVE_ARRAY *nextMoves = NewMoveArray();     // allocate memory for next moves
+        copyBoard.GetMoves(*nextMoves);             // get all moves possible
+        int val = copyBoard.MiniMaxMin(searchDepth - 1, *nextMoves, states, NULL, player);
         if (val > best && result != NULL)
         {
             *result = moves[i];
@@ -1205,9 +1204,9 @@ int Board::MiniMaxMin(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves); // get all moves possible
-        int val = copyBoard.MiniMaxMax(searchDepth - 1, nextMoves, states,NULL, player);
+        MOVE_ARRAY *nextMoves = NewMoveArray(); // allocate memory for next moves
+        copyBoard.GetMoves(*nextMoves); // get all moves possible
+        int val = copyBoard.MiniMaxMax(searchDepth - 1, *nextMoves, states, NULL, player);
         if (val < best && result != NULL)
         {
             *result = moves[i];
