@@ -157,77 +157,77 @@ std::string Uint8ToString(uint8_t board)
     return out;
 }
 
- bool GetCapture(MOVE move)
+bool GetCapture(MOVE move)
 {
     return (move & CAPTURE) && !(move & MOVE_FLAGS & ~CAPTURE);
 }
 
- bool GetCastling(MOVE move)
+bool GetCastling(MOVE move)
 {
     return (move & CASTLING) && !(move & MOVE_FLAGS & ~CASTLING);
 }
 
- bool GetUpgradeRook(MOVE move)
+bool GetUpgradeRook(MOVE move)
 {
     return (move & UPGRADE_ROOK) && !(move & MOVE_FLAGS & ~UPGRADE_ROOK);
 }
 
- bool GetUpgradeKnight(MOVE move)
+bool GetUpgradeKnight(MOVE move)
 {
     return (move & UPGRADE_KNIGHT) && !(move & MOVE_FLAGS & ~UPGRADE_KNIGHT);
 }
 
- bool GetUpgradeBishop(MOVE move)
+bool GetUpgradeBishop(MOVE move)
 {
     return (move & UPGRADE_BISHOP) && !(move & MOVE_FLAGS & ~UPGRADE_BISHOP);
 }
 
- bool GetUpgradeQueen(MOVE move)
+bool GetUpgradeQueen(MOVE move)
 {
     return (move & UPGRADE_QUEEN) && !(move & MOVE_FLAGS & ~UPGRADE_QUEEN);
 }
 
- uint8_t GetToX(MOVE move)
+uint8_t GetToX(MOVE move)
 {
     return 7 - (move & MOVE_TO_X);
 }
 
- uint8_t GetToY(MOVE move)
+uint8_t GetToY(MOVE move)
 {
     return (move & MOVE_TO_Y) >> 3;
 }
 
- uint8_t GetFromX(MOVE move)
+uint8_t GetFromX(MOVE move)
 {
     return 7 - ((move & MOVE_FROM_X) >> 6);
 }
 
- uint8_t GetFromY(MOVE move)
+uint8_t GetFromY(MOVE move)
 {
     return (move & MOVE_FROM_Y) >> 9;
 }
 
- uint8_t FieldIndex(uint8_t x, uint8_t y)
+uint8_t FieldIndex(uint8_t x, uint8_t y)
 {
     return (y << 3) || (7 - x);
 }
 
- BOARD SingleBitBoard(uint8_t x, uint8_t y)
+BOARD SingleBitBoard(uint8_t x, uint8_t y)
 {
     return 1ULL << FieldIndex(x, y);
 }
 
- BOARD GetSingleBitBoardTo(MOVE move)
+BOARD GetSingleBitBoardTo(MOVE move)
 {
     return 1ULL << (move & MOVE_TO);
 }
 
- BOARD GetSingleBitBoardFrom(MOVE move)
+BOARD GetSingleBitBoardFrom(MOVE move)
 {
     return 1ULL << ((move & MOVE_FROM) >> 6);
 }
 
- void PrintMove(MOVE move)
+void PrintMove(MOVE move)
 {
     std::cout << "FROM X: " << GetFromX(move)
               << " FROM Y: " << GetFromY(move)
@@ -242,45 +242,46 @@ std::string Uint8ToString(uint8_t board)
               << std::endl;
 }
 
- MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
     return (flags | (FieldIndex(xFrom, yFrom) << 6) | FieldIndex(xTo, yTo));
 }
 
- MOVE_ARRAY *NewMoveArray()
+MOVE_ARRAY *NewMoveArray()
 {
-    MOVE_ARRAY moves;
-    moves[0] = 1;
-    return &moves;
+    MOVE_ARRAY *moves = (MOVE_ARRAY *)calloc(sizeof(MOVE), 1024);
+    *moves[0] = 1;
+    return moves;
 }
 
- bool InBounds(uint8_t x, uint8_t y)
+bool InBounds(uint8_t x, uint8_t y)
 {
     return !((x | y) & ~0b111U);
 }
 
- void AddMoveSlidingPiece(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+void AddMoveSlidingPiece(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
     *attackedFieldsOwn = *attackedFieldsOwn | SingleBitBoard(xTo, yTo);
     *moves[*moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
     *moves[0] = *moves[0] + 1;
 }
 
- void AddMove(MOVE_ARRAY *moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+void AddMove(MOVE_ARRAY *moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
     *moves[*moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
     *moves[0] = *moves[0] + 1;
 }
 
- bool TryAddMove(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMove(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
-    if (TryAddMoveNoCapture(moves,allPieces,currentColor,xFrom,yFrom,xTo,yTo)) {
+    if (TryAddMoveNoCapture(moves, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
+    {
         return true;
     }
     return TryAddMoveOnlyCapture(moves, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
 }
 
- bool TryAddMoveNoCapture(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveNoCapture(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~allPieces))
     {
@@ -290,7 +291,7 @@ std::string Uint8ToString(uint8_t board)
     return false;
 }
 
- bool TryAddMoveOnlyCapture(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveOnlyCapture(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~currentColor & allPieces))
     {
@@ -300,7 +301,7 @@ std::string Uint8ToString(uint8_t board)
     return false;
 }
 
- void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~allPieces) && (yTo == 0 || yTo == 7))
     {
@@ -315,7 +316,7 @@ std::string Uint8ToString(uint8_t board)
     }
 }
 
- void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~currentColor & allPieces) && (yTo == 0 || yTo == 7))
     {
@@ -326,32 +327,34 @@ std::string Uint8ToString(uint8_t board)
     }
     else if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~currentColor & allPieces))
     {
-        AddMove(moves,xFrom,yFrom,xTo,yTo,CAPTURE);
+        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE);
     }
 }
 
- bool TryAddMoveKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
-    if (TryAddMoveNoCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy,allPieces, currentColor, xFrom, yFrom, xTo, yTo))
+    if (TryAddMoveNoCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
     {
         return true;
     }
     return TryAddMoveOnlyCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
 }
 
- bool TryAddMoveNoCaptureKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveNoCaptureKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
-    if (InBounds(xTo, yTo)) {
-        *attackedFieldsOwn = *attackedFieldsOwn | SingleBitBoard(xTo,yTo);
-        if (~attackedFieldsEnemy & SingleBitBoard(xTo,yTo) & allPieces) {
-            AddMoveKing(moves,xFrom,yFrom,xTo,yTo,0);
+    if (InBounds(xTo, yTo))
+    {
+        *attackedFieldsOwn = *attackedFieldsOwn | SingleBitBoard(xTo, yTo);
+        if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & allPieces)
+        {
+            AddMoveKing(moves, xFrom, yFrom, xTo, yTo, 0);
             return true;
         }
     }
     return false;
 }
 
- bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo))
     {
@@ -365,8 +368,8 @@ std::string Uint8ToString(uint8_t board)
     return false;
 }
 
- void AddMoveKing(MOVE_ARRAY *moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+void AddMoveKing(MOVE_ARRAY *moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
-    *moves[*moves[0]] = CreateMove(xFrom,yFrom,xTo,yTo,flags);
+    *moves[*moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
     *moves[0] = *moves[0] + 1;
 }
