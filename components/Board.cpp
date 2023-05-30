@@ -856,7 +856,7 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 }
                 if (this->kings & this->black & SingleBitBoard(x, y))
                 {
-                    king::possibleMoves(moves, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    king::possibleMoves(moves, this->move_rights, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
                 if (this->knights & this->black & SingleBitBoard(x, y))
                 {
@@ -883,7 +883,7 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 }
                 if (this->kings & this->white & SingleBitBoard(x, y))
                 {
-                    king::possibleMoves(moves, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    king::possibleMoves(moves, this->move_rights, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
                 }
                 if (this->knights & this->white & SingleBitBoard(x, y))
                 {

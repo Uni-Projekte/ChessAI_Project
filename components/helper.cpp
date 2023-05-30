@@ -338,7 +338,7 @@ bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD 
     if (InBounds(xTo, yTo))
     {
         attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
-        if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & allPieces)
+        if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~allPieces & ~currentColor)
         {
             AddMoveKing(moves, xFrom, yFrom, xTo, yTo, 0);
             return true;

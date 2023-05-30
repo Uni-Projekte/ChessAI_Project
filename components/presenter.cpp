@@ -410,7 +410,7 @@ void Presenter::displayUINT64(uint64_t number) {
 
         std::cout << "| ";
         for (int col = 0; col < 8; ++col) {
-            int index = row * 8 + col;
+            int index = row * 8 +(7 - col);
             if (bits.test(index)) {
                 std::cout << "1 ";
             } else {

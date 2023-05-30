@@ -448,7 +448,15 @@ TEST(PiecesTest, KingMoveInCheckedField1)
     rook::possibleMoves(moves1, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+    king::possibleMoves(moves, board.GetMoveRights(),board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+
+    int i = 0;
+
+    for(int k: moves){
+        i++;
+    }
+
+    std::cout << "legnth: "<<i;
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -460,7 +468,7 @@ TEST(PiecesTest, KingMoveInCheckedField1)
 
 TEST(PiecesTest, KingMoveInCheckedField2)
 {
-    Board board("4r3/8/8/8/2q5/3K4/8/8 w - - 0 1");
+    Board board("4r3/8/8/8/2q5/3K4/4R3/8 w - - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -478,7 +486,8 @@ TEST(PiecesTest, KingMoveInCheckedField2)
     queen::possibleMoves(moves2, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("c4")>>3, board.GetPosition("c4") & 0b111);
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+    king::possibleMoves(moves, board.GetMoveRights(),board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -490,6 +499,66 @@ TEST(PiecesTest, KingMoveInCheckedField2)
 
 
     presenter.displayUINT64(board.GetFromBlackAttackedFields());
+}
+
+TEST(PiecesTest, KingMoveInCheckedField3)
+{
+    Board board("4r3/8/8/8/8/4K3/8/8 w - - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[7] = {
+            7,
+            CreateMove(4, 2, 5, 3, 0),
+            CreateMove(4, 2, 5, 2, 0),
+            CreateMove(4, 2, 5, 1, 0),
+            CreateMove(4, 2, 3, 1, 0),
+            CreateMove(4, 2, 3, 2, 0),
+            CreateMove(4, 2, 3, 3, 0),
+    };
+
+    NEW_MOVE_ARRAY(moves1);
+    rook::possibleMoves(moves1, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8")>>3, board.GetPosition("e8") & 0b111);
+
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(),board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e3") >> 3, board.GetPosition("e3") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+
+    std::cout << moves[0] << std::endl;
+}
+
+TEST(PiecesTest,WhiteKingsideRochade){
+    Board board("8/8/8/8/8/8/8/R3K2R w KQ - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[8] = {
+            8,
+            CreateMove(4, 0, 6, 0, 0),
+            CreateMove(4, 0, 2, 0, 0),
+            CreateMove(4, 0, 4, 1, 0),
+            CreateMove(4, 0, 5, 1, 0),
+            CreateMove(4, 0, 5, 0, 0),
+            CreateMove(4, 0, 3, 0, 0),
+            CreateMove(4, 0, 3, 1, 0)
+    };
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(), board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
 }
 
 
