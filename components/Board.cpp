@@ -958,36 +958,24 @@ MOVE Board::GetMoveMinMax()
 }
 
 
-int CountPiece(BOARD coloredPiece)
-{
-    int num = 0;
-    for (int i = 0; i < 64; i = i + 1)
-    {
-        if ((coloredPiece >> i) & 1)
-        {
-            num = num + 1;
-        }
-    }
-    return num;
-}
 
 int Board::BoardRanking(PLAYER player)
 {
     int ranking = 0;
 
-    ranking = ranking + 10000 * CountPiece(this->GetWhiteKing());
-    ranking = ranking + 900 * CountPiece(this->GetWhiteQueen());
-    ranking = ranking + 500 * CountPiece(this->GetWhiteRooks());
-    ranking = ranking + 300 * CountPiece(this->GetWhiteBishops());
-    ranking = ranking + 300 * CountPiece(this->GetWhiteKnights());
-    ranking = ranking + 100 * CountPiece(this->GetWhitePawns());
+    ranking = ranking + 10000 * popcount(this->GetWhiteKing());
+    ranking = ranking + 900 * popcount(this->GetWhiteQueen());
+    ranking = ranking + 500 * popcount(this->GetWhiteRooks());
+    ranking = ranking + 300 * popcount(this->GetWhiteBishops());
+    ranking = ranking + 300 * popcount(this->GetWhiteKnights());
+    ranking = ranking + 100 * popcount(this->GetWhitePawns());
 
-    ranking = ranking - 10000 * CountPiece(this->GetBlackKing());
-    ranking = ranking - 900 * CountPiece(this->GetBlackQueen());
-    ranking = ranking - 500 * CountPiece(this->GetBlackRooks());
-    ranking = ranking - 300 * CountPiece(this->GetBlackBishops());
-    ranking = ranking - 300 * CountPiece(this->GetBlackKnights());
-    ranking = ranking - 100 * CountPiece(this->GetBlackPawns());
+    ranking = ranking - 10000 * popcount(this->GetBlackKing());
+    ranking = ranking - 900 * popcount(this->GetBlackQueen());
+    ranking = ranking - 500 * popcount(this->GetBlackRooks());
+    ranking = ranking - 300 * popcount(this->GetBlackBishops());
+    ranking = ranking - 300 * popcount(this->GetBlackKnights());
+    ranking = ranking - 100 * popcount(this->GetBlackPawns());
 
     return ranking;
 }
@@ -1010,7 +998,7 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
         int countStates = 0;
         this->AlphaBetaMax(searchDepth, moves, countStates,INT_MIN, INT_MAX, &result, player);
         searchDepth = searchDepth + 1;
-        int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end = std::chrono::duration_cast<std::chrono::milliseconds>(
                           std::chrono::system_clock::now().time_since_epoch())
                           .count();
 

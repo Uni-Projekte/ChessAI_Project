@@ -322,37 +322,43 @@ typedef MOVE MOVE_ARRAY[MAX_MOVES];
 #define MOVE_FROM_X 0b0000000111000000U
 #define MOVE_FROM_Y 0b0000111000000000U
 
-bool GetCapture(MOVE move);
+inline bool GetCapture(MOVE move);
 
-bool GetCastling(MOVE move);
+inline bool GetCastling(MOVE move);
 
-bool GetUpgradeRook(MOVE move);
+inline bool GetUpgradeRook(MOVE move);
 
-bool GetUpgradeKnight(MOVE move);
+inline bool GetUpgradeKnight(MOVE move);
 
-bool GetUpgradeBishop(MOVE move);
+inline bool GetUpgradeBishop(MOVE move);
 
-bool GetUpgradeQueen(MOVE move);
+inline bool GetUpgradeQueen(MOVE move);
 
-uint8_t GetToX(MOVE move);
+inline uint8_t GetToX(MOVE move);
 
-uint8_t GetToY(MOVE move);
+inline uint8_t GetToY(MOVE move);
 
-uint8_t GetFromX(MOVE move);
+inline uint8_t GetFromX(MOVE move);
 
-uint8_t GetFromY(MOVE move);
+inline uint8_t GetFromY(MOVE move);
 
-uint8_t FieldIndex(uint8_t x, uint8_t y);
+inline uint8_t FieldIndex(uint8_t x, uint8_t y);
 
-BOARD SingleBitBoard(uint8_t x, uint8_t y);
+inline BOARD SingleBitBoard(uint8_t x, uint8_t y);
 
-BOARD GetSingleBitBoardTo(MOVE move);
+inline BOARD GetSingleBitBoardTo(MOVE move)
+{
+    return 1ULL << (move & MOVE_TO);
+}
 
-BOARD GetSingleBitBoardFrom(MOVE move);
+inline BOARD GetSingleBitBoardFrom(MOVE move)
+{
+    return 1ULL << ((move & MOVE_FROM) >> 6);
+}
 
 void PrintMove(MOVE move);
 
-MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
+inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
 bool InBounds(uint8_t x, uint8_t y);
 
