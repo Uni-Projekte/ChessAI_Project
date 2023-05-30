@@ -35,7 +35,7 @@ TEST(PiecesTest, BishopTest1) {
         CreateMove(4, 4, 1, 7, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i) {
@@ -63,7 +63,7 @@ TEST(PiecesTest, BishopTest2) {
         CreateMove(4, 4, 3, 5, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i) {
@@ -84,7 +84,7 @@ TEST(PiecesTest, BishopTest3) {
         CreateMove(1, 1, 0, 0, 0),
         CreateMove(1, 1, 0, 2, 0),
     };
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -129,7 +129,7 @@ TEST(PiecesTest, QueenTest1) {
         CreateMove(4, 4, 4, 7, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -173,7 +173,7 @@ TEST(PiecesTest, QueenTest2) {
         CreateMove(4, 4, 4, 7, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -216,7 +216,7 @@ TEST(PiecesTest, QueenTest3) {
         CreateMove(4, 4, 4, 7, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -248,7 +248,7 @@ TEST(PiecesTest, RookTest1) {
         CreateMove(0, 7, 0, 0, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -280,7 +280,7 @@ TEST(PiecesTest, RookTest2) {
         CreateMove(0, 7, 0, 0, CAPTURE),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -311,7 +311,7 @@ TEST(PiecesTest, RookTest3) {
         CreateMove(0, 7, 0, 1, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -337,7 +337,7 @@ TEST(PiecesTest, KnightTest1) {
         CreateMove(4, 3, 2, 2, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e4") >> 3, board.GetPosition("e4") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -359,7 +359,7 @@ TEST(PiecesTest, KnightTest2) {
         CreateMove(1, 6, 3, 5, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("b7") >> 3, board.GetPosition("b7") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -380,7 +380,7 @@ TEST(PiecesTest, KnightTest3) {
         CreateMove(6, 1, 4, 0, 0),
     };
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -444,10 +444,10 @@ TEST(PiecesTest, KingMoveInCheckedField1)
             CreateMove(3, 2, 2, 3, 0),
     };
 
-    MOVE_ARRAY moves1 = NewMoveArray();
+    NEW_MOVE_ARRAY(moves1);
     rook::possibleMoves(moves1, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     king::possibleMoves(moves, board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)
@@ -471,13 +471,13 @@ TEST(PiecesTest, KingMoveInCheckedField2)
             CreateMove(3, 2, 2, 3, CAPTURE),
     };
 
-    MOVE_ARRAY moves1 = NewMoveArray();
+    NEW_MOVE_ARRAY(moves1);
     rook::possibleMoves(moves1, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8")>>3, board.GetPosition("e8") & 0b111);
 
-    MOVE_ARRAY moves2 = NewMoveArray();
+    NEW_MOVE_ARRAY(moves2);
     queen::possibleMoves(moves2, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("c4")>>3, board.GetPosition("c4") & 0b111);
 
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     king::possibleMoves(moves, board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
 
     for (int i = 0; i < moves[0]; ++i)

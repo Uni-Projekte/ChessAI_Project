@@ -247,16 +247,6 @@ MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t
     return (flags | ((uint16_t)(FieldIndex(xFrom, yFrom)) << 6) | FieldIndex(xTo, yTo));
 }
 
-MOVE_ARRAY NewMoveArray()
-{
-    MOVE_ARRAY moves = (MOVE_ARRAY) calloc(sizeof(MOVE), MAX_MOVES);
-    if (moves == NULL) {
-        std::cout << "out of memory" << std::endl;
-    }
-    moves[0] = 1;
-    return moves;
-}
-
 bool InBounds(uint8_t x, uint8_t y)
 {
     return !((x | y) & ~0b111U);

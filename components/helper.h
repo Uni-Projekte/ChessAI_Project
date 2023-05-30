@@ -305,7 +305,7 @@ std::string Uint8ToString(uint8_t board);
 
 typedef uint64_t BOARD;
 typedef uint16_t MOVE;
-typedef MOVE *MOVE_ARRAY;
+typedef MOVE MOVE_ARRAY[MAX_MOVES];
 
 #define CAPTURE 0b1000000000000000U
 #define CASTLING 0b0100000000000000U
@@ -354,8 +354,6 @@ void PrintMove(MOVE move);
 
 MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
-MOVE_ARRAY NewMoveArray();
-
 bool InBounds(uint8_t x, uint8_t y);
 
 void AddMoveSlidingPiece(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
@@ -397,9 +395,9 @@ void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, u
 //                                 << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)      \
 //                                 << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
 
-// #define NEW_MOVE_ARRAY(VARNAME) \
-//     MOVE_ARRAY VARNAME;         \
-//     VARNAME[0] = 1;
+#define NEW_MOVE_ARRAY(VARNAME) \
+    MOVE_ARRAY VARNAME;         \
+    VARNAME[0] = 1;
 
 // #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
 

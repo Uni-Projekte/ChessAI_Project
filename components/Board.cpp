@@ -913,7 +913,7 @@ MOVE Board::GetMove()
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     this->GetMoves(moves);
 
     MOVE move = 0;
@@ -939,7 +939,7 @@ MOVE Board::GetMoveMinMax()
     //     std::cout << moves[i] << ", ";
     // }
     // std::cout << moves[moves.size()-1] << std::endl;
-    MOVE_ARRAY moves = NewMoveArray();
+    NEW_MOVE_ARRAY(moves);
     this->GetMoves(moves);
     MOVE move = 0;
     if (this->move_rights & 1)
@@ -1053,7 +1053,7 @@ int Board::AlphaBetaMax(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        MOVE_ARRAY nextMoves = NewMoveArray();     // allocate memory for next moves
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
         copyBoard.GetMoves(nextMoves);             // get all moves possible
         int val = copyBoard.AlphaBetaMin(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
         if (val > best && result != NULL)
@@ -1094,7 +1094,7 @@ int Board::AlphaBetaMin(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        MOVE_ARRAY nextMoves = NewMoveArray(); // allocate memory for next moves
+        NEW_MOVE_ARRAY(nextMoves); // allocate memory for next moves
         copyBoard.GetMoves(nextMoves); // get all moves possible
         int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
         if (val < best && result != NULL)
@@ -1172,7 +1172,7 @@ int Board::MiniMaxMax(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        MOVE_ARRAY nextMoves = NewMoveArray();     // allocate memory for next moves
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
         copyBoard.GetMoves(nextMoves);             // get all moves possible
         int val = copyBoard.MiniMaxMin(searchDepth - 1, nextMoves, states, NULL, player);
         if (val > best && result != NULL)
@@ -1204,7 +1204,7 @@ int Board::MiniMaxMin(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        MOVE_ARRAY nextMoves = NewMoveArray(); // allocate memory for next moves
+        NEW_MOVE_ARRAY(nextMoves);; // allocate memory for next moves
         copyBoard.GetMoves(nextMoves); // get all moves possible
         int val = copyBoard.MiniMaxMax(searchDepth - 1, nextMoves, states, NULL, player);
         if (val < best && result != NULL)
