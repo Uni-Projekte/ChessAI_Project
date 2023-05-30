@@ -17,14 +17,14 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
                 metKing = true;
             }
             else if (!metKing){
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         } else {
             if (metKing){
                 attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX++;
@@ -44,7 +44,7 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
                 metKing = true;
             }
             else if (!metKing){
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         }
@@ -53,7 +53,7 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
             if (metKing){
                 attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX++;
@@ -73,14 +73,14 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
                 metKing = true;
             }
             else if (!metKing){
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         } else {
             if (metKing){
                 attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX--;
@@ -100,14 +100,14 @@ void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD en
                 metKing = true;
             }
             else if (!metKing){
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, CAPTURE);
                 break;
             }
         } else {
             if (metKing){
                 attackedFieldsOwn |= SingleBitBoard(newX, newY);
             }else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, newY, 0);
             }
         }
         newX--;

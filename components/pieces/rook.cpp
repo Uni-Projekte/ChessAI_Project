@@ -19,7 +19,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 metKing = true;
             }
             else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, y, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, CAPTURE);
                 break;
             }
         }
@@ -29,7 +29,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 attackedFieldsOwn |= SingleBitBoard(newX, y);
             }
             else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, y, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, 0);
             }
         }
         newX++;
@@ -46,7 +46,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 metKing = true;
             }
             else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, y, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, CAPTURE);
                 break;
             }
         }
@@ -56,7 +56,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 attackedFieldsOwn |= SingleBitBoard(newX, y);
             }
             else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, newX, y, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, newX, y, 0);
             }
         }
         newX--;
@@ -73,7 +73,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 attackedFieldsOwn |= SingleBitBoard(x,newY);
                 metKing = true;
             } else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, x, newY, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, CAPTURE);
                 break;
             }
         }
@@ -83,7 +83,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 attackedFieldsOwn |= SingleBitBoard(x, newY);
             }
             else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, x, newY, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, 0);
             }
         }
         newY--;
@@ -99,7 +99,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 attackedFieldsOwn |= SingleBitBoard(x,newY);
                 metKing = true;
             } else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, x, newY, CAPTURE);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, CAPTURE);
                 break;
             }
         }
@@ -109,7 +109,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn , BOARD ene
                 attackedFieldsOwn |= SingleBitBoard(x, newY);
             }
             else{
-                AddMoveSlidingPiece(&moves, &attackedFieldsOwn, enemyKing, x, y, x, newY, 0);
+                AddMoveSlidingPiece(moves, attackedFieldsOwn, enemyKing, x, y, x, newY, 0);
             }
         }
         newY++;

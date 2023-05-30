@@ -305,7 +305,7 @@ std::string Uint8ToString(uint8_t board);
 
 typedef uint64_t BOARD;
 typedef uint16_t MOVE;
-typedef MOVE MOVE_ARRAY[MAX_MOVES];
+typedef MOVE *MOVE_ARRAY;
 
 #define CAPTURE 0b1000000000000000U
 #define CASTLING 0b0100000000000000U
@@ -354,31 +354,31 @@ void PrintMove(MOVE move);
 
 MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
-MOVE_ARRAY *NewMoveArray();
+MOVE_ARRAY NewMoveArray();
 
 bool InBounds(uint8_t x, uint8_t y);
 
-void AddMoveSlidingPiece(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
+void AddMoveSlidingPiece(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
-void AddMove(MOVE_ARRAY *moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
+void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
-bool TryAddMove(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMove(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveNoCapture(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveNoCapture(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveOnlyCapture(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveOnlyCapture(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY *moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY *moves, BOARD *attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-void AddMoveKing(MOVE_ARRAY *moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
+void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
 // #define GET_CAPTURE(M) (((M)&CAPTURE) && !((M)&(CAPTURE >> 1)))
 // #define GET_CASTLING(M) (((M)&CASTLING) && !((M)&(CASTLING << 1)))
