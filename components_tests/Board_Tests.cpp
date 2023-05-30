@@ -72,7 +72,7 @@ TEST(BoardTest, StartRanking)
 
 TEST(BoardTest, DoMoveBenchmarkStart)
 {
-    Board board("r2qr1k1/p4ppp/2Q1b3/4N3/5B2/3BnP2/PP4PP/R4RK1 w - - 0 19");
+    Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
@@ -135,6 +135,18 @@ TEST(BoardTest, BenchmarkMiddleMinMax)
 TEST(BoardTest, DoMoveBenchmarkEndMinMax)
 {
     Board board("r3k3/5p1p/n7/6B1/8/8/P7/K1R5 w q - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    for (int i = 0; i < 1; i++)
+    {
+        board.GetMoveMinMax();
+    }
+}
+
+TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
+{
+    Board board("r2qk2r/p1ppn1pp/bpnb1p2/4p3/4P3/2NPBN2/PPP1BPPP/R2Q1RK1 w Qkq - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);

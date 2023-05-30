@@ -157,75 +157,66 @@ std::string Uint8ToString(uint8_t board)
     return out;
 }
 
-bool GetCapture(MOVE move)
+inline bool GetCapture(MOVE move)
 {
     return (move & CAPTURE) && !(move & MOVE_FLAGS & ~CAPTURE);
 }
 
-bool GetCastling(MOVE move)
+inline bool GetCastling(MOVE move)
 {
     return (move & CASTLING) && !(move & MOVE_FLAGS & ~CASTLING);
 }
 
-bool GetUpgradeRook(MOVE move)
+inline bool GetUpgradeRook(MOVE move)
 {
     return (move & UPGRADE_ROOK) && !(move & MOVE_FLAGS & ~UPGRADE_ROOK);
 }
 
-bool GetUpgradeKnight(MOVE move)
+inline bool GetUpgradeKnight(MOVE move)
 {
     return (move & UPGRADE_KNIGHT) && !(move & MOVE_FLAGS & ~UPGRADE_KNIGHT);
 }
 
-bool GetUpgradeBishop(MOVE move)
+inline bool GetUpgradeBishop(MOVE move)
 {
     return (move & UPGRADE_BISHOP) && !(move & MOVE_FLAGS & ~UPGRADE_BISHOP);
 }
 
-bool GetUpgradeQueen(MOVE move)
+inline bool GetUpgradeQueen(MOVE move)
 {
     return (move & UPGRADE_QUEEN) && !(move & MOVE_FLAGS & ~UPGRADE_QUEEN);
 }
 
-uint8_t GetToX(MOVE move)
+inline uint8_t GetToX(MOVE move)
 {
     return ~(move & MOVE_TO_X) & 0b111;
 }
 
-uint8_t GetToY(MOVE move)
+inline uint8_t GetToY(MOVE move)
 {
     return (move & MOVE_TO_Y) >> 3;
 }
 
-uint8_t GetFromX(MOVE move)
+inline uint8_t GetFromX(MOVE move)
 {
     return ~((move & MOVE_FROM_X) >> 6) & 0b111;
 }
 
-uint8_t GetFromY(MOVE move)
+inline uint8_t GetFromY(MOVE move)
 {
     return (move & MOVE_FROM_Y) >> 9;
 }
 
-uint8_t FieldIndex(uint8_t x, uint8_t y)
+inline uint8_t FieldIndex(uint8_t x, uint8_t y)
 {
     return (y << 3) | (~x & 0b111);
 }
 
-BOARD SingleBitBoard(uint8_t x, uint8_t y)
+inline BOARD SingleBitBoard(uint8_t x, uint8_t y)
 {
     return 1ULL << FieldIndex(x, y);
 }
 
-BOARD GetSingleBitBoardTo(MOVE move)
-{
-    return 1ULL << (move & MOVE_TO);
-}
-
-BOARD GetSingleBitBoardFrom(MOVE move)
-{
-    return 1ULL << ((move & MOVE_FROM) >> 6);
-}
 
 void PrintMove(MOVE move)
 {
@@ -242,7 +233,7 @@ void PrintMove(MOVE move)
               << std::endl;
 }
 
-MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
     return (flags | ((uint16_t)(FieldIndex(xFrom, yFrom)) << 6) | FieldIndex(xTo, yTo));
 }
