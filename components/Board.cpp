@@ -719,6 +719,7 @@ uint8_t Board::GetPosition(string position) const
 #define ROW_1_AND_8 0xff000000000000ffULL
 #define NOT_ROW_1_AND_8 0x00ffffffffffff00ULL
 #include <bitset>
+#include <bit>
 
 void Board::DoMove(MOVE move)
 {

@@ -534,7 +534,7 @@ TEST(PiecesTest, KingMoveInCheckedField3)
     std::cout << moves[0] << std::endl;
 }
 
-TEST(PiecesTest,WhiteKingsideRochade){
+TEST(PiecesTest,WhiteCastling){
     Board board("8/8/8/8/8/8/8/R3K2R w KQ - 0 1");
 
     Presenter presenter = Presenter();
@@ -553,6 +553,147 @@ TEST(PiecesTest,WhiteKingsideRochade){
 
     NEW_MOVE_ARRAY(moves);
     king::possibleMoves(moves, board.GetMoveRights(), board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+}
+
+TEST(PiecesTest,WhiteCastlingNotWorking){
+    Board board("4k3/8/8/8/8/7b/8/R1n1K2R w KQ - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[5] = {
+            5,
+            CreateMove(4, 0, 4, 1, 0),
+            CreateMove(4, 0, 5, 1, 0),
+            CreateMove(4, 0, 3, 0, 0),
+            CreateMove(4, 0, 3, 1, 0),
+    };
+
+
+    NEW_MOVE_ARRAY(dummy);
+    bishop::possibleMoves(dummy, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("h3") >> 3, board.GetPosition("h3") & 0b111);
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(), board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+}
+
+TEST(PiecesTest,WhiteCastlingNotWorkingCheck){
+    Board board("4k3/8/8/8/8/2b5/8/R3K2R w KQ - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[5] = {
+            5,
+            CreateMove(4, 0, 4, 1, 0),
+            CreateMove(4, 0, 5, 1, 0),
+            CreateMove(4, 0, 5, 0, 0),
+            CreateMove(4, 0, 3, 0, 0),
+    };
+
+
+    NEW_MOVE_ARRAY(dummy);
+    bishop::possibleMoves(dummy, board.GetFromBlackAttackedFields(), board.GetWhiteKing(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("c3") >> 3, board.GetPosition("c3") & 0b111);
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(), board.GetFromWhiteAttackedFields(),board.GetFromBlackAttackedFields(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+}
+
+TEST(PiecesTest, BlackCastling){
+    Board board("r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[8] = {
+            8,
+            CreateMove(4, 7, 6, 7, 0),
+            CreateMove(4, 7, 2, 7, 0),
+            CreateMove(4, 7, 5, 7, 0),
+            CreateMove(4, 7, 5, 6, 0),
+            CreateMove(4, 7, 4, 6, 0),
+            CreateMove(4, 7, 3, 6, 0),
+            CreateMove(4, 7, 3, 7, 0),
+    };
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(), board.GetFromBlackAttackedFields(),board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+}
+
+
+TEST(PiecesTest, BlackCastlingNotWorking){
+    Board board("r3kN1r/8/8/B7/8/8/8/4K3 w kq - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[5] = {
+            5,
+            CreateMove(4, 7, 5, 7, CAPTURE),
+            CreateMove(4, 7, 5, 6, 0),
+            CreateMove(4, 7, 4, 6, 0),
+            CreateMove(4, 7, 3, 6, 0),
+    };
+
+
+    NEW_MOVE_ARRAY(dummy);
+    bishop::possibleMoves(dummy, board.GetFromWhiteAttackedFields(), board.GetBlackKing(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("a5") >> 3, board.GetPosition("a5") & 0b111);
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(), board.GetFromBlackAttackedFields(),board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+
+
+    for (int i = 0; i < moves[0]; ++i)
+    {
+        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
+    }
+}
+
+
+TEST(PiecesTest, BlackCastlingNotWorkingCheck){
+    Board board("r3k2r/8/8/1B6/8/8/8/4K3 w kq - 0 1");
+
+    Presenter presenter = Presenter();
+    std::cout << std::endl << presenter.ToString(board);
+
+    MOVE expectedMoves[5] = {
+            5,
+            CreateMove(4, 7, 5, 7, 0),
+            CreateMove(4, 7, 5, 6, 0),
+            CreateMove(4, 7, 4, 6, 0),
+            CreateMove(4, 7, 3, 7, 0),
+    };
+
+
+    NEW_MOVE_ARRAY(dummy);
+    bishop::possibleMoves(dummy, board.GetFromWhiteAttackedFields(), board.GetBlackKing(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("b5") >> 3, board.GetPosition("b5") & 0b111);
+
+    NEW_MOVE_ARRAY(moves);
+    king::possibleMoves(moves, board.GetMoveRights(), board.GetFromBlackAttackedFields(),board.GetFromWhiteAttackedFields(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
 
 
     for (int i = 0; i < moves[0]; ++i)

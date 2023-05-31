@@ -7,25 +7,25 @@ void king::possibleMoves(MOVE_ARRAY &moves, uint8_t moveRights, BOARD &attackedF
     uint64_t whiteKingStartPostition = 0b1000;
     uint64_t blackKingStartPostition = 0b100000000000000000000000000000000000000000000000000000000000;
 
-    if(moveRights&0b10000000 && (whiteKingStartPostition & SingleBitBoard(x,y))){
+    if(moveRights&0b10000000 && (whiteKingStartPostition & SingleBitBoard(x,y) & ~attackedFieldsEnemy)){
         uint64_t fieldsInBetweenWhiteKingSide = 0b110;
         if(!(fieldsInBetweenWhiteKingSide & allPieces) && !(fieldsInBetweenWhiteKingSide & attackedFieldsEnemy)){
             TryAddMoveKing(moves,attackedFieldsOwn,attackedFieldsEnemy,allPieces,currentColor,x,y,x+2,y);
         }
     }
-    if(moveRights&0b01000000 && (whiteKingStartPostition & SingleBitBoard(x,y))){
+    if(moveRights&0b01000000 && (whiteKingStartPostition & SingleBitBoard(x,y) & ~attackedFieldsEnemy)){
         uint64_t fieldsInBetweenWhiteQueenSide = 0b01110000;
         if(!(fieldsInBetweenWhiteQueenSide & allPieces) && !(fieldsInBetweenWhiteQueenSide & attackedFieldsEnemy)){
             TryAddMoveKing(moves,attackedFieldsOwn,attackedFieldsEnemy,allPieces,currentColor,x,y,x-2,y);
         }
     }
-    if(moveRights&0b00100000 && (blackKingStartPostition & SingleBitBoard(x,y))){
+    if(moveRights&0b00100000 && (blackKingStartPostition & SingleBitBoard(x,y) & ~attackedFieldsEnemy)){
         uint64_t fieldsInBetweenBlackKingSide = 0b011000000000000000000000000000000000000000000000000000000000;
         if(!(fieldsInBetweenBlackKingSide & allPieces) && !(fieldsInBetweenBlackKingSide & attackedFieldsEnemy)){
             TryAddMoveKing(moves,attackedFieldsOwn,attackedFieldsEnemy,allPieces,currentColor,x,y,x+2,y);
         }
     }
-    if(moveRights&0b00010000 && (blackKingStartPostition & SingleBitBoard(x,y))){
+    if(moveRights&0b00010000 && (blackKingStartPostition & SingleBitBoard(x,y) & ~attackedFieldsEnemy)){
         uint64_t fieldsInBetweenBlackQueenSide = 0b0111000000000000000000000000000000000000000000000000000000000000;
         if(!(fieldsInBetweenBlackQueenSide & allPieces) && !(fieldsInBetweenBlackQueenSide & attackedFieldsEnemy)){
             TryAddMoveKing(moves,attackedFieldsOwn,attackedFieldsEnemy,allPieces,currentColor,x,y,x-2,y);
