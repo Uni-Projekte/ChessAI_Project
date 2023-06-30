@@ -376,112 +376,21 @@ void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD curren
 
 void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
 void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
-// #define GET_CAPTURE(M) (((M)&CAPTURE) && !((M)&(CAPTURE >> 1)))
-// #define GET_CASTLING(M) (((M)&CASTLING) && !((M)&(CASTLING << 1)))
-// #define GET_UPGRADE_ROOK(M) !(((M) >> 12) & 0b11 )
-// #define GET_UPGRADE_KNIGHT(M) bool(((M)&0b0001000000000000U) & ~(((M)&0010000000000000U) >> 1))
-// #define GET_UPGRADE_BISHOP(M) bool(((M)&0b0010000000000000U) & ~((M)&0b0001000000000000U) << 1)
-// #define GET_UPGRADE_QUEEN(M) !(((M) >> 12) ^ 0b11)
-// #define GET_MOVE_TO_X(M) (7 - ((M)&MOVE_TO_X))
-// #define GET_MOVE_TO_Y(M) (((M)&MOVE_TO_Y) >> 3)
-// #define GET_MOVE_FROM_X(M) (7 - (((M)&MOVE_FROM_X) >> 6))
-// #define GET_MOVE_FROM_Y(M) (((M)&MOVE_FROM_Y) >> 9)
+bool TryMarkField(BOARD &attackedFieldsOwn, uint8_t xTo, uint8_t yTo);
 
-// #define GET_SINGLE_BIT_BOARD_TO(M) SINGLE_BIT_BOARD(GET_MOVE_TO_X(M), GET_MOVE_TO_Y(M))
-// #define GET_SINGLE_BIT_BOARD_FROM(M) SINGLE_BIT_BOARD(GET_MOVE_FROM_X(M), GET_MOVE_FROM_Y(M))
-// #define PRINT_MOVE(M) std::cout << "FROM: X:" << GET_MOVE_FROM_X(M) << " Y:" << GET_MOVE_FROM_Y(M) \
-//                                 << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)      \
-//                                 << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
 
 #define NEW_MOVE_ARRAY(VARNAME) \
     MOVE_ARRAY VARNAME;         \
     VARNAME[0] = 1;
 
-// #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
-
-// #define SINGLE_BIT_BOARD(X, Y) (1ULL << (FIELD_INDEX(X, Y)))
-
-// #define CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     (MOVE)(FLAGS | (FIELD_INDEX(X_FROM, Y_FROM) << 6) | FIELD_INDEX(X_TO, Y_TO))
-
-// #define IF_IN_BOUNDS(X, Y, DO)                      \
-//     if ((X) < 8 && (Y) < 8 && (X) >= 0 && (Y) >= 0) \
-//     {                                               \
-//         DO;                                          \
-//     }
-
-// #define ADD_MOVE_SLIDING_PIECE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO)                   ;                      \
-//     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
-//     MOVES[0] = MOVES[0] + 1;
-
-// #define ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
-//     MOVES[0] = MOVES[0] + 1;
-
-// #define TRY_ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
-
-// #define TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                             \
-//         X_TO, Y_TO,                                                                                                         \
-//         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
-
-// #define TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                               \
-//         X_TO, Y_TO,                                                                             \
-//         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
-
-// #define TRY_ADD_MOVE_UPGRADE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                          \
-//         X_TO, Y_TO,                                                                         \
-//         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR) { \
-//             if (Y_TO % 7 < 2) \
-//         { \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_ROOK); \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_KNIGHT); \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_BISHOP); \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_QUEEN); \
-//         } \
-//         else \
-//         { \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE); \
-//         } })
-
-// // Operations for King
-
-// #define TRY_ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)  \
-//     TRY_ADD_MOVE_NO_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     TRY_ADD_MOVE_ONLY_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY,ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
-
-// #define TRY_ADD_MOVE_NO_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                                                                          \
-//         X_TO, Y_TO,                                                                                                                        \
-//         ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO);                                                                                 \
-//         if (~ATTACKEDFIELDSENEMY & SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
-//             ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
-
-// #define TRY_ADD_MOVE_ONLY_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                               \
-//         X_TO, Y_TO,                                                                             \
-//         ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO);\
-//         if (~ATTACKEDFIELDSENEMY & SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
-//             ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
-
-// #define ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
-//     MOVES[0] = MOVES[0] + 1;
 
 #define H1 (1ULL)
 #define G1 (1ULL << 1)

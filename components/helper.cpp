@@ -243,13 +243,6 @@ bool InBounds(uint8_t x, uint8_t y)
     return !((x | y) & ~0b111U);
 }
 
-void AddMoveSlidingPiece(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
-{
-    attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
-    moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
-    moves[0] = moves[0] + 1;
-}
-
 void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
     moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
@@ -315,20 +308,19 @@ void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD curr
     }
 }
 
-bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
-    if (TryAddMoveNoCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
+    if (TryAddMoveNoCaptureKing(moves, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
     {
         return true;
     }
-    return TryAddMoveOnlyCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
+    return TryAddMoveOnlyCaptureKing(moves, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
 }
 
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo))
     {
-        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
         if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~allPieces & ~currentColor)
         {
             AddMoveKing(moves, xFrom, yFrom, xTo, yTo, 0);
@@ -338,11 +330,10 @@ bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD 
     return false;
 }
 
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo))
     {
-        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
         if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~currentColor & allPieces)
         {
             AddMoveKing(moves, xFrom, yFrom, xTo, yTo, CAPTURE);
@@ -356,4 +347,14 @@ void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, u
 {
     moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
     moves[0] = moves[0] + 1;
+}
+
+bool TryMarkField(BOARD &attackedFieldsOwn, uint8_t xTo, uint8_t yTo)
+{
+    if (InBounds(xTo, yTo))
+    {
+        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo,yTo);
+        return true;
+    }
+    return false;
 }

@@ -1,6 +1,7 @@
 #include "pawn.h"
 
-void pawn::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante)
+
+void pawn::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante)
 {
     if (color == WHITE)
     {
@@ -40,5 +41,19 @@ void pawn::possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD allP
         TryAddMoveNoCapture(moves, allPieces, currentColor, x, y, x, y - 1);
         TryAddMoveOnlyCapture(moves, allPieces, currentColor, x, y, x - 1, y - 1);
         TryAddMoveOnlyCapture(moves, allPieces, currentColor, x, y, x + 1, y - 1);
+    }
+}
+
+void pawn::markFields(BOARD &attackedFieldsOwn, uint8_t x, uint8_t y, bool color)
+{
+    if (color == WHITE)
+    {
+        TryMarkField(attackedFieldsOwn, x - 1, y + 1);
+        TryMarkField(attackedFieldsOwn, x + 1, y + 1);
+    }
+    else
+    {
+        TryMarkField(attackedFieldsOwn, x - 1, y - 1);
+        TryMarkField(attackedFieldsOwn, x + 1, y - 1);
     }
 }

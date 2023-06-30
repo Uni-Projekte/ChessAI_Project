@@ -6,7 +6,9 @@
 
 class knight {
     public:
-        static void possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
+    static void possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y);
+
+    static void markFields(BOARD &attackedFieldsOwn, uint8_t x, uint8_t y);
 };
 
 

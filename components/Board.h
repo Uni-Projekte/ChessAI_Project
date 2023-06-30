@@ -12,6 +12,8 @@ private:
     uint64_t white;  // bitboard representing white pieces
     uint64_t attackedFromWhite; // bitboard representing from White attacked fields
     uint64_t attackedFromBlack; // bitboard representing from Black attacked fields
+    uint64_t pinnedWhitePieces;
+    uint64_t pinnedBlackPieces;
     uint64_t pawns;  // bitboard representing all pawns
     uint64_t kings;  // bitboard representing all kings
     uint64_t queens; // bitboard representing all queens
@@ -134,6 +136,8 @@ public:
     MOVE GetMove();
 
     MOVE GetMoveMinMax();
+
+    void MarkFields();
 
     void PlayGame();
 

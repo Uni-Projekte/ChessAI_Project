@@ -29,7 +29,26 @@
     <list default="true" id="c7b732a3-91b0-4ce3-a457-3ec48e051414" name="Changes" comment="changed a comment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/bishop.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/bishop.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/bishop.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/bishop.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/king.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/king.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/king.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/king.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/knight.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/knight.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/knight.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/knight.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/pawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/pawn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/queen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/queen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/queen.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/queen.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/rook.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
+    </list>
+    <list id="cec19834-fb85-4940-9319-83fed6098c57" name="Changes by Mateusz Pawelczyk" comment="">
+      <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
     </list>
     <list id="f4eb0402-153a-4b11-8d89-172698176ae1" name="Changes by TaschTasch" comment="" />
@@ -49,6 +68,118 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/components/pieces/rook.cpp">
+      <ranges>
+        <range start1="2" end1="3" start2="2" end2="62" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="4" end1="6" start2="63" end2="63" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="7" end1="10" start2="64" end2="64" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="11" end1="13" start2="65" end2="69" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="16" end1="19" start2="72" end2="87" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="21" end1="23" start2="89" end2="95" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="25" end1="26" start2="97" end2="98" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="27" end1="33" start2="99" end2="100" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="35" end1="36" start2="102" end2="103" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="37" end1="37" start2="104" end2="137" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="38" end1="39" start2="138" end2="141" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="41" end1="42" start2="143" end2="149" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="43" end1="45" start2="150" end2="151" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="46" end1="56" start2="152" end2="155" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="58" end1="59" start2="157" end2="160" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="63" end1="63" start2="164" end2="166" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="64" end1="65" start2="167" end2="167" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="66" end1="66" start2="168" end2="169" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="67" end1="67" start2="170" end2="172" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="69" end1="70" start2="174" end2="180" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="71" end1="73" start2="181" end2="182" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="74" end1="83" start2="183" end2="186" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="85" end1="86" start2="188" end2="191" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="90" end1="90" start2="195" end2="197" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="91" end1="91" start2="198" end2="199" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="93" end1="93" start2="201" end2="203" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="95" end1="96" start2="205" end2="211" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="97" end1="99" start2="212" end2="213" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="100" end1="109" start2="214" end2="217" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="111" end1="112" start2="219" end2="222" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="116" end1="116" start2="226" end2="228" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/components/Board.cpp">
+      <ranges>
+        <range start1="29" end1="29" start2="29" end2="31" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="47" end1="47" start2="49" end2="51" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="369" end1="383" start2="373" end2="387" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="655" end1="669" start2="659" end2="673" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="843" end1="843" start2="847" end2="849" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="844" end1="844" start2="850" end2="921" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="855" end1="856" start2="932" end2="933" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="859" end1="860" start2="936" end2="937" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="863" end1="864" start2="940" end2="941" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="867" end1="868" start2="944" end2="945" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="871" end1="872" start2="948" end2="949" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="875" end1="876" start2="952" end2="953" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="882" end1="883" start2="959" end2="960" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="886" end1="887" start2="963" end2="964" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="890" end1="891" start2="967" end2="968" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="894" end1="895" start2="971" end2="972" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="898" end1="899" start2="975" end2="976" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="902" end1="903" start2="979" end2="980" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+        <range start1="986" end1="988" start2="1063" end2="1065" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="993" end1="995" start2="1070" end2="1072" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="1002" end1="1004" start2="1079" end2="1081" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="1022" end1="1029" start2="1099" end2="1106" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="1064" end1="1071" start2="1141" end2="1148" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp">
+      <ranges>
+        <range start1="21" end1="35" start2="21" end2="35" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="38" end1="39" start2="38" end2="39" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="51" end1="63" start2="51" end2="63" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="66" end1="67" start2="66" end2="67" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="79" end1="85" start2="79" end2="85" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="87" end1="88" start2="87" end2="88" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="101" end1="129" start2="101" end2="129" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="132" end1="133" start2="132" end2="133" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="146" end1="173" start2="146" end2="173" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="176" end1="177" start2="176" end2="177" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="190" end1="216" start2="190" end2="216" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="219" end1="220" start2="219" end2="220" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="233" end1="248" start2="233" end2="248" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="251" end1="252" start2="251" end2="252" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="265" end1="280" start2="265" end2="280" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="283" end1="284" start2="283" end2="284" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="297" end1="311" start2="297" end2="311" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="314" end1="315" start2="314" end2="315" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="328" end1="337" start2="328" end2="337" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="340" end1="341" start2="340" end2="341" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="354" end1="359" start2="354" end2="359" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="362" end1="363" start2="362" end2="363" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="376" end1="380" start2="376" end2="380" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="383" end1="384" start2="383" end2="384" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="430" end1="431" start2="430" end2="431" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="447" end1="448" start2="447" end2="448" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="450" end1="451" start2="450" end2="451" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="482" end1="483" start2="482" end2="483" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="485" end1="486" start2="485" end2="486" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="488" end1="489" start2="488" end2="489" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="521" end1="522" start2="521" end2="522" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="525" end1="526" start2="525" end2="526" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="554" end1="555" start2="554" end2="555" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="579" end1="580" start2="579" end2="580" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="582" end1="583" start2="582" end2="583" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="607" end1="608" start2="607" end2="608" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="610" end1="611" start2="610" end2="611" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="637" end1="638" start2="637" end2="638" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="663" end1="664" start2="663" end2="664" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="666" end1="667" start2="666" end2="667" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="692" end1="693" start2="692" end2="693" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="695" end1="696" start2="695" end2="696" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="703" end1="703" start2="703" end2="707" changelist="c7b732a3-91b0-4ce3-a457-3ec48e051414" />
+        <range start1="758" end1="758" start2="762" end2="799" changelist="cec19834-fb85-4940-9319-83fed6098c57" />
+      </ranges>
+    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -73,7 +204,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "create-pieces",
+    "git-widget-placeholder": "640048b6",
     "last_opened_file_path": "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -85,8 +216,20 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Google Test.PiecesTest.BlackCastlingNotWorkingCheck">
+  <component name="RunManager" selected="Google Test.All in Pieces_Tests.cpp">
+    <configuration name="All in Pieces_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp)" TEST_MODE="PATTERN">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Component_Tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PiecesTest.BishopMarkFields" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BishopMarkFields" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -110,24 +253,7 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PiecesTest.WhiteCastlingNotWorking" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="WhiteCastlingNotWorking" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.WhiteCastlingNotWorkingCheck" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="WhiteCastlingNotWorkingCheck" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ChessAI_Project" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="ChessAI_Project" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="ChessAI_Project">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -165,19 +291,19 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
+      <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
+      <item itemvalue="Google Test.PiecesTest.BishopMarkFields" />
       <item itemvalue="Google Test.PiecesTest.BlackCastling" />
       <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
       <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorkingCheck" />
-      <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorking" />
-      <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorkingCheck" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
+        <item itemvalue="Google Test.PiecesTest.BishopMarkFields" />
         <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorkingCheck" />
         <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
         <item itemvalue="Google Test.PiecesTest.BlackCastling" />
-        <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorkingCheck" />
-        <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorking" />
       </list>
     </recent_temporary>
   </component>
@@ -256,9 +382,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/components/pieces/king.cpp</url>
-          <line>8</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp</url>
+          <line>777</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

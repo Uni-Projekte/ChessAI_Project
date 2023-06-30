@@ -27,6 +27,8 @@ Board::Board()
     this->white = StartBoardWhite;
     this->attackedFromWhite = 0;
     this->attackedFromBlack = 0;
+    this->pinnedWhitePieces = 0;
+    this->pinnedBlackPieces = 0;
     this->bishops = StartBoardBishops;
     this->queens = StartBoardQueens;
     this->rooks = StartBoardRooks;
@@ -45,6 +47,8 @@ Board::Board(Board *board)
     this->white = board->white;
     this->attackedFromWhite = board->attackedFromWhite;
     this->attackedFromBlack = board->attackedFromBlack;
+    this->pinnedWhitePieces = board->pinnedWhitePieces;
+    this->pinnedBlackPieces = board->pinnedBlackPieces;
     this->bishops = board->bishops;
     this->queens = board->queens;
     this->rooks = board->rooks;
@@ -367,20 +371,20 @@ void Board::fromFEN(string fen)
         {
             switch (c)
             {
-            case 'K':
-                this->move_rights |= 0b10000000;
-                break;
-            case 'Q':
-                this->move_rights |= 0b01000000;
-                break;
-            case 'k':
-                this->move_rights |= 0b00100000;
-                break;
-            case 'q':
-                this->move_rights |= 0b00010000;
-                break;
-            default:
-                throw std::invalid_argument("Invalid FEN string. Invalid castling rights.");
+                case 'K':
+                    this->move_rights |= 0b10000000;
+                    break;
+                case 'Q':
+                    this->move_rights |= 0b01000000;
+                    break;
+                case 'k':
+                    this->move_rights |= 0b00100000;
+                    break;
+                case 'q':
+                    this->move_rights |= 0b00010000;
+                    break;
+                default:
+                    throw std::invalid_argument("Invalid FEN string. Invalid castling rights.");
             }
         }
     }
@@ -653,20 +657,20 @@ uint64_t *Board::getPiece(char piece)
     piece = tolower(piece);
     switch (piece)
     {
-    case 'p':
-        return &this->pawns;
-    case 'q':
-        return &this->queens;
-    case 'k':
-        return &this->kings;
-    case 'b':
-        return &this->bishops;
-    case 'n':
-        return &this->knights;
-    case 'r':
-        return &this->rooks;
-    default:
-        return NULL;
+        case 'p':
+            return &this->pawns;
+        case 'q':
+            return &this->queens;
+        case 'k':
+            return &this->kings;
+        case 'b':
+            return &this->bishops;
+        case 'n':
+            return &this->knights;
+        case 'r':
+            return &this->rooks;
+        default:
+            return NULL;
     }
 }
 
@@ -841,6 +845,79 @@ void Board::DoMove(MOVE move)
 
     // en_passant
     this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
+
+    this->MarkFields();
+}
+
+void Board::MarkFields(){
+    if(this->move_rights&1){
+        this->pinnedWhitePieces = 0;
+        this->attackedFromBlack = 0;
+    }
+    else{
+        this->pinnedBlackPieces = 0;
+        this->attackedFromWhite = 0;
+    }
+    for (uint8_t x = 0; x < 8; x = x + 1)
+    {
+        for (uint8_t y = 0; y < 8; y = y + 1)
+        {
+            if (this->move_rights & 1)
+            {
+                if (this->bishops & this->black & SingleBitBoard(x, y))
+                {
+                    bishop::markFields(this->attackedFromBlack, this->pinnedWhitePieces, this->kings & this->white, this->white | this->black, this->black, x, y);
+                }
+                if (this->kings & this->black & SingleBitBoard(x, y))
+                {
+                    king::markFields(this->attackedFromBlack, x, y);
+                }
+                if (this->knights & this->black & SingleBitBoard(x, y))
+                {
+                    knight::markFields(this->attackedFromBlack, x, y);
+                }
+                if (this->pawns & this->black & SingleBitBoard(x, y))
+                {
+                    pawn::markFields(this->attackedFromBlack, x, y, true);
+                }
+                if (this->rooks & this->black & SingleBitBoard(x, y))
+                {
+                    rook::markFields(this->attackedFromBlack, this->pinnedWhitePieces, this->kings & this->white, this->white | this->black, this->black, x, y);
+                }
+                if (this->queens & this->black & SingleBitBoard(x, y))
+                {
+                    queen::markFields(this->attackedFromBlack, this->pinnedWhitePieces, this->kings & this->white, this->white | this->black, this->black, x, y);
+                }
+            }
+            else
+            {
+                if (this->bishops & this->white & SingleBitBoard(x, y))
+                {
+                    bishop::markFields(this->attackedFromWhite, this->pinnedBlackPieces, this->kings & this->black, this->white | this->black, this->white, x, y);
+                }
+                if (this->kings & this->white & SingleBitBoard(x, y))
+                {
+                    king::markFields(this->attackedFromBlack, x, y);
+                }
+                if (this->knights & this->white & SingleBitBoard(x, y))
+                {
+                    knight::markFields(this->attackedFromBlack, x, y);
+                }
+                if (this->pawns & this->white & SingleBitBoard(x, y))
+                {
+                    pawn::markFields(this->attackedFromBlack, x, y, 0);
+                }
+                if (this->rooks & this->white & SingleBitBoard(x, y))
+                {
+                    rook::markFields(this->attackedFromWhite, this->pinnedBlackPieces, this->kings & this->black, this->white | this->black, this->white, x, y);
+                }
+                if (this->queens & this->white & SingleBitBoard(x, y))
+                {
+                    queen::markFields(this->attackedFromWhite, this->pinnedBlackPieces, this->kings & this->black, this->white | this->black, this->white, x, y);
+                }
+            }
+        }
+    }
 }
 
 void Board::GetMoves(MOVE_ARRAY &moves)
@@ -853,54 +930,54 @@ void Board::GetMoves(MOVE_ARRAY &moves)
             {
                 if (this->bishops & this->black & SingleBitBoard(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
+                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y);
                 }
                 if (this->kings & this->black & SingleBitBoard(x, y))
                 {
-                    king::possibleMoves(moves, this->move_rights, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    king::possibleMoves(moves, this->move_rights, this->attackedFromWhite, this->black | this->white, this->black, x, y);
                 }
                 if (this->knights & this->black & SingleBitBoard(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y);
+                    knight::possibleMoves(moves, this->black | this->white, this->black, x, y);
                 }
                 if (this->pawns & this->black & SingleBitBoard(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
                 }
                 if (this->rooks & this->black & SingleBitBoard(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
+                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y);
                 }
                 if (this->queens & this->black & SingleBitBoard(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
+                    queen::possibleMoves(moves, this->black | this->white, this->black, x, y);
                 }
             }
             else
             {
                 if (this->bishops & this->white & SingleBitBoard(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
+                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y);
                 }
                 if (this->kings & this->white & SingleBitBoard(x, y))
                 {
-                    king::possibleMoves(moves, this->move_rights, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    king::possibleMoves(moves, this->move_rights, this->attackedFromBlack, this->black | this->white, this->white, x, y);
                 }
                 if (this->knights & this->white & SingleBitBoard(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    knight::possibleMoves(moves, this->black | this->white, this->white, x, y);
                 }
                 if (this->pawns & this->white & SingleBitBoard(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
                 }
                 if (this->rooks & this->white & SingleBitBoard(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
+                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y);
                 }
                 if (this->queens & this->white & SingleBitBoard(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
+                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y);
                 }
             }
         }
@@ -984,15 +1061,15 @@ int Board::BoardRanking(PLAYER player)
 MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
 {
     int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
-                        std::chrono::system_clock::now().time_since_epoch())
-                        .count();
+            std::chrono::system_clock::now().time_since_epoch())
+            .count();
 
     unsigned int searchDepth = 1;
     MOVE result;
 
     int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
-                      std::chrono::system_clock::now().time_since_epoch())
-                      .count();
+            std::chrono::system_clock::now().time_since_epoch())
+            .count();
 
     while (true)
     {
@@ -1000,8 +1077,8 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
         this->AlphaBetaMax(searchDepth, moves, countStates,INT_MIN, INT_MAX, &result, player);
         searchDepth = searchDepth + 1;
         end = std::chrono::duration_cast<std::chrono::milliseconds>(
-                          std::chrono::system_clock::now().time_since_epoch())
-                          .count();
+                std::chrono::system_clock::now().time_since_epoch())
+                .count();
 
         // PrintMove(result);
         // std::cout << searchDepth-1 << std::endl;
@@ -1020,13 +1097,13 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
 }
 
 int Board::AlphaBetaMax(
-    int searchDepth,
-    MOVE_ARRAY moves,
-    int &states,
-    int alpha,
-    int beta,
-    MOVE *result,
-    PLAYER player)
+        int searchDepth,
+        MOVE_ARRAY moves,
+        int &states,
+        int alpha,
+        int beta,
+        MOVE *result,
+        PLAYER player)
 {
 
     states += 1;
@@ -1062,13 +1139,13 @@ int Board::AlphaBetaMax(
 }
 
 int Board::AlphaBetaMin(
-    int searchDepth,
-    MOVE_ARRAY moves,
-    int &states,
-    int alpha,
-    int beta,
-    MOVE *result,
-    PLAYER player)
+        int searchDepth,
+        MOVE_ARRAY moves,
+        int &states,
+        int alpha,
+        int beta,
+        MOVE *result,
+        PLAYER player)
 {
     states +=1;
     if (searchDepth <= 0)
