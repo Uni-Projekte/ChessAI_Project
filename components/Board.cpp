@@ -1239,13 +1239,13 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
 }
 
 int Board::AlphaBetaMax(
-    int searchDepth,
-    MOVE_ARRAY moves,
-    int &states,
-    int alpha,
-    int beta,
-    MOVE *result,
-    PLAYER player)
+        int searchDepth,
+        MOVE_ARRAY moves,
+        int &states,
+        int alpha,
+        int beta,
+        MOVE *result,
+        PLAYER player)
 {
     states += 1;
     if (searchDepth <= 0)
@@ -1255,22 +1255,26 @@ int Board::AlphaBetaMax(
 
     uint64_t zobristKey = 0;
 
-    if(this->transpositionTable && this->keyGenerator){
-        zobristKey = keyGenerator->CalculateZobristKey(this->black,this->white,this->kings,this->queens,this->bishops,
-                                                       this->knights,this->rooks,this->pawns);
+    if (this->transpositionTable && this->keyGenerator)
+    {
+        zobristKey = keyGenerator->CalculateZobristKey(this->black, this->white, this->kings, this->queens,
+                                                       this->bishops, this->knights, this->rooks, this->pawns);
 
-        // Check if the current position is already evaluated in the transposition table
         auto entryIt = transpositionTable->find(zobristKey);
 
-        if (entryIt != transpositionTable->end() && entryIt->second.depth >= searchDepth) {
-            TranspositionEntry& entry = entryIt->second;
-            if (entry.score > alpha) {
+        if (entryIt != transpositionTable->end() && entryIt->second.depth >= searchDepth)
+        {
+            TranspositionEntry &entry = entryIt->second;
+            if (entry.score > alpha)
+            {
                 alpha = entry.score;
-                if (result != NULL) {
+                if (result != nullptr)
+                {
                     *result = entry.bestMove;
                 }
             }
-            if (entry.score >= beta) {
+            if (entry.score >= beta)
+            {
                 return entry.score;
             }
         }
@@ -1278,20 +1282,25 @@ int Board::AlphaBetaMax(
 
     int best = INT_MIN;
 
+    MOVE defaultMove;  // Default value for result if it's nullptr
+    MOVE &currentMove = (result != nullptr) ? *result : defaultMove;
+
     for (int i = 1; i < moves[0]; i++)
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves);             // get all moves possible
-        int val = copyBoard.AlphaBetaMin(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
-        if (val > best && result != NULL)
+        copyBoard.GetMoves(nextMoves); // get all moves possible
+        int val = copyBoard.AlphaBetaMin(searchDepth - 1, nextMoves, states, alpha, beta, &currentMove, player);
+        if (val > best)
         {
-            *result = moves[i];
-            //std::cout << i << std::endl;
+            best = val;
+            if (result != nullptr)
+            {
+                *result = currentMove;
+            }
         }
-        best = max(best, val);
-        alpha = max(alpha, best);
+        alpha = std::max(alpha, best);
 
         if (beta <= alpha)
         {
@@ -1299,11 +1308,15 @@ int Board::AlphaBetaMax(
         }
     }
 
-    if(this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000) {
+    if (this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000)
+    {
         TranspositionEntry entry;
         entry.depth = searchDepth;
         entry.score = best;
-        entry.bestMove = *result;
+        if (result != nullptr)
+        {
+            entry.bestMove = *result;
+        }
         transpositionTable->insert(std::make_pair(zobristKey, entry));
     }
 
@@ -1311,15 +1324,15 @@ int Board::AlphaBetaMax(
 }
 
 int Board::AlphaBetaMin(
-    int searchDepth,
-    MOVE_ARRAY moves,
-    int &states,
-    int alpha,
-    int beta,
-    MOVE *result,
-    PLAYER player)
+        int searchDepth,
+        MOVE_ARRAY moves,
+        int &states,
+        int alpha,
+        int beta,
+        MOVE *result,
+        PLAYER player)
 {
-    states +=1;
+    states += 1;
     if (searchDepth <= 0)
     {
         return BoardRanking(player);
@@ -1327,21 +1340,26 @@ int Board::AlphaBetaMin(
 
     uint64_t zobristKey = 0;
 
-    if(this->transpositionTable && this->keyGenerator) {
+    if (this->transpositionTable && this->keyGenerator)
+    {
         // Check if the current position is stored in the transposition table
-        uint64_t zobristKey = this->keyGenerator->CalculateZobristKey(this->black, this->white, this->kings,
-                                                                      this->queens, this->bishops,
-                                                                      this->knights, this->rooks, this->pawns);
+        zobristKey = this->keyGenerator->CalculateZobristKey(this->black, this->white, this->kings,
+                                                             this->queens, this->bishops,
+                                                             this->knights, this->rooks, this->pawns);
         auto entryIt = this->transpositionTable->find(zobristKey);
-        if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth) {
+        if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth)
+        {
             TranspositionEntry &entry = entryIt->second;
-            if (entry.score < beta) {
+            if (entry.score < beta)
+            {
                 beta = entry.score;
-                if (result != NULL) {
+                if (result != nullptr)
+                {
                     *result = entry.bestMove;
                 }
             }
-            if (entry.score <= alpha) {
+            if (entry.score <= alpha)
+            {
                 return entry.score;
             }
         }
@@ -1349,31 +1367,40 @@ int Board::AlphaBetaMin(
 
     int best = INT_MAX;
 
+    MOVE defaultMove;  // Default value for result if it's nullptr
+    MOVE& currentMove = (result != nullptr) ? *result : defaultMove;
+
     for (int i = 1; i < moves[0]; i++)
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves); // allocate memory for next moves<
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
         copyBoard.GetMoves(nextMoves); // get all moves possible
-        int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
-        if (val < best && result != NULL)
+        int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, &currentMove, player);
+        if (val < best)
         {
-            *result = moves[i];
-            //std::cout << i << std::endl;
+            best = val;
+            if (result != nullptr)
+            {
+                *result = currentMove;
+            }
         }
-        best = min(best, val);
-        beta = min(beta, best);
+        beta = std::min(beta, best);
 
         if (beta <= alpha)
         {
             break;
         }
     }
-    if(this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000) {
+    if (this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000)
+    {
         TranspositionEntry entry;
         entry.depth = searchDepth;
         entry.score = best;
-        entry.bestMove = *result;
+        if (result != nullptr)
+        {
+            entry.bestMove = *result;
+        }
         transpositionTable->insert(std::make_pair(zobristKey, entry));
     }
 

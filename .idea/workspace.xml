@@ -29,8 +29,6 @@
     <list default="true" id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,42 +55,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;milestone-3&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "milestone-3",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Google Test.BoardTest.DoMoveBenchmarkMiddleTranspostionTable">
+}]]></component>
+  <component name="RunManager" selected="Google Test.BoardTest.DoMoveBenchmarkEnd">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in Board_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Board_Tests.cpp)" TEST_MODE="PATTERN">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in Pieces_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp)" TEST_MODE="PATTERN">
+    <configuration name="BoardTest.DoMoveBenchmarkEnd" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkEnd" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.DoMoveBenchmarkMiddleTranspostionTable" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkMiddleTranspostionTable" TEST_MODE="SUITE_TEST">
+    <configuration name="BoardTest.DoMoveBenchmarkMiddle" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkMiddle" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.PlayGame" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="PlayGame" TEST_MODE="SUITE_TEST">
+    <configuration name="BoardTest.DoMoveBenchmarkMiddleTranspostionTable" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkMiddleTranspostionTable" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.DoMoveBenchmarkStart" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkStart" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -142,17 +152,19 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
+      <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
+      <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddle" />
+      <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkStart" />
       <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddleTranspostionTable" />
       <item itemvalue="Google Test.All in Board_Tests.cpp" />
-      <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
-      <item itemvalue="Google Test.BoardTest.PlayGame" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
+        <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddle" />
+        <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkStart" />
         <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddleTranspostionTable" />
         <item itemvalue="Google Test.All in Board_Tests.cpp" />
-        <item itemvalue="Google Test.BoardTest.PlayGame" />
-        <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
       </list>
     </recent_temporary>
   </component>
@@ -167,6 +179,7 @@
       <workItem from="1688229175156" duration="2954000" />
       <workItem from="1688233303411" duration="5000" />
       <workItem from="1688233501580" duration="1562000" />
+      <workItem from="1688235827873" duration="5010000" />
     </task>
     <servers />
   </component>
@@ -189,21 +202,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/components_tests/Board_Tests.cpp</url>
-          <line>103</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/components/Board.cpp</url>
-          <line>1374</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
