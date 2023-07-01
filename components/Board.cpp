@@ -27,6 +27,8 @@ Board::Board()
     this->white = StartBoardWhite;
     this->attackedFromWhite = 0;
     this->attackedFromBlack = 0;
+    this->pinnedWhitePieces = 0;
+    this->pinnedBlackPieces = 0;
     this->bishops = StartBoardBishops;
     this->queens = StartBoardQueens;
     this->rooks = StartBoardRooks;
@@ -45,6 +47,8 @@ Board::Board(Board *board)
     this->white = board->white;
     this->attackedFromWhite = board->attackedFromWhite;
     this->attackedFromBlack = board->attackedFromBlack;
+    this->pinnedWhitePieces = board->pinnedWhitePieces;
+    this->pinnedBlackPieces = board->pinnedBlackPieces;
     this->bishops = board->bishops;
     this->queens = board->queens;
     this->rooks = board->rooks;
@@ -63,6 +67,8 @@ Board::Board(std::string fen)
     this->white = 0;
     this->attackedFromWhite = 0;
     this->attackedFromBlack = 0;
+    this->pinnedWhitePieces = 0;
+    this->pinnedBlackPieces = 0;
     this->pawns = 0;
     this->kings = 0;
     this->queens = 0;
@@ -723,6 +729,7 @@ uint8_t Board::GetPosition(string position) const
 
 void Board::DoMove(MOVE move)
 {
+
     const BOARD from = GetSingleBitBoardFrom(move);
     const BOARD to = GetSingleBitBoardTo(move);
     const bool capture = GetCapture(move);
@@ -841,10 +848,19 @@ void Board::DoMove(MOVE move)
 
     // en_passant
     this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
+
+    MarkFields();
 }
 
-void Board::GetMoves(MOVE_ARRAY &moves)
-{
+void Board::MarkFields(){
+    if(this->move_rights&1){
+        this->pinnedWhitePieces = 0;
+        this->attackedFromBlack = 0;
+    }
+    else{
+        this->pinnedBlackPieces = 0;
+        this->attackedFromWhite = 0;
+    }
     for (uint8_t x = 0; x < 8; x = x + 1)
     {
         for (uint8_t y = 0; y < 8; y = y + 1)
@@ -853,54 +869,134 @@ void Board::GetMoves(MOVE_ARRAY &moves)
             {
                 if (this->bishops & this->black & SingleBitBoard(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
+                    bishop::markFields(this->attackedFromBlack, this->pinnedWhitePieces, this->kings & this->white, this->white | this->black, this->black, x, y);
                 }
                 if (this->kings & this->black & SingleBitBoard(x, y))
                 {
-                    king::possibleMoves(moves, this->move_rights, this->attackedFromBlack, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    king::markFields(this->attackedFromBlack, x, y);
                 }
                 if (this->knights & this->black & SingleBitBoard(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y);
+                    knight::markFields(this->attackedFromBlack, x, y);
                 }
                 if (this->pawns & this->black & SingleBitBoard(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromBlack, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::markFields(this->attackedFromBlack, x, y, true);
                 }
                 if (this->rooks & this->black & SingleBitBoard(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
+                    rook::markFields(this->attackedFromBlack, this->pinnedWhitePieces, this->kings & this->white, this->white | this->black, this->black, x, y);
                 }
                 if (this->queens & this->black & SingleBitBoard(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromBlack, this->kings & this->white, this->black | this->white, this->black, x, y);
+                    queen::markFields(this->attackedFromBlack, this->pinnedWhitePieces, this->kings & this->white, this->white | this->black, this->black, x, y);
                 }
             }
             else
             {
                 if (this->bishops & this->white & SingleBitBoard(x, y))
                 {
-                    bishop::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
+                    bishop::markFields(this->attackedFromWhite, this->pinnedBlackPieces, this->kings & this->black, this->white | this->black, this->white, x, y);
                 }
                 if (this->kings & this->white & SingleBitBoard(x, y))
                 {
-                    king::possibleMoves(moves, this->move_rights, this->attackedFromWhite, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    king::markFields(this->attackedFromBlack, x, y);
                 }
                 if (this->knights & this->white & SingleBitBoard(x, y))
                 {
-                    knight::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y);
+                    knight::markFields(this->attackedFromBlack, x, y);
                 }
                 if (this->pawns & this->white & SingleBitBoard(x, y))
                 {
-                    pawn::possibleMoves(moves, this->attackedFromWhite, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                    pawn::markFields(this->attackedFromBlack, x, y, 0);
                 }
                 if (this->rooks & this->white & SingleBitBoard(x, y))
                 {
-                    rook::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
+                    rook::markFields(this->attackedFromWhite, this->pinnedBlackPieces, this->kings & this->black, this->white | this->black, this->white, x, y);
                 }
                 if (this->queens & this->white & SingleBitBoard(x, y))
                 {
-                    queen::possibleMoves(moves, this->attackedFromWhite, this->kings & this->black, this->black | this->white, this->white, x, y);
+                    queen::markFields(this->attackedFromWhite, this->pinnedBlackPieces, this->kings & this->black, this->white | this->black, this->white, x, y);
+                }
+            }
+        }
+    }
+}
+
+void Board::GetMoves(MOVE_ARRAY &moves)
+{
+    uint8_t whiteKingPostition = SingleBitboardToPosition(this->kings & this->white);
+    uint8_t blackKingPostition = SingleBitboardToPosition(this->kings & this->black);
+
+    uint8_t whiteKingX = whiteKingPostition >> 3;
+    uint8_t whiteKingY = whiteKingPostition & 0b111;
+
+    uint8_t blackKingX = blackKingPostition >> 3;
+    uint8_t blackKingY = blackKingPostition & 0b111;
+
+
+    for (uint8_t x = 0; x < 8; x = x + 1)
+    {
+        for (uint8_t y = 0; y < 8; y = y + 1)
+        {
+            uint8_t direction = 0;
+            uint64_t currentField = SingleBitBoard(x, y);
+            if (this->move_rights & 1)
+            {
+                if(currentField & this->pinnedBlackPieces) direction = GetDirection(blackKingX, blackKingY, x, y);
+                uint64_t isBlack = this->black & currentField;
+                if (this->bishops & isBlack)
+                {
+                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->kings & isBlack)
+                {
+                    king::possibleMoves(moves, this->move_rights, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                }
+                if (this->knights & isBlack)
+                {
+                    knight::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->pawns & isBlack)
+                {
+                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                }
+                if (this->rooks & isBlack)
+                {
+                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                }
+                if (this->queens & isBlack)
+                {
+                    queen::possibleMoves(moves,  this->black | this->white, this->black, x, y);
+                }
+            }
+            else
+            {
+                uint64_t isWhite = this->white & SingleBitBoard(x, y);
+                if(currentField & this->pinnedWhitePieces) direction = GetDirection(whiteKingX, whiteKingY, x, y);
+                if (this->bishops & isWhite)
+                {
+                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->kings & isWhite)
+                {
+                    king::possibleMoves(moves, this->move_rights, this->attackedFromBlack, this->black | this->white, this->white, x, y);
+                }
+                if (this->knights & isWhite)
+                {
+                    knight::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->pawns & isWhite)
+                {
+                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                }
+                if (this->rooks & isWhite)
+                {
+                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                }
+                if (this->queens & isWhite)
+                {
+                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y);
                 }
             }
         }
@@ -960,7 +1056,7 @@ MOVE Board::GetMoveMinMax()
 
 
 
-int Board::BoardRanking(PLAYER player)
+int Board::MaterialWorth()
 {
     int ranking = 0;
 
@@ -970,7 +1066,6 @@ int Board::BoardRanking(PLAYER player)
     ranking = ranking + 300 * popcount(this->GetWhiteBishops());
     ranking = ranking + 300 * popcount(this->GetWhiteKnights());
     ranking = ranking + 100 * popcount(this->GetWhitePawns());
-
     ranking = ranking - 10000 * popcount(this->GetBlackKing());
     ranking = ranking - 900 * popcount(this->GetBlackQueen());
     ranking = ranking - 500 * popcount(this->GetBlackRooks());
@@ -979,6 +1074,82 @@ int Board::BoardRanking(PLAYER player)
     ranking = ranking - 100 * popcount(this->GetBlackPawns());
 
     return ranking;
+}
+
+int Board::AttackedFields()
+{
+    int ranking = 0;
+
+    ranking = ranking + 10000 * popcount(this->attackedFromWhite & this->GetBlackKing());
+    ranking = ranking + 900 * popcount(this->attackedFromWhite & this->GetBlackQueen());
+    ranking = ranking + 500 * popcount(this->attackedFromWhite & this->GetBlackRooks());
+    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetBlackBishops());
+    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetBlackKnights());
+    ranking = ranking + 100 * popcount(this->attackedFromWhite & this->GetBlackPawns());
+
+    ranking = ranking - 10000 * popcount(this->attackedFromBlack & this->GetWhiteKing());
+    ranking = ranking - 900 * popcount(this->attackedFromBlack & this->GetWhiteQueen());
+    ranking = ranking - 500 * popcount(this->attackedFromBlack & this->GetWhiteRooks());
+    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetWhiteBishops());
+    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetWhiteKnights());
+    ranking = ranking - 100 * popcount(this->attackedFromBlack & this->GetWhitePawns());
+
+    return ranking;
+}
+
+int Board::PawnFileCounts()
+{
+    int ranking = 0;
+
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnA) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnB) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnC) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnD) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnE) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnF) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnG) - 1);
+    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnH) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnA) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnB) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnC) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnD) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnE) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnF) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnG) - 1);
+    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnH) - 1);
+
+    return ranking;
+}
+
+int Board::Defence()
+{
+    int ranking = 0;
+
+    ranking = ranking + 10000 * popcount(this->attackedFromWhite & this->GetWhiteKing());
+    ranking = ranking + 900 * popcount(this->attackedFromWhite & this->GetWhiteQueen());
+    ranking = ranking + 500 * popcount(this->attackedFromWhite & this->GetWhiteRooks());
+    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetWhiteBishops());
+    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetWhiteKnights());
+    ranking = ranking + 100 * popcount(this->attackedFromWhite & this->GetWhitePawns());
+
+    ranking = ranking - 10000 * popcount(this->attackedFromBlack & this->GetBlackKing());
+    ranking = ranking - 900 * popcount(this->attackedFromBlack & this->GetBlackQueen());
+    ranking = ranking - 500 * popcount(this->attackedFromBlack & this->GetBlackRooks());
+    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetBlackBishops());
+    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetBlackKnights());
+    ranking = ranking - 100 * popcount(this->attackedFromBlack & this->GetBlackPawns());
+
+    return ranking;
+}
+
+int Board::BoardRanking(PLAYER player)
+{
+    int materialWorth = this->MaterialWorth();
+    int attackedFields = this->AttackedFields();
+    int pawnFileCounts = this->PawnFileCounts();
+    int defence = this->Defence();
+    float materialWorthWeight = 0.5;
+    return (int) (materialWorth * 0.45 + attackedFields * 0.30 + pawnFileCounts * 0.1 + defence * 0.15);
 }
 
 MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
@@ -1003,11 +1174,11 @@ MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
                           std::chrono::system_clock::now().time_since_epoch())
                           .count();
 
-        // PrintMove(result);
-        // std::cout << searchDepth-1 << std::endl;
-        // std::cout << end - start << std::endl;
-        // std::cout << maxTime << std::endl;
-        // std::cout << "States: "<<countStates<< std::endl;
+        PrintMove(result);
+        std::cout << searchDepth-1 << std::endl;
+        std::cout << end - start << std::endl;
+        std::cout << maxTime << std::endl;
+        std::cout << "States: "<<countStates<< std::endl;
         if (end - start > maxTime)
         {
             break;
@@ -1028,13 +1199,34 @@ int Board::AlphaBetaMax(
     MOVE *result,
     PLAYER player)
 {
-
     states += 1;
     if (searchDepth <= 0)
     {
         return BoardRanking(player);
     }
 
+    uint64_t zobristKey = 0;
+
+    if(this->transpositionTable && this->keyGenerator){
+        zobristKey = keyGenerator->CalculateZobristKey(this->black,this->white,this->kings,this->queens,this->bishops,
+                                                       this->knights,this->rooks,this->pawns);
+
+        // Check if the current position is already evaluated in the transposition table
+        auto entryIt = transpositionTable->find(zobristKey);
+
+        if (entryIt != transpositionTable->end() && entryIt->second.depth >= searchDepth) {
+            TranspositionEntry& entry = entryIt->second;
+            if (entry.score > alpha) {
+                alpha = entry.score;
+                if (result != NULL) {
+                    *result = entry.bestMove;
+                }
+            }
+            if (entry.score >= beta) {
+                return entry.score;
+            }
+        }
+    }
 
     int best = INT_MIN;
 
@@ -1058,6 +1250,15 @@ int Board::AlphaBetaMax(
             break;
         }
     }
+
+    if(this->transpositionTable && this->keyGenerator) {
+        TranspositionEntry entry;
+        entry.depth = searchDepth;
+        entry.score = best;
+        entry.bestMove = *result;
+        transpositionTable->insert(std::make_pair(zobristKey, entry));
+    }
+
     return best;
 }
 
@@ -1076,6 +1277,27 @@ int Board::AlphaBetaMin(
         return BoardRanking(player);
     }
 
+    uint64_t zobristKey = 0;
+
+    if(this->transpositionTable && this->keyGenerator) {
+        // Check if the current position is stored in the transposition table
+        uint64_t zobristKey = this->keyGenerator->CalculateZobristKey(this->black, this->white, this->kings,
+                                                                      this->queens, this->bishops,
+                                                                      this->knights, this->rooks, this->pawns);
+        auto entryIt = this->transpositionTable->find(zobristKey);
+        if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth) {
+            TranspositionEntry &entry = entryIt->second;
+            if (entry.score < beta) {
+                beta = entry.score;
+                if (result != NULL) {
+                    *result = entry.bestMove;
+                }
+            }
+            if (entry.score <= alpha) {
+                return entry.score;
+            }
+        }
+    }
 
     int best = INT_MAX;
 
@@ -1099,6 +1321,14 @@ int Board::AlphaBetaMin(
             break;
         }
     }
+    if(this->transpositionTable && this->keyGenerator) {
+        TranspositionEntry entry;
+        entry.depth = searchDepth;
+        entry.score = best;
+        entry.bestMove = *result;
+        transpositionTable->insert(std::make_pair(zobristKey, entry));
+    }
+
     return best;
 }
 
@@ -1125,11 +1355,11 @@ MOVE Board::MiniMaxIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
 
-        // PrintMove(result);
-        // std::cout << searchDepth-1 << std::endl;
-        // std::cout << end - start << std::endl;
-        // std::cout << maxTime << std::endl;
-        // std::cout << "States: "<<countStates<< std::endl;
+        PrintMove(result);
+        std::cout << searchDepth-1 << std::endl;
+        std::cout << end - start << std::endl;
+        std::cout << maxTime << std::endl;
+        std::cout << "States: "<<countStates<< std::endl;
 
         if (end - start > maxTime)
         {

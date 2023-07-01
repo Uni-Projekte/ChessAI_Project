@@ -8,8 +8,9 @@ class pawn
 {
 public:
 
-    static void possibleMoves(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante);
+    static void possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, bool color, uint8_t en_passante);
 
+    static void markFields(BOARD &attackedFieldsOwn, uint8_t x, uint8_t y, bool color);
 };
 
 #endif //CHESSAI_PROJECT_PAWN_H

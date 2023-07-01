@@ -24,6 +24,6 @@ set(ChessAI_Project_Src
     pieces/queen.cpp
     pieces/queen.h
     pieces/rook.cpp
-    pieces/rook.h)
+    pieces/rook.h ZobristKeyGenerator.cpp ZobristKeyGenerator.h)
 
 add_library(components ${ChessAI_Project_Src} )

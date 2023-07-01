@@ -29,7 +29,22 @@
     <list default="true" id="c7b732a3-91b0-4ce3-a457-3ec48e051414" name="Changes" comment="changed a comment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/bishop.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/bishop.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/bishop.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/bishop.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/king.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/king.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/king.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/king.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/knight.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/knight.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/knight.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/knight.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/pawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/pawn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/queen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/queen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/queen.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/queen.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/pieces/rook.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
     </list>
     <list id="f4eb0402-153a-4b11-8d89-172698176ae1" name="Changes by TaschTasch" comment="" />
@@ -73,7 +88,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "create-pieces",
+    "git-widget-placeholder": "640048b6",
     "last_opened_file_path": "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -85,49 +100,49 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Google Test.PiecesTest.BlackCastlingNotWorkingCheck">
+  <component name="RunManager" selected="Google Test.All in Board_Tests.cpp">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in Board_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Board_Tests.cpp)" TEST_MODE="PATTERN">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in Pieces_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp)" TEST_MODE="PATTERN">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.DoMoveBenchmarkEnd" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkEnd" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Component_Tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PiecesTest.BlackCastling" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastling" TEST_MODE="SUITE_TEST">
+    <configuration name="PiecesTest.BlackCastlingNotWorking" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastlingNotWorking" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PiecesTest.BlackCastlingNotWorking" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastlingNotWorking" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.BlackCastlingNotWorkingCheck" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastlingNotWorkingCheck" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.WhiteCastlingNotWorking" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="WhiteCastlingNotWorking" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.WhiteCastlingNotWorkingCheck" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="WhiteCastlingNotWorkingCheck" TEST_MODE="SUITE_TEST">
+    <configuration name="PiecesTest.BlackCastlingNotWorkingCheck" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastlingNotWorkingCheck" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="ChessAI_Project" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="ChessAI_Project" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="ChessAI_Project">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -165,19 +180,19 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
-      <item itemvalue="Google Test.PiecesTest.BlackCastling" />
+      <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
+      <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
+      <item itemvalue="Google Test.All in Board_Tests.cpp" />
       <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
       <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorkingCheck" />
-      <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorking" />
-      <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorkingCheck" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.All in Board_Tests.cpp" />
+        <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
+        <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
         <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorkingCheck" />
         <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
-        <item itemvalue="Google Test.PiecesTest.BlackCastling" />
-        <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorkingCheck" />
-        <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorking" />
       </list>
     </recent_temporary>
   </component>
@@ -251,16 +266,5 @@
     <MESSAGE value="changed fromFEN and added toFEN" />
     <MESSAGE value="changed a comment" />
     <option name="LAST_COMMIT_MESSAGE" value="changed a comment" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/components/pieces/king.cpp</url>
-          <line>8</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

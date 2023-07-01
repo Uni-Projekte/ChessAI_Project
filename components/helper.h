@@ -2,284 +2,285 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unordered_set>
 
 #ifndef CONSTANTBITBOARDS
 #define CONSTANTBITBOARDS
 
 const uint64_t StartBoardBlack = std::stoull(
-    "11111111"
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "11111111"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t StartBoardWhite = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "11111111",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "11111111",
+        nullptr, 2);
 
 const uint64_t StartBoardPawns = std::stoull(
-    "00000000"
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t StartBoardRooks = std::stoull(
-    "10000001"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "10000001",
-    nullptr, 2);
+        "10000001"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "10000001",
+        nullptr, 2);
 
 const uint64_t StartBoardKnights = std::stoull(
-    "01000010"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "01000010",
-    nullptr, 2);
+        "01000010"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "01000010",
+        nullptr, 2);
 
 const uint64_t StartBoardBishops = std::stoull(
-    "00100100"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00100100",
-    nullptr, 2);
+        "00100100"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00100100",
+        nullptr, 2);
 
 const uint64_t StartBoardKings = std::stoull(
-    "00001000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00001000",
-    nullptr, 2);
+        "00001000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00001000",
+        nullptr, 2);
 
 const uint64_t StartBoardQueens = std::stoull(
-    "00010000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00010000",
-    nullptr, 2);
+        "00010000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00010000",
+        nullptr, 2);
 
 const uint64_t BoardRow8 = std::stoull(
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow7 = std::stoull(
-    "00000000"
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow6 = std::stoull(
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow5 = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow4 = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow3 = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow2 = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111"
+        "00000000",
+        nullptr, 2);
 
 const uint64_t BoardRow1 = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "00000000"
-    "11111111",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "00000000"
+        "11111111",
+        nullptr, 2);
 
 const uint64_t BoardColumnA = std::stoull(
-    "10000000"
-    "10000000"
-    "10000000"
-    "10000000"
-    "10000000"
-    "10000000"
-    "10000000"
-    "10000000",
-    nullptr, 2);
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000"
+        "10000000",
+        nullptr, 2);
 
 const uint64_t BoardColumnB = std::stoull(
-    "01000000"
-    "01000000"
-    "01000000"
-    "01000000"
-    "01000000"
-    "01000000"
-    "01000000"
-    "01000000",
-    nullptr, 2);
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000"
+        "01000000",
+        nullptr, 2);
 
 const uint64_t BoardColumnC = std::stoull(
-    "00100000"
-    "00100000"
-    "00100000"
-    "00100000"
-    "00100000"
-    "00100000"
-    "00100000"
-    "00100000",
-    nullptr, 2);
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000"
+        "00100000",
+        nullptr, 2);
 
 const uint64_t BoardColumnD = std::stoull(
-    "00010000"
-    "00010000"
-    "00010000"
-    "00010000"
-    "00010000"
-    "00010000"
-    "00010000"
-    "00010000",
-    nullptr, 2);
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000"
+        "00010000",
+        nullptr, 2);
 
 const uint64_t BoardColumnE = std::stoull(
-    "00001000"
-    "00001000"
-    "00001000"
-    "00001000"
-    "00001000"
-    "00001000"
-    "00001000"
-    "00001000",
-    nullptr, 2);
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000"
+        "00001000",
+        nullptr, 2);
 
 const uint64_t BoardColumnF = std::stoull(
-    "00000100"
-    "00000100"
-    "00000100"
-    "00000100"
-    "00000100"
-    "00000100"
-    "00000100"
-    "00000100",
-    nullptr, 2);
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100"
+        "00000100",
+        nullptr, 2);
 
 const uint64_t BoardColumnG = std::stoull(
-    "00000010"
-    "00000010"
-    "00000010"
-    "00000010"
-    "00000010"
-    "00000010"
-    "00000010"
-    "00000010",
-    nullptr, 2);
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010"
+        "00000010",
+        nullptr, 2);
 
 const uint64_t BoardColumnH = std::stoull(
-    "00000001"
-    "00000001"
-    "00000001"
-    "00000001"
-    "00000001"
-    "00000001"
-    "00000001"
-    "00000001",
-    nullptr, 2);
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001"
+        "00000001",
+        nullptr, 2);
 
 const uint64_t KingWinPosition = std::stoull(
-    "00000000"
-    "00000000"
-    "00000000"
-    "00011000"
-    "00011000"
-    "00000000"
-    "00000000"
-    "00000000",
-    nullptr, 2);
+        "00000000"
+        "00000000"
+        "00000000"
+        "00011000"
+        "00011000"
+        "00000000"
+        "00000000"
+        "00000000",
+        nullptr, 2);
 
 uint64_t GetRowFromIndex(int index);
 
@@ -376,112 +377,28 @@ void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD curren
 
 void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
 
 void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
 
-// #define GET_CAPTURE(M) (((M)&CAPTURE) && !((M)&(CAPTURE >> 1)))
-// #define GET_CASTLING(M) (((M)&CASTLING) && !((M)&(CASTLING << 1)))
-// #define GET_UPGRADE_ROOK(M) !(((M) >> 12) & 0b11 )
-// #define GET_UPGRADE_KNIGHT(M) bool(((M)&0b0001000000000000U) & ~(((M)&0010000000000000U) >> 1))
-// #define GET_UPGRADE_BISHOP(M) bool(((M)&0b0010000000000000U) & ~((M)&0b0001000000000000U) << 1)
-// #define GET_UPGRADE_QUEEN(M) !(((M) >> 12) ^ 0b11)
-// #define GET_MOVE_TO_X(M) (7 - ((M)&MOVE_TO_X))
-// #define GET_MOVE_TO_Y(M) (((M)&MOVE_TO_Y) >> 3)
-// #define GET_MOVE_FROM_X(M) (7 - (((M)&MOVE_FROM_X) >> 6))
-// #define GET_MOVE_FROM_Y(M) (((M)&MOVE_FROM_Y) >> 9)
+void showDifference(const std::unordered_set<int>& set1, const std::unordered_set<int>& set2);
 
-// #define GET_SINGLE_BIT_BOARD_TO(M) SINGLE_BIT_BOARD(GET_MOVE_TO_X(M), GET_MOVE_TO_Y(M))
-// #define GET_SINGLE_BIT_BOARD_FROM(M) SINGLE_BIT_BOARD(GET_MOVE_FROM_X(M), GET_MOVE_FROM_Y(M))
-// #define PRINT_MOVE(M) std::cout << "FROM: X:" << GET_MOVE_FROM_X(M) << " Y:" << GET_MOVE_FROM_Y(M) \
-//                                 << " TO: X:" << GET_MOVE_TO_X(M) << " Y:" << GET_MOVE_TO_Y(M)      \
-//                                 << " FLAGS:" << ((M & 0b1111000000000000) >> 12) << std::endl;
+bool TryMarkField(BOARD &attackedFieldsOwn, uint8_t xTo, uint8_t yTo);
+
+uint8_t SingleBitboardToPosition(BOARD board);
+
+uint8_t GetDirection(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
+
+std::string MoveToString(MOVE move);
 
 #define NEW_MOVE_ARRAY(VARNAME) \
     MOVE_ARRAY VARNAME;         \
     VARNAME[0] = 1;
 
-// #define FIELD_INDEX(X, Y) (((Y) << 3) | (7 - (X)))
-
-// #define SINGLE_BIT_BOARD(X, Y) (1ULL << (FIELD_INDEX(X, Y)))
-
-// #define CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     (MOVE)(FLAGS | (FIELD_INDEX(X_FROM, Y_FROM) << 6) | FIELD_INDEX(X_TO, Y_TO))
-
-// #define IF_IN_BOUNDS(X, Y, DO)                      \
-//     if ((X) < 8 && (Y) < 8 && (X) >= 0 && (Y) >= 0) \
-//     {                                               \
-//         DO;                                          \
-//     }
-
-// #define ADD_MOVE_SLIDING_PIECE(MOVES, ATTACKEDFIELDSOWN, ENEMYKING, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO)                   ;                      \
-//     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
-//     MOVES[0] = MOVES[0] + 1;
-
-// #define ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
-//     MOVES[0] = MOVES[0] + 1;
-
-// #define TRY_ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
-
-// #define TRY_ADD_MOVE_NO_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                             \
-//         X_TO, Y_TO,                                                                                                         \
-//         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
-
-// #define TRY_ADD_MOVE_ONLY_CAPTURE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                               \
-//         X_TO, Y_TO,                                                                             \
-//         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
-
-// #define TRY_ADD_MOVE_UPGRADE(MOVES, ATTACKEDFIELDSOWN, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                          \
-//         X_TO, Y_TO,                                                                         \
-//         if (SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR) { \
-//             if (Y_TO % 7 < 2) \
-//         { \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_ROOK); \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_KNIGHT); \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_BISHOP); \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE | UPGRADE_QUEEN); \
-//         } \
-//         else \
-//         { \
-//             ADD_MOVE(MOVES, ATTACKEDFIELDSOWN, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE); \
-//         } })
-
-// // Operations for King
-
-// #define TRY_ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)  \
-//     TRY_ADD_MOVE_NO_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     TRY_ADD_MOVE_ONLY_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY,ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO)
-
-// #define TRY_ADD_MOVE_NO_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                                                                          \
-//         X_TO, Y_TO,                                                                                                                        \
-//         ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO);                                                                                 \
-//         if (~ATTACKEDFIELDSENEMY & SINGLE_BIT_BOARD(X_TO, Y_TO) & ~ALL_PIECES){                                      \
-//             ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, 0)})
-
-// #define TRY_ADD_MOVE_ONLY_CAPTURE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, ALL_PIECES, CURRENT_COLOR, X_FROM, Y_FROM, X_TO, Y_TO) \
-//     IF_IN_BOUNDS(                                                                               \
-//         X_TO, Y_TO,                                                                             \
-//         ATTACKEDFIELDSOWN |= SINGLE_BIT_BOARD(X_TO, Y_TO);\
-//         if (~ATTACKEDFIELDSENEMY & SINGLE_BIT_BOARD(X_TO, Y_TO) & ~CURRENT_COLOR & ALL_PIECES){                        \
-//             ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, CAPTURE)})
-
-// #define ADD_MOVE_KING(MOVES, ATTACKEDFIELDSOWN, ATTACKEDFIELDSENEMY, X_FROM, Y_FROM, X_TO, Y_TO, FLAGS) \
-//     MOVES[MOVES[0]] = (CREATE_MOVE(X_FROM, Y_FROM, X_TO, Y_TO, FLAGS)); \
-//     MOVES[0] = MOVES[0] + 1;
 
 #define H1 (1ULL)
 #define G1 (1ULL << 1)

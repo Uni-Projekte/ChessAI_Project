@@ -5,13 +5,26 @@
 #include "helper.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include "ZobristKeyGenerator.h"
+
+// Define a type for the transposition table entry
+struct TranspositionEntry {
+    int depth;
+    int score;
+    MOVE bestMove;
+};
 
 class Board {
 private:
+    std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable = nullptr;//0. Best Move 1. Alpha 2. Beta
+    ZobristKeyGenerator *keyGenerator = nullptr;
     uint64_t black;  // bitboard representing black pieces
     uint64_t white;  // bitboard representing white pieces
     uint64_t attackedFromWhite; // bitboard representing from White attacked fields
     uint64_t attackedFromBlack; // bitboard representing from Black attacked fields
+    uint64_t pinnedWhitePieces;
+    uint64_t pinnedBlackPieces;
     uint64_t pawns;  // bitboard representing all pawns
     uint64_t kings;  // bitboard representing all kings
     uint64_t queens; // bitboard representing all queens
@@ -130,6 +143,13 @@ public:
     void DoMove(MOVE move);
 
     void GetMoves(MOVE_ARRAY &moves);
+
+    void MarkFields();
+
+    int MaterialWorth();
+    int AttackedFields();
+    int PawnFileCounts();
+    int Defence();
 
     MOVE GetMove();
 

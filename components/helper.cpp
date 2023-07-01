@@ -1,27 +1,29 @@
 #include "helper.h"
+#include <sstream>
+#include <string>
 
 uint64_t GetRowFromIndex(int index)
 {
     switch (index)
     {
-    case 0:
-        return BoardRow1;
-    case 1:
-        return BoardRow2;
-    case 2:
-        return BoardRow3;
-    case 3:
-        return BoardRow4;
-    case 4:
-        return BoardRow5;
-    case 5:
-        return BoardRow6;
-    case 6:
-        return BoardRow7;
-    case 7:
-        return BoardRow8;
-    default:
-        throw std::invalid_argument("index must be 0-7");
+        case 0:
+            return BoardRow1;
+        case 1:
+            return BoardRow2;
+        case 2:
+            return BoardRow3;
+        case 3:
+            return BoardRow4;
+        case 4:
+            return BoardRow5;
+        case 5:
+            return BoardRow6;
+        case 6:
+            return BoardRow7;
+        case 7:
+            return BoardRow8;
+        default:
+            throw std::invalid_argument("index must be 0-7");
     }
 }
 
@@ -29,24 +31,24 @@ uint64_t GetColumnFromIndex(int index)
 {
     switch (index)
     {
-    case 0:
-        return BoardColumnA;
-    case 1:
-        return BoardColumnB;
-    case 2:
-        return BoardColumnC;
-    case 3:
-        return BoardColumnD;
-    case 4:
-        return BoardColumnE;
-    case 5:
-        return BoardColumnF;
-    case 6:
-        return BoardColumnG;
-    case 7:
-        return BoardColumnH;
-    default:
-        throw std::invalid_argument("index must be 0-7");
+        case 0:
+            return BoardColumnA;
+        case 1:
+            return BoardColumnB;
+        case 2:
+            return BoardColumnC;
+        case 3:
+            return BoardColumnD;
+        case 4:
+            return BoardColumnE;
+        case 5:
+            return BoardColumnF;
+        case 6:
+            return BoardColumnG;
+        case 7:
+            return BoardColumnH;
+        default:
+            throw std::invalid_argument("index must be 0-7");
     }
 }
 
@@ -54,24 +56,24 @@ std::string GetColumnLetterFromIndex(int index)
 {
     switch (index)
     {
-    case 0:
-        return "A";
-    case 1:
-        return "B";
-    case 2:
-        return "C";
-    case 3:
-        return "D";
-    case 4:
-        return "E";
-    case 5:
-        return "F";
-    case 6:
-        return "G";
-    case 7:
-        return "H";
-    default:
-        throw std::invalid_argument("index must be 0-7");
+        case 0:
+            return "A";
+        case 1:
+            return "B";
+        case 2:
+            return "C";
+        case 3:
+            return "D";
+        case 4:
+            return "E";
+        case 5:
+            return "F";
+        case 6:
+            return "G";
+        case 7:
+            return "H";
+        default:
+            throw std::invalid_argument("index must be 0-7");
     }
 }
 
@@ -233,6 +235,41 @@ void PrintMove(MOVE move)
               << std::endl;
 }
 
+std::string MoveToString(MOVE move)
+{
+    std::stringstream ss;
+    ss << "FROM X: " << (int)GetFromX(move)
+       << " FROM Y: " << (int)GetFromY(move)
+       << " TO X: " << (int)GetToX(move)
+       << " TO Y: " << (int)GetToY(move)
+       << " CAPTURE: " << GetCapture(move)
+       << " CASTLING: " << GetCastling(move)
+       << " UPGRADE ROOK: " << GetUpgradeRook(move)
+       << " UPGRADE KNIGHT: " << GetUpgradeKnight(move)
+       << " UPGRADE BISHOP: " << GetUpgradeBishop(move)
+       << " UPGRADE QUEEN: " << GetUpgradeQueen(move)
+       << std::endl;
+
+    std::string result = ss.str();
+    return result;
+}
+
+void showDifference(const std::unordered_set<int>& set1, const std::unordered_set<int>& set2) {
+    std::unordered_set<int> difference;
+
+    for (const auto& element : set1) {
+        if (set2.find(element) == set2.end()) {
+            difference.insert(element);
+        }
+    }
+
+    for (const MOVE element : difference) {
+        PrintMove(element);
+    }
+
+    std::cout << std::endl;
+}
+
 inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
 {
     return (flags | ((uint16_t)(FieldIndex(xFrom, yFrom)) << 6) | FieldIndex(xTo, yTo));
@@ -241,13 +278,6 @@ inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, u
 bool InBounds(uint8_t x, uint8_t y)
 {
     return !((x | y) & ~0b111U);
-}
-
-void AddMoveSlidingPiece(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
-{
-    attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
-    moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
-    moves[0] = moves[0] + 1;
 }
 
 void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
@@ -315,20 +345,19 @@ void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD curr
     }
 }
 
-bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
-    if (TryAddMoveNoCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
+    if (TryAddMoveNoCaptureKing(moves, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
     {
         return true;
     }
-    return TryAddMoveOnlyCaptureKing(moves, attackedFieldsOwn, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
+    return TryAddMoveOnlyCaptureKing(moves, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
 }
 
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo))
     {
-        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
         if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~allPieces & ~currentColor)
         {
             AddMoveKing(moves, xFrom, yFrom, xTo, yTo, 0);
@@ -338,11 +367,10 @@ bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD 
     return false;
 }
 
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
 {
     if (InBounds(xTo, yTo))
     {
-        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo, yTo);
         if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~currentColor & allPieces)
         {
             AddMoveKing(moves, xFrom, yFrom, xTo, yTo, CAPTURE);
@@ -356,4 +384,61 @@ void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, u
 {
     moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
     moves[0] = moves[0] + 1;
+}
+
+bool TryMarkField(BOARD &attackedFieldsOwn, uint8_t xTo, uint8_t yTo)
+{
+    if (InBounds(xTo, yTo))
+    {
+        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo,yTo);
+        return true;
+    }
+    return false;
+}
+
+uint8_t SingleBitboardToPosition(BOARD board)
+{
+    uint8_t y = 0;
+    if(board<=(1ULL<<7))y=0;
+    else if(board<=(1ULL<<15))y=1;
+    else if(board<=(1ULL<<23))y=2;
+    else if(board<=(1ULL<<31))y=3;
+    else if(board<=(1ULL<<39))y=4;
+    else if(board<=(1ULL<<47))y=5;
+    else if(board<=(1ULL<<55))y=6;
+    else if(board<=(1ULL<<63))y=7;
+
+    board = board >> (y*8);
+
+    uint8_t x = 0;
+    if(board==1)x=0;
+    else if(board==2)x=1;
+    else if(board==4)x=2;
+    else if(board==8)x=3;
+    else if(board==16)x=4;
+    else if(board==32)x=5;
+    else if(board==64)x=6;
+    else if(board==128)x=7;
+
+    return (x<<3)|y;
+}
+
+uint8_t GetDirection(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
+{
+    if (xFrom == xTo)
+    {
+        return 1;
+    }
+    else if (yFrom == yTo)
+    {
+        return 2;
+    }
+    else if ((xFrom < xTo && yFrom < yTo) || (xFrom > xTo && yFrom > yTo))
+    {
+        return 3;
+    }
+    else
+    {
+        return 4;
+    }
 }
