@@ -2,10 +2,10 @@
 #include "bishop.h"
 #include "rook.h"
 
-void queen::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void queen::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, uint8_t direction)
 {
-    bishop::possibleMoves(moves, allPieces, currentColor, x, y);
-    rook::possibleMoves(moves, allPieces, currentColor, x, y);
+    bishop::possibleMoves(moves, allPieces, currentColor, x, y, direction);
+    rook::possibleMoves(moves, allPieces, currentColor, x, y, direction);
 }
 
 void queen::markFields(BOARD &attackedFieldsOwn, BOARD &pinnedEnemy,BOARD enemyKing, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)

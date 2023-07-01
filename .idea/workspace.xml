@@ -3,9 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader">{
-  &quot;useNewFormat&quot;: true
-}</component>
+  <component name="CMakePresetLoader"><![CDATA[{
+  "useNewFormat": true
+}]]></component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
@@ -26,28 +26,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7b732a3-91b0-4ce3-a457-3ec48e051414" name="Changes" comment="changed a comment">
+    <list default="true" id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/bishop.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/bishop.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/bishop.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/bishop.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/king.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/king.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/king.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/king.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/knight.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/knight.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/knight.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/knight.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/pawn.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/pawn.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/queen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/queen.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/queen.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/queen.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/pieces/rook.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/pieces/rook.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
     </list>
-    <list id="f4eb0402-153a-4b11-8d89-172698176ae1" name="Changes by TaschTasch" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,11 +47,6 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="create-pieces" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -71,32 +55,26 @@
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2023" />
-    <option name="minorVersion" value="1.1" />
+    <option name="minorVersion" value="1.3" />
   </component>
-  <component name="ProjectId" id="2PIXJZHV5GlYlCkBLOKVoQyDbrx" />
+  <component name="ProjectId" id="2RyjMrYOAudINVMu0diQzh6cCGm" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.advertisement.text.has.clang-format": "true",
+    "WebServerToolWindowFactoryState": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "640048b6",
-    "last_opened_file_path": "C:/Users/Mateusz Pawelczyk/Documents/Programmieren/C++ Scripts/ChessAI_Project",
+    "git-widget-placeholder": "milestone-3",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CPPToolchains",
-    "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -112,31 +90,7 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in Pieces_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp)" TEST_MODE="PATTERN">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BoardTest.DoMoveBenchmarkEnd" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkEnd" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Component_Tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.BlackCastlingNotWorking" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastlingNotWorking" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.BlackCastlingNotWorkingCheck" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastlingNotWorkingCheck" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -180,66 +134,24 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
-      <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
-      <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
       <item itemvalue="Google Test.All in Board_Tests.cpp" />
-      <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
-      <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorkingCheck" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Google Test.All in Board_Tests.cpp" />
-        <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
-        <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
-        <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorkingCheck" />
-        <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c7b732a3-91b0-4ce3-a457-3ec48e051414" name="Changes" comment="" />
-      <created>1683145499233</created>
+      <changelist id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="" />
+      <created>1688229171304</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1683145499233</updated>
-      <workItem from="1683145502237" duration="2348000" />
-      <workItem from="1683624014497" duration="135000" />
-      <workItem from="1683624162533" duration="1717000" />
-      <workItem from="1683712142444" duration="15799000" />
-      <workItem from="1683746512141" duration="8205000" />
-      <workItem from="1683783111728" duration="1175000" />
-      <workItem from="1683795699201" duration="3125000" />
-      <workItem from="1683811161244" duration="831000" />
-      <workItem from="1683820579007" duration="15475000" />
-      <workItem from="1683840992096" duration="975000" />
-      <workItem from="1684252215974" duration="1261000" />
-      <workItem from="1684256197154" duration="8804000" />
-      <workItem from="1684330491551" duration="8354000" />
-      <workItem from="1684403650945" duration="9561000" />
-      <workItem from="1684579836097" duration="2000" />
-      <workItem from="1684579879099" duration="254000" />
-      <workItem from="1684580158615" duration="2327000" />
-      <workItem from="1685040449187" duration="5447000" />
-      <workItem from="1685453609147" duration="11818000" />
-      <workItem from="1685555495677" duration="4503000" />
+      <updated>1688229171304</updated>
+      <workItem from="1688229175156" duration="912000" />
     </task>
-    <task id="LOCAL-00001" summary="changed fromFEN and added toFEN">
-      <created>1683718408490</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1683718408490</updated>
-    </task>
-    <task id="LOCAL-00002" summary="changed a comment">
-      <created>1683721582347</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1683721582347</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,21 +162,5 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticFoundErrors value="true" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed fromFEN and added toFEN" />
-    <MESSAGE value="changed a comment" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed a comment" />
   </component>
 </project>

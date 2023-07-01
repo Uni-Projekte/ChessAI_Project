@@ -947,7 +947,7 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 uint64_t isBlack = this->black & currentField;
                 if (this->bishops & isBlack)
                 {
-                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y, direction);
                 }
                 if (this->kings & isBlack)
                 {
@@ -963,20 +963,20 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 }
                 if (this->rooks & isBlack)
                 {
-                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y, direction);
                 }
                 if (this->queens & isBlack)
                 {
-                    queen::possibleMoves(moves,  this->black | this->white, this->black, x, y);
+                    queen::possibleMoves(moves,  this->black | this->white, this->black, x, y, direction);
                 }
             }
             else
             {
-                uint64_t isWhite = this->white & SingleBitBoard(x, y);
+                uint64_t isWhite = this->white & currentField;
                 if(currentField & this->pinnedWhitePieces) direction = GetDirection(whiteKingX, whiteKingY, x, y);
                 if (this->bishops & isWhite)
                 {
-                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y, direction);
                 }
                 if (this->kings & isWhite)
                 {
@@ -992,11 +992,11 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 }
                 if (this->rooks & isWhite)
                 {
-                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y,direction);
                 }
                 if (this->queens & isWhite)
                 {
-                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y, direction);
                 }
             }
         }

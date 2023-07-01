@@ -41,7 +41,7 @@ TEST(PiecesTest, BishopTest1) {
 
 
     NEW_MOVE_ARRAY(moves);
-    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111, 0);
     std::unordered_set<int> movesSet(moves, moves + moves[0]);
     EXPECT_EQ(expectedMovesSet == movesSet, true);
 
@@ -71,7 +71,7 @@ TEST(PiecesTest, BishopTest2) {
 
 
     NEW_MOVE_ARRAY(moves);
-    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111,0);
     std::unordered_set<int> movesSet(moves, moves + moves[0]);
     EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
@@ -93,7 +93,7 @@ TEST(PiecesTest, BishopTest3) {
 
 
     NEW_MOVE_ARRAY(moves);
-    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111);
+    bishop::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("b2") >> 3, board.GetPosition("b2") & 0b111, 0);
     std::unordered_set<int> movesSet(moves, moves + moves[0]);
     EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
@@ -138,7 +138,7 @@ TEST(PiecesTest, QueenTest1) {
 
 
     NEW_MOVE_ARRAY(moves);
-    queen::possibleMoves(moves, board.GetAllPieces(),board.GetWhitePieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    queen::possibleMoves(moves, board.GetAllPieces(),board.GetWhitePieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111,0);
     std::unordered_set<int> movesSet(moves, moves + moves[0]);
     EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
@@ -182,7 +182,7 @@ TEST(PiecesTest, QueenTest2) {
 
 
     NEW_MOVE_ARRAY(moves);
-    queen::possibleMoves(moves, board.GetAllPieces(),board.GetWhitePieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    queen::possibleMoves(moves, board.GetAllPieces(),board.GetWhitePieces(),board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111, 0);
 
     std::unordered_set<int> movesSet(moves + 1, moves + moves[0]);
 
@@ -226,7 +226,7 @@ TEST(PiecesTest, QueenTest3) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    queen::possibleMoves(moves, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111);
+    queen::possibleMoves(moves, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111, 0);
 
     std::unordered_set<int> expectedMovesSet(expectedMoves + 1, expectedMoves + expectedMoves[0]);
     std::unordered_set<int> actualMoves;
@@ -268,7 +268,7 @@ TEST(PiecesTest, RookTest1) {
 
 
     NEW_MOVE_ARRAY(moves);
-    rook::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
+    rook::possibleMoves(moves, board.GetAllPieces(),board.GetBlackPieces(),board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111,0);
     std::unordered_set<int> movesSet(moves, moves + moves[0]);
     EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
@@ -297,7 +297,7 @@ TEST(PiecesTest, RookTest2) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
+    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111, 0);
 
     for (int i = 0; i < moves[0]; ++i)
     {
@@ -328,7 +328,7 @@ TEST(PiecesTest, RookTest3) {
     };
 
     NEW_MOVE_ARRAY(moves);
-    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111);
+    rook::possibleMoves(moves, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111, 0);
 
     for (int i = 0; i < moves[0]; ++i)
     {

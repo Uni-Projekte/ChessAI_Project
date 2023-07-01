@@ -1,61 +1,67 @@
 #include "rook.h"
 
-void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, uint8_t direction)
 {
-    // east
-    uint8_t newX = x+1;
-    while (newX < 8 && !(currentColor & SingleBitBoard(newX, y)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(newX, y))
+    uint8_t newX;
+    uint8_t newY;
+    if(direction == 0 || direction==1){
+        // east
+        uint8_t newX = x+1;
+        while (newX < 8 && !(currentColor & SingleBitBoard(newX, y)))
         {
-            AddMove(moves, x, y, newX, y, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, newX, y, 0);
+            if (allPieces & ~currentColor & SingleBitBoard(newX, y))
+            {
+                AddMove(moves, x, y, newX, y, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, newX, y, 0);
+            }
+            newX++;
         }
-        newX++;
+
+        //west
+        newX = x-1;
+        while (newX < 255 && !(currentColor & SingleBitBoard(newX, y)))
+        {
+            if (allPieces & ~currentColor & SingleBitBoard(newX, y))
+            {
+                AddMove(moves, x, y, newX, y, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, newX, y, 0);
+            }
+            newX--;
+        }
     }
 
-    //west
-    newX = x-1;
-    while (newX < 255 && !(currentColor & SingleBitBoard(newX, y)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(newX, y))
+    if(direction == 0 || direction==2){
+        //south
+        uint8_t newY = y-1;
+        while (newY < 255 && !(currentColor & SingleBitBoard(x, newY)))
         {
-            AddMove(moves, x, y, newX, y, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, newX, y, 0);
+            if (allPieces & ~currentColor & SingleBitBoard(x, newY))
+            {
+                AddMove(moves, x, y, x, newY, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, x, newY, 0);
+            }
+            newY--;
         }
-        newX--;
-    }
 
-    //south
-    uint8_t newY = y-1;
-    while (newY < 255 && !(currentColor & SingleBitBoard(x, newY)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(x, newY))
+        //north
+        newY = y+1;
+        while (newY < 8 && !(currentColor & SingleBitBoard(x, newY)))
         {
-            AddMove(moves, x, y, x, newY, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, x, newY, 0);
+            if (allPieces & ~currentColor & SingleBitBoard(x, newY))
+            {
+                AddMove(moves, x, y, x, newY, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, x, newY, 0);
+            }
+            newY++;
         }
-        newY--;
-    }
-
-    //north
-    newY = y+1;
-    while (newY < 8 && !(currentColor & SingleBitBoard(x, newY)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(x, newY))
-        {
-            AddMove(moves, x, y, x, newY, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, x, newY, 0);
-        }
-        newY++;
     }
 }
 

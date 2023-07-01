@@ -2,72 +2,80 @@
 #include <iostream>
 
 // Check for possible moves in the diagonal directions.
-void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
+void bishop::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, uint8_t direction)
 {
-    // Check for possible moves in the diagonal direction.
-    uint8_t newX = x + 1;
-    uint8_t newY = y + 1;
-    while (newX < 8 && newY < 8 && !(currentColor & SingleBitBoard(newX, newY)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
+    uint8_t newX;
+    uint8_t newY;
+    if(direction == 3 || direction == 0) {
+        // Check for possible moves in the diagonal direction.
+        uint8_t newX = x + 1;
+        uint8_t newY = y + 1;
+        while (newX < 8 && newY < 8 && !(currentColor & SingleBitBoard(newX, newY)))
         {
-            AddMove(moves, x, y, newX, newY, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, newX, newY, 0);
+            if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
+            {
+                AddMove(moves, x, y, newX, newY, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, newX, newY, 0);
+            }
+            newX++;
+            newY++;
         }
-        newX++;
-        newY++;
+
+        // diagonal south west
+        newX = x - 1;
+        newY = y - 1;
+        while (newX < 255 && newY < 255 && !(currentColor & SingleBitBoard(newX, newY)))
+        {
+
+            if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
+            {
+                AddMove(moves, x, y, newX, newY, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, newX, newY, 0);
+            }
+            newX--;
+            newY--;
+        }
     }
 
-    // diagonal south east
-    newX = x + 1;
-    newY = y - 1;
-    while (newX < 8 && newY < 255 && !(currentColor & SingleBitBoard(newX, newY)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
+
+    if(direction == 4 || direction == 0){
+        // diagonal south east
+        newX = x + 1;
+        newY = y - 1;
+        while (newX < 8 && newY < 255 && !(currentColor & SingleBitBoard(newX, newY)))
         {
-            AddMove(moves, x, y, newX, newY, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, newX, newY, 0);
+            if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
+            {
+                AddMove(moves, x, y, newX, newY, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, newX, newY, 0);
+            }
+            newX++;
+            newY--;
         }
-        newX++;
-        newY--;
+
+        // diagonal north west
+        newX = x - 1;
+        newY = y + 1;
+        while (newX < 255 && newY < 8 && !(currentColor & SingleBitBoard(newX, newY)))
+        {
+            if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
+            {
+                AddMove(moves, x, y, newX, newY, CAPTURE);
+                break;
+            } else {
+                AddMove(moves, x, y, newX, newY, 0);
+            }
+            newX--;
+            newY++;
+        }
     }
 
-    // diagonal south west
-    newX = x - 1;
-    newY = y - 1;
-    while (newX < 255 && newY < 255 && !(currentColor & SingleBitBoard(newX, newY)))
-    {
-
-        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
-        {
-            AddMove(moves, x, y, newX, newY, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, newX, newY, 0);
-        }
-        newX--;
-        newY--;
-    }
-
-    // diagonal north west
-    newX = x - 1;
-    newY = y + 1;
-    while (newX < 255 && newY < 8 && !(currentColor & SingleBitBoard(newX, newY)))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(newX, newY))
-        {
-            AddMove(moves, x, y, newX, newY, CAPTURE);
-            break;
-        } else {
-            AddMove(moves, x, y, newX, newY, 0);
-        }
-        newX--;
-        newY++;
-    }
 }
 
 
