@@ -56,8 +56,12 @@ public:
 
     Board(Board *board);
 
+    Board(std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable , ZobristKeyGenerator *keyGenerator);
+
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
+
+    Board(std::string fen, std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable , ZobristKeyGenerator *keyGenerator);
 
     uint8_t GetEnPassant() const;
     uint8_t GetMoveRights() const;

@@ -54,6 +54,7 @@ TEST(BoardTest, FromFENTestRandomBoard2) {
 
 TEST(BoardTest, PlayGame)
 {
+
     Board board = Board();
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -85,6 +86,22 @@ TEST(BoardTest, DoMoveBenchmarkStart)
 TEST(BoardTest, DoMoveBenchmarkMiddle)
 {
     Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    for (int i = 0; i < 1; i++)
+    {
+        board.GetMove();
+    }
+    std::cout << board.GetMove();
+}
+
+TEST(BoardTest, DoMoveBenchmarkMiddleTranspostionTable)
+{
+    ZobristKeyGenerator *zobristKeyGenerator = new ZobristKeyGenerator();
+    zobristKeyGenerator->InitRandomFields();
+    std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable = new std::unordered_map<uint64_t , TranspositionEntry>();
+    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1", transpositionTable, zobristKeyGenerator);
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);

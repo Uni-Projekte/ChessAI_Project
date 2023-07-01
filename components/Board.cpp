@@ -41,8 +41,32 @@ Board::Board()
     this->fullmove_number = 1;
 }
 
+Board::Board(std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable, ZobristKeyGenerator *keyGenerator)
+{
+    this->transpositionTable = transpositionTable;
+    this->keyGenerator = keyGenerator;
+    this->black = StartBoardBlack;
+    this->white = StartBoardWhite;
+    this->attackedFromWhite = 0;
+    this->attackedFromBlack = 0;
+    this->pinnedWhitePieces = 0;
+    this->pinnedBlackPieces = 0;
+    this->bishops = StartBoardBishops;
+    this->queens = StartBoardQueens;
+    this->rooks = StartBoardRooks;
+    this->pawns = StartBoardPawns;
+    this->kings = StartBoardKings;
+    this->knights = StartBoardKnights;
+    this->move_rights = 0b11110000;
+    this->en_passant = 0b00000000;
+    this->halfmove_clock = 0;
+    this->fullmove_number = 1;
+}
+
 Board::Board(Board *board)
 {
+    this->transpositionTable = board->transpositionTable;
+    this->keyGenerator = board->keyGenerator;
     this->black = board->black;
     this->white = board->white;
     this->attackedFromWhite = board->attackedFromWhite;
@@ -59,6 +83,30 @@ Board::Board(Board *board)
     this->en_passant = board->en_passant;
     this->halfmove_clock = board->halfmove_clock;
     this->fullmove_number = board->fullmove_number;
+}
+
+Board::Board(std::string fen,std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable, ZobristKeyGenerator *keyGenerator)
+{
+    this->transpositionTable = transpositionTable;
+    this->keyGenerator = keyGenerator;
+    this->black = 0;
+    this->white = 0;
+    this->attackedFromWhite = 0;
+    this->attackedFromBlack = 0;
+    this->pinnedWhitePieces = 0;
+    this->pinnedBlackPieces = 0;
+    this->pawns = 0;
+    this->kings = 0;
+    this->queens = 0;
+    this->rooks = 0;
+    this->bishops = 0;
+    this->knights = 0;
+    this->move_rights = 0b00000000;
+    this->en_passant = 0b00000000;
+    this->halfmove_clock = 0;
+    this->fullmove_number = 1;
+
+    this->fromFEN(std::move(fen));
 }
 
 Board::Board(std::string fen)
@@ -1251,7 +1299,7 @@ int Board::AlphaBetaMax(
         }
     }
 
-    if(this->transpositionTable && this->keyGenerator) {
+    if(this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000) {
         TranspositionEntry entry;
         entry.depth = searchDepth;
         entry.score = best;
@@ -1305,7 +1353,7 @@ int Board::AlphaBetaMin(
     {
         Board copyBoard = Board(this); // copy board, because we have no move undo
         copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves); // allocate memory for next moves
+        NEW_MOVE_ARRAY(nextMoves); // allocate memory for next moves<
         copyBoard.GetMoves(nextMoves); // get all moves possible
         int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
         if (val < best && result != NULL)
@@ -1321,7 +1369,7 @@ int Board::AlphaBetaMin(
             break;
         }
     }
-    if(this->transpositionTable && this->keyGenerator) {
+    if(this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000) {
         TranspositionEntry entry;
         entry.depth = searchDepth;
         entry.score = best;
