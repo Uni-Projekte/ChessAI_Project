@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 
+
 uint64_t GetRowFromIndex(int index)
 {
     switch (index)
@@ -161,32 +162,32 @@ std::string Uint8ToString(uint8_t board)
 
 inline bool GetCapture(MOVE move)
 {
-    return (move & CAPTURE) && !(move & MOVE_FLAGS & ~CAPTURE);
+    return move & CAPTURE_FLAGS;
 }
 
 inline bool GetCastling(MOVE move)
 {
-    return (move & CASTLING) && !(move & MOVE_FLAGS & ~CASTLING);
+    return move & CASTLING;
 }
 
 inline bool GetUpgradeRook(MOVE move)
 {
-    return (move & UPGRADE_ROOK) && !(move & MOVE_FLAGS & ~UPGRADE_ROOK);
+    return (move & UPGRADE_FLAGS) == UPGRADE_ROOK;
 }
 
 inline bool GetUpgradeKnight(MOVE move)
 {
-    return (move & UPGRADE_KNIGHT) && !(move & MOVE_FLAGS & ~UPGRADE_KNIGHT);
+    return (move & UPGRADE_FLAGS) == UPGRADE_KNIGHT;
 }
 
 inline bool GetUpgradeBishop(MOVE move)
 {
-    return (move & UPGRADE_BISHOP) && !(move & MOVE_FLAGS & ~UPGRADE_BISHOP);
+    return (move & UPGRADE_FLAGS) == UPGRADE_BISHOP;
 }
 
 inline bool GetUpgradeQueen(MOVE move)
 {
-    return (move & UPGRADE_QUEEN) && !(move & MOVE_FLAGS & ~UPGRADE_QUEEN);
+    return (move & UPGRADE_FLAGS) == UPGRADE_QUEEN;
 }
 
 inline uint8_t GetToX(MOVE move)
@@ -270,7 +271,7 @@ void showDifference(const std::unordered_set<int>& set1, const std::unordered_se
     std::cout << std::endl;
 }
 
-inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, int flags)
 {
     return (flags | ((uint16_t)(FieldIndex(xFrom, yFrom)) << 6) | FieldIndex(xTo, yTo));
 }
@@ -280,133 +281,17 @@ bool InBounds(uint8_t x, uint8_t y)
     return !((x | y) & ~0b111U);
 }
 
-void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
-{
-    moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
-    moves[0] = moves[0] + 1;
-}
-
-bool TryAddMove(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (TryAddMoveNoCapture(moves, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
-    {
-        return true;
-    }
-    return TryAddMoveOnlyCapture(moves, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
-}
-
-bool TryAddMoveNoCapture(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~allPieces))
-    {
-        AddMove(moves, xFrom, yFrom, xTo, yTo, 0);
-        return true;
-    }
-    return false;
-}
-
-bool TryAddMoveOnlyCapture(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~currentColor & allPieces))
-    {
-        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE);
-        return true;
-    }
-    return false;
-}
-
-void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~allPieces) && (yTo == 0 || yTo == 7))
-    {
-        AddMove(moves, xFrom, yFrom, xTo, yTo, UPGRADE_ROOK);
-        AddMove(moves, xFrom, yFrom, xTo, yTo, UPGRADE_KNIGHT);
-        AddMove(moves, xFrom, yFrom, xTo, yTo, UPGRADE_BISHOP);
-        AddMove(moves, xFrom, yFrom, xTo, yTo, UPGRADE_QUEEN);
-    }
-    else if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~allPieces))
-    {
-        AddMove(moves, xFrom, yFrom, xTo, yTo, 0);
-    }
-}
-
-void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~currentColor & allPieces) && (yTo == 0 || yTo == 7))
-    {
-        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE | UPGRADE_ROOK);
-        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE | UPGRADE_KNIGHT);
-        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE | UPGRADE_BISHOP);
-        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE | UPGRADE_QUEEN);
-    }
-    else if (InBounds(xTo, yTo) && (SingleBitBoard(xTo, yTo) & ~currentColor & allPieces))
-    {
-        AddMove(moves, xFrom, yFrom, xTo, yTo, CAPTURE);
-    }
-}
-
-bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (TryAddMoveNoCaptureKing(moves, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo))
-    {
-        return true;
-    }
-    return TryAddMoveOnlyCaptureKing(moves, attackedFieldsEnemy, allPieces, currentColor, xFrom, yFrom, xTo, yTo);
-}
-
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo))
-    {
-        if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~allPieces & ~currentColor)
-        {
-            AddMoveKing(moves, xFrom, yFrom, xTo, yTo, 0);
-            return true;
-        }
-    }
-    return false;
-}
-
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo))
-    {
-        if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~currentColor & allPieces)
-        {
-            AddMoveKing(moves, xFrom, yFrom, xTo, yTo, CAPTURE);
-            return true;
-        }
-    }
-    return false;
-}
-
-void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
-{
-    moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
-    moves[0] = moves[0] + 1;
-}
-
-bool TryMarkField(BOARD &attackedFieldsOwn, uint8_t xTo, uint8_t yTo)
-{
-    if (InBounds(xTo, yTo))
-    {
-        attackedFieldsOwn = attackedFieldsOwn | SingleBitBoard(xTo,yTo);
-        return true;
-    }
-    return false;
-}
-
 uint8_t SingleBitboardToPosition(BOARD board)
 {
     uint8_t y = 0;
     if(board<=(1ULL<<7))y=0;
-    else if(board<=(1ULL<<15))y=1;
-    else if(board<=(1ULL<<23))y=2;
-    else if(board<=(1ULL<<31))y=3;
-    else if(board<=(1ULL<<39))y=4;
-    else if(board<=(1ULL<<47))y=5;
-    else if(board<=(1ULL<<55))y=6;
-    else if(board<=(1ULL<<63))y=7;
+    else if(board <= (1ULL<<15))y=1;
+    else if(board <= (1ULL<<23))y=2;
+    else if(board <= (1ULL<<31))y=3;
+    else if(board <= (1ULL<<39))y=4;
+    else if(board <= (1ULL<<47))y=5;
+    else if(board <= (1ULL<<55))y=6;
+    else if(board <= (1ULL<<63))y=7;
 
     board = board >> (y*8);
 

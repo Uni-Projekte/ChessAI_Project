@@ -298,30 +298,52 @@ std::string Uint16ToString(uint16_t board);
 
 std::string Uint8ToString(uint8_t board);
 
-#define PLAYER bool
-#define WHITE false
-#define BLACK true
+
 
 #define MAX_MOVES (8 * 8 * 16)
 
 typedef uint64_t BOARD;
-typedef uint16_t MOVE;
+// Capture (or Upgrade) | Castling (or Upgrade) | Upgrade | Upgrade | FROM_YYY | FROM_XXX | TO_YYY | TO_XXX
+typedef unsigned int MOVE;
 typedef MOVE MOVE_ARRAY[MAX_MOVES];
 
-#define CAPTURE 0b1000000000000000U
-#define CASTLING 0b0100000000000000U
-#define UPGRADE_ROOK 0b1100000000000000U
-#define UPGRADE_KNIGHT 0b1101000000000000U
-#define UPGRADE_BISHOP 0b1110000000000000U
-#define UPGRADE_QUEEN 0b1111000000000000U
+enum COLOR {
+    WHITE,
+    BLACK
+};
 
-#define MOVE_FLAGS 0b1111000000000000U
+enum PIECE {
+    NO_PIECE,
+    PAWN,
+    ROOK,
+    KNIGHT,
+    BISHOP,
+    QUEEN
+};
+
+
+#define UPGRADE_FLAGS 0b111U << 12
+#define CAPTURE_FLAGS 0b111 << 15
 #define MOVE_TO 0b0000000000111111U
 #define MOVE_TO_X 0b0000000000000111U
 #define MOVE_TO_Y 0b0000000000111000U
 #define MOVE_FROM 0b0000111111000000U
 #define MOVE_FROM_X 0b0000000111000000U
 #define MOVE_FROM_Y 0b0000111000000000U
+
+// #define CAPTURE 0b1000000000000000U
+#define UPGRADE_ROOK    ROOK << 12
+#define UPGRADE_KNIGHT  KNIGHT << 12
+#define UPGRADE_BISHOP  BISHOP << 12
+#define UPGRADE_QUEEN   QUEEN << 12
+#define CAPTURE_PAWN    PAWN << 15
+#define CAPTURE_ROOK    ROOK << 15
+#define CAPTURE_KNIGHT  KNIGHT << 15
+#define CAPTURE_BISHOP  BISHOP << 15
+#define CAPTURE_QUEEN   QUEEN << 15
+#define EN_PASSANTE     1U << 18
+#define CASTLING        1U << 19
+
 
 inline bool GetCapture(MOVE move);
 
@@ -363,31 +385,7 @@ inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, u
 
 bool InBounds(uint8_t x, uint8_t y);
 
-void AddMoveSlidingPiece(MOVE_ARRAY &moves, BOARD &attackedFieldsOwn, BOARD enemyKind, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
-
-void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
-
-bool TryAddMove(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-bool TryAddMoveNoCapture(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-bool TryAddMoveOnlyCapture(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-void TryAddMoveNoCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-void TryAddMoveOnlyCaptureUpgrade(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-bool TryAddMoveKing(MOVE_ARRAY &moves, BOARD attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, BOARD &attackedFieldsEnemy, BOARD allPieces, BOARD currentColor, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo);
-
-void AddMoveKing(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
-
 void showDifference(const std::unordered_set<int>& set1, const std::unordered_set<int>& set2);
-
-bool TryMarkField(BOARD &attackedFieldsOwn, uint8_t xTo, uint8_t yTo);
 
 uint8_t SingleBitboardToPosition(BOARD board);
 

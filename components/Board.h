@@ -5,20 +5,34 @@
 #include "helper.h"
 #include <string>
 #include <vector>
-#include <unordered_map>
-#include "ZobristKeyGenerator.h"
 
-// Define a type for the transposition table entry
-struct TranspositionEntry {
-    int depth;
-    int score;
-    MOVE bestMove;
-};
+
+
+
+#define WHITE_KING_SIDE 0b00000010U
+#define WHITE_QUEEN_SIDE 0b00100000U
+#define BLACK_KING_SIDE (WHITE_KING_SIDE << 56ULL)
+#define BLACK_QUEEN_SIDE (WHITE_QUEEN_SIDE << 56ULL)
+#define MOVE_X_MASK 0b00111000U
+#define MOVE_Y_MASK 0b00000111U
+#define NO_WHITE_CASTLING 0b00111111U
+#define NO_BLACK_CASTLING 0b11001111U
+#define BLACK_KINGSIDE_TOWER (1ULL << 56ULL)
+#define BLACK_QUEENSIDE_TOWER (1ULL << 63ULL)
+#define WHITE_KINGSIDE_TOWER (1ULL)
+#define WHITE_QUEENSIDE_TOWER (1ULL << 7ULL)
+#define BLACK_KINGSIDE_TOWER_AFTER (1ULL << 58ULL)
+#define BLACK_QUEENSIDE_TOWER_AFTER (1ULL << 60ULL)
+#define WHITE_KINGSIDE_TOWER_AFTER (1ULL << 3ULL)
+#define WHITE_QUEENSIDE_TOWER_AFTER (1ULL << 4ULL)
+#define ROW_1_AND_8 0xff000000000000ffULL
+#define NOT_ROW_1_AND_8 0x00ffffffffffff00ULL
+#define NO_END 0
+#define WHITE_WIN 1
+#define BLACK_WIN 2
 
 class Board {
 private:
-    std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable = nullptr;//0. Best Move 1. Alpha 2. Beta
-    ZobristKeyGenerator *keyGenerator = nullptr;
     uint64_t black;  // bitboard representing black pieces
     uint64_t white;  // bitboard representing white pieces
     uint64_t attackedFromWhite; // bitboard representing from White attacked fields
@@ -56,17 +70,39 @@ public:
 
     Board(Board *board);
 
-    Board(std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable , ZobristKeyGenerator *keyGenerator);
-
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
 
-    Board(std::string fen, std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable , ZobristKeyGenerator *keyGenerator);
+
+    // Check if piece of player is on position with row and column
+    uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);
+
+    // Converts a FEN string to a board configuration
+    void fromFEN(std::string fen);
+
+    // Converts a board configuration to a FEN string
+    std::string toFEN();
+
+    // Gets the piece variable from a piece as character
+    uint64_t *getPiece(char piece);
+
+    // Gets the color variable from a piece as character
+    uint64_t *getColor(char piece);
+
+    uint8_t GetPosition(std::string position) const;
+
+    void DoMove(MOVE move);
+
+    void GetMoves(MOVE_ARRAY &moves);
+
+    void MarkFields();
 
     uint8_t GetEnPassant() const;
     uint8_t GetMoveRights() const;
     uint8_t GetHalfMoveClock() const;
     uint16_t GetFullMoveNumber() const;
+    uint64_t GetCurrentColorBoard() const;
+    COLOR GetCurrentColor() const;
     uint64_t GetWhite() const;
     uint64_t GetBlack() const;
     uint64_t GetKings() const;
@@ -127,79 +163,15 @@ public:
     // Returns the bitboard representing from Black attacked fields
     uint64_t& GetFromBlackAttackedFields();
 
-    // Check if piece of player is on position with row and column
-    uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);
 
-    // Converts a FEN string to a board configuration
-    void fromFEN(std::string fen);
 
-    // Converts a board configuration to a FEN string
-    std::string toFEN();
 
-    // Gets the piece variable from a piece as character
-    uint64_t *getPiece(char piece);
-
-    // Gets the color variable from a piece as character
-    uint64_t *getColor(char piece);
-
-    uint8_t GetPosition(std::string position) const;
-
-    void DoMove(MOVE move);
-
-    void GetMoves(MOVE_ARRAY &moves);
-
-    void MarkFields();
-
-    int MaterialWorth();
-    int AttackedFields();
-    int PawnFileCounts();
-    int Defence();
-
-    MOVE GetMove();
-
-    MOVE GetMoveMinMax();
 
     void PlayGame();
 
     int End();
 
-    int BoardRanking(PLAYER player);
 
-    MOVE AlphaBetaIterative(MOVE_ARRAY moves,
-                         int maxTime,
-                            PLAYER player);
-
-    int AlphaBetaMax(int searchDepth,
-                  MOVE_ARRAY moves,
-                  int &states,
-                  int alpha,
-                  int beta,
-                  MOVE *result,
-                  PLAYER player);
-
-    int AlphaBetaMin(int searchDepth,
-                     MOVE_ARRAY moves,
-                     int &states,
-                     int alpha,
-                     int beta,
-                     MOVE *result,
-                     PLAYER player);
-
-    MOVE MiniMaxIterative(MOVE_ARRAY moves,
-                            int maxTime,
-                            PLAYER player);
-
-    int MiniMaxMax(int searchDepth,
-                     MOVE_ARRAY moves,
-                     int &states,
-                     MOVE *result,
-                     PLAYER player);
-
-    int MiniMaxMin(int searchDepth,
-                     MOVE_ARRAY moves,
-                     int &states,
-                     MOVE *result,
-                     PLAYER player);
 };
 
 #endif // BOARD_H

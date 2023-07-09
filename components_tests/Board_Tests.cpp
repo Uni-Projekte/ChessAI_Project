@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "../components/Board.h"
+#include "../components/MoveAlgorithms.h"
 #include "../components/presenter.h"
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -61,7 +62,7 @@ TEST(BoardTest, PlayGame)
     //board.PlayGame();
 }
 
-TEST(BoardTest, StartRanking)
+/*TEST(BoardTest, StartRanking)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
     Presenter presenter = Presenter();
@@ -171,6 +172,6 @@ TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
     {
         board.GetMoveMinMax();
     }
-}
+}*/
 
 

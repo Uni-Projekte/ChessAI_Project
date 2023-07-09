@@ -3,11 +3,11 @@
 
 #include "../components/Board.h"
 #include "../components/presenter.h"
-#include "../components/pieces/bishop.h"
-#include "../components/pieces/queen.h"
-#include "../components/pieces/rook.h"
-#include "../components/pieces/knight.h"
-#include "../components/pieces/king.h"
+#include "../components/MoveGenerator/pieces/bishop.h"
+#include "../components/MoveGenerator/pieces/queen.h"
+#include "../components/MoveGenerator/pieces/rook.h"
+#include "../components/MoveGenerator/pieces/knight.h"
+#include "../components/MoveGenerator/pieces/king.h"
 #include <filesystem>
 #include <bitset>
 #include <string>
@@ -84,7 +84,7 @@ TEST(PiecesTest, BishopTest3) {
     MOVE expectedMoves[6] = {
             6,
             CreateMove(1, 1, 2, 2, 0),
-            CreateMove(1, 1, 3, 3, CAPTURE),
+            CreateMove(1, 1, 3, 3, CAPTURE_QUEEN),
             CreateMove(1, 1, 2, 0, 0),
             CreateMove(1, 1, 0, 0, 0),
             CreateMove(1, 1, 0, 2, 0),
@@ -411,7 +411,7 @@ TEST(PiecesTest, PawnEatsPawnTest)
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
-    board.DoMove(CreateMove(4, 3, 3, 4, CAPTURE));
+    board.DoMove(CreateMove(4, 3, 3, 4, EN_PASSANTE));
     std::cout << std::endl << presenter.ToString(board);
     EXPECT_EQ("3k4/8/8/3P4/8/8/8/4K3 b - - 0 1", board.toFEN());
 }
@@ -424,7 +424,7 @@ TEST(PiecesTest, EnPassantTest)
 
     board.DoMove(CreateMove(5, 1, 5, 3, 0));
     EXPECT_EQ("2k5/8/8/8/5Pp1/8/8/3K4 b - f3 0 1", board.toFEN());
-    board.DoMove(CreateMove(6, 3, 5, 2, CAPTURE));
+    board.DoMove(CreateMove(6, 3, 5, 2, EN_PASSANTE));
     std::cout << std::endl << presenter.ToString(board);
     EXPECT_EQ("2k5/8/8/8/8/5p2/8/3K4 w - - 0 2", board.toFEN());
 }
@@ -439,7 +439,7 @@ TEST(PiecesTest, EnPassantTest2)
     board.DoMove(CreateMove(5, 6, 5, 4, 0));
     EXPECT_EQ("rnbqkbnr/1pppp1pp/p7/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", board.toFEN());
 
-    board.DoMove(CreateMove(4, 4, 5, 5, CAPTURE));
+    board.DoMove(CreateMove(4, 4, 5, 5, EN_PASSANTE));
     std::cout << std::endl << presenter.ToString(board);
     EXPECT_EQ("rnbqkbnr/1pppp1pp/p4P2/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3", board.toFEN());
 }

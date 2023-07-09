@@ -13,17 +13,17 @@ set(ChessAI_Project_Src
     Board.h
     presenter.cpp
     presenter.h
-    pieces/bishop.cpp
-    pieces/bishop.h
-    pieces/king.cpp
-    pieces/king.h
-    pieces/knight.cpp
-    pieces/knight.h
-    pieces/pawn.cpp
-    pieces/pawn.h
-    pieces/queen.cpp
-    pieces/queen.h
-    pieces/rook.cpp
-    pieces/rook.h ZobristKeyGenerator.cpp ZobristKeyGenerator.h)
+        MoveGenerator/pieces/bishop.cpp
+        MoveGenerator/pieces/bishop.h
+        MoveGenerator/pieces/king.cpp
+        MoveGenerator/pieces/king.h
+        MoveGenerator/pieces/knight.cpp
+        MoveGenerator/pieces/knight.h
+        MoveGenerator/pieces/pawn.cpp
+        MoveGenerator/pieces/pawn.h
+        MoveGenerator/pieces/queen.cpp
+        MoveGenerator/pieces/queen.h
+        MoveGenerator/pieces/rook.cpp
+        MoveGenerator/pieces/rook.h ZobristKeyGenerator.cpp ZobristKeyGenerator.h MoveAlgorithms.cpp MoveAlgorithms.h MoveGenerator/MoveGeneratorHelper.cpp MoveGenerator/MoveGeneratorHelper.h)
 
 add_library(components ${ChessAI_Project_Src} )

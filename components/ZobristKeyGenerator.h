@@ -3,6 +3,7 @@
 
 #include "helper.h"
 #include "random"
+#include "Board.h"
 
 
 class ZobristKeyGenerator {
@@ -21,8 +22,7 @@ private:
 public:
     ZobristKeyGenerator();
     void InitRandomFields();
-    uint64_t CalculateZobristKey(uint64_t black, uint64_t white, uint64_t kings, uint64_t queens,
-                                 uint64_t bishops, uint64_t knights, uint64_t rooks, uint64_t pawns);
+    uint64_t CalculateZobristKey(Board board);
 };
 
 

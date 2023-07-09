@@ -20,11 +20,19 @@ void ZobristKeyGenerator::InitRandomFields(){
     }
 }
 
-uint64_t ZobristKeyGenerator::CalculateZobristKey(uint64_t black, uint64_t white, uint64_t kings, uint64_t queens,
-                                                  uint64_t bishops, uint64_t knights, uint64_t rooks,
-                                                  uint64_t pawns){
+uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
 
     uint64_t zobristKey = 0;
+
+    uint64_t black = board.GetBlack();
+    uint64_t white = board.GetWhite();
+    uint64_t kings = board.GetKings();
+    uint64_t queens = board.GetQueens();
+    uint64_t bishops = board.GetBishops();
+    uint64_t knights = board.GetKnights();
+    uint64_t rooks = board.GetRooks();
+    uint64_t pawns = board.GetPawns();
+
 
     for (uint8_t x = 0; x < 8; x = x + 1)
     {

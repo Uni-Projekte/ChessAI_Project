@@ -1,17 +1,23 @@
 #include "rook.h"
 
-void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y, uint8_t direction)
+void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, uint8_t direction)
 {
     uint8_t newX;
     uint8_t newY;
+
+    BOARD currentColor = board->GetCurrentColorBoard();
+    BOARD allPieces = board->GetAllPieces();
+
     if(direction == 0 || direction==1){
         // east
         uint8_t newX = x+1;
         while (newX < 8 && !(currentColor & SingleBitBoard(newX, y)))
         {
-            if (allPieces & ~currentColor & SingleBitBoard(newX, y))
-            {
-                AddMove(moves, x, y, newX, y, CAPTURE);
+            BOARD toBitboard = SingleBitBoard(newX, y);
+            if (allPieces & ~currentColor & toBitboard){
+                PIECE capturePiece = GetCapturedPiece(board, toBitboard);
+                int captureFlag = capturePiece << 15;
+                AddMove(moves, x, y, newX, newY, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, newX, y, 0);
@@ -23,9 +29,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
         newX = x-1;
         while (newX < 255 && !(currentColor & SingleBitBoard(newX, y)))
         {
-            if (allPieces & ~currentColor & SingleBitBoard(newX, y))
+            BOARD toBitboard = SingleBitBoard(newX, y);
+            if (allPieces & ~currentColor & toBitboard)
             {
-                AddMove(moves, x, y, newX, y, CAPTURE);
+                PIECE capturePiece = GetCapturedPiece(board, toBitboard);
+                int captureFlag = capturePiece << 15;
+                AddMove(moves, x, y, newX, newY, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, newX, y, 0);
@@ -39,9 +48,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
         uint8_t newY = y-1;
         while (newY < 255 && !(currentColor & SingleBitBoard(x, newY)))
         {
-            if (allPieces & ~currentColor & SingleBitBoard(x, newY))
+            BOARD toBitboard = SingleBitBoard(x, newY);
+            if (allPieces & ~currentColor & toBitboard)
             {
-                AddMove(moves, x, y, x, newY, CAPTURE);
+                PIECE capturePiece = GetCapturedPiece(board, toBitboard);
+                int captureFlag = capturePiece << 15;
+                AddMove(moves, x, y, newX, newY, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, x, newY, 0);
@@ -53,9 +65,12 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
         newY = y+1;
         while (newY < 8 && !(currentColor & SingleBitBoard(x, newY)))
         {
-            if (allPieces & ~currentColor & SingleBitBoard(x, newY))
+            BOARD toBitboard = SingleBitBoard(x, newY);
+            if (allPieces & ~currentColor & toBitboard)
             {
-                AddMove(moves, x, y, x, newY, CAPTURE);
+                PIECE capturePiece = GetCapturedPiece(board, toBitboard);
+                int captureFlag = capturePiece << 15;
+                AddMove(moves, x, y, newX, newY, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, x, newY, 0);
@@ -67,46 +82,6 @@ void rook::possibleMoves(MOVE_ARRAY &moves, BOARD allPieces, BOARD currentColor,
 
 void rook::markFields(BOARD &attackedFieldsOwn, BOARD &pinnedEnemy, BOARD enemyKing , BOARD allPieces, BOARD currentColor, uint8_t x, uint8_t y)
 {
-
-    // east
-    /*bool attackFields = !(currentColor & SingleBitBoard(newX, y));
-    bool pinFields = false;
-    BOARD lastEnemy = 0;
-    while (newX < 8 && (attackFields || pinFields))
-    {
-        if (allPieces & ~currentColor & SingleBitBoard(newX, y))
-        {
-            if(SingleBitBoard(newX,y) & enemyKing)
-            {
-                pinnedEnemy = lastEnemy;
-                if (attackFields)
-                {
-                    attackedFieldsOwn |= SingleBitBoard(newX, y);
-                }
-                if (newX + 1 < 8 && !(SingleBitBoard(newX + 1, y) & currentColor))
-                {
-                    if (attackFields)
-                    {
-                        attackedFieldsOwn |= SingleBitBoard(newX, y);
-                    }
-                }
-                break;
-            }
-            else{
-                if (attackFields)
-                {
-                    attackedFieldsOwn |= SingleBitBoard(newX, y);
-                }
-                pinFields = attackFields;
-                attackFields = false;
-            }
-        }
-        else if (attackFields)
-        {
-            attackedFieldsOwn |= SingleBitBoard(newX, y);
-        }
-        newX++;
-    }*/
 
     // east
     uint8_t newX = x+1;

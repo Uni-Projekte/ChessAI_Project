@@ -3,14 +3,12 @@
 #include <stdexcept>
 #include <utility>
 #include <string>
-#include <fstream>
-#include <iostream>
-#include "pieces/bishop.h"
-#include "pieces/king.h"
-#include "pieces/knight.h"
-#include "pieces/pawn.h"
-#include "pieces/queen.h"
-#include "pieces/rook.h"
+#include "MoveGenerator/pieces/bishop.h"
+#include "MoveGenerator/pieces/king.h"
+#include "MoveGenerator/pieces/knight.h"
+#include "MoveGenerator/pieces/pawn.h"
+#include "MoveGenerator/pieces/queen.h"
+#include "MoveGenerator/pieces/rook.h"
 #include "presenter.h"
 #include <chrono>
 
@@ -41,32 +39,8 @@ Board::Board()
     this->fullmove_number = 1;
 }
 
-Board::Board(std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable, ZobristKeyGenerator *keyGenerator)
-{
-    this->transpositionTable = transpositionTable;
-    this->keyGenerator = keyGenerator;
-    this->black = StartBoardBlack;
-    this->white = StartBoardWhite;
-    this->attackedFromWhite = 0;
-    this->attackedFromBlack = 0;
-    this->pinnedWhitePieces = 0;
-    this->pinnedBlackPieces = 0;
-    this->bishops = StartBoardBishops;
-    this->queens = StartBoardQueens;
-    this->rooks = StartBoardRooks;
-    this->pawns = StartBoardPawns;
-    this->kings = StartBoardKings;
-    this->knights = StartBoardKnights;
-    this->move_rights = 0b11110000;
-    this->en_passant = 0b00000000;
-    this->halfmove_clock = 0;
-    this->fullmove_number = 1;
-}
-
 Board::Board(Board *board)
 {
-    this->transpositionTable = board->transpositionTable;
-    this->keyGenerator = board->keyGenerator;
     this->black = board->black;
     this->white = board->white;
     this->attackedFromWhite = board->attackedFromWhite;
@@ -83,30 +57,6 @@ Board::Board(Board *board)
     this->en_passant = board->en_passant;
     this->halfmove_clock = board->halfmove_clock;
     this->fullmove_number = board->fullmove_number;
-}
-
-Board::Board(std::string fen,std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable, ZobristKeyGenerator *keyGenerator)
-{
-    this->transpositionTable = transpositionTable;
-    this->keyGenerator = keyGenerator;
-    this->black = 0;
-    this->white = 0;
-    this->attackedFromWhite = 0;
-    this->attackedFromBlack = 0;
-    this->pinnedWhitePieces = 0;
-    this->pinnedBlackPieces = 0;
-    this->pawns = 0;
-    this->kings = 0;
-    this->queens = 0;
-    this->rooks = 0;
-    this->bishops = 0;
-    this->knights = 0;
-    this->move_rights = 0b00000000;
-    this->en_passant = 0b00000000;
-    this->halfmove_clock = 0;
-    this->fullmove_number = 1;
-
-    this->fromFEN(std::move(fen));
 }
 
 Board::Board(std::string fen)
@@ -131,218 +81,7 @@ Board::Board(std::string fen)
     this->fromFEN(std::move(fen));
 }
 
-uint8_t Board::GetEnPassant() const
-{
-    return this->en_passant;
-}
 
-uint8_t Board::GetMoveRights() const
-{
-    return this->move_rights;
-}
-
-uint8_t Board::GetHalfMoveClock() const
-{
-    return this->halfmove_clock;
-}
-
-uint16_t Board::GetFullMoveNumber() const
-{
-    return this->fullmove_number;
-}
-
-uint64_t Board::GetWhite() const
-{
-    return this->white;
-}
-
-uint64_t Board::GetBlack() const
-{
-    return this->black;
-}
-
-uint64_t Board::GetKings() const
-{
-    return this->kings;
-}
-
-uint64_t Board::GetQueens() const
-{
-    return this->queens;
-}
-
-uint64_t Board::GetBishops() const
-{
-    return this->bishops;
-}
-
-uint64_t Board::GetKnights() const
-{
-    return this->knights;
-}
-
-uint64_t Board::GetRooks() const
-{
-    return this->rooks;
-}
-
-uint64_t Board::GetPawns() const
-{
-    return this->pawns;
-}
-
-/**
- * @brief Get the bitboard of all pieces
- * @return new complete bit-board-collection
- */
-uint64_t Board::GetAllPieces() const
-{
-    return this->black | this->white;
-}
-
-/**
- * @brief Get the bitboard of all white pieces
- * @return new complete bit-board-collection
- */
-uint64_t Board::GetWhitePieces() const
-{
-    return this->white;
-}
-
-/**
- * @brief Get the bitboard of all black pieces
- * @return new complete bit-board-collection
- */
-uint64_t Board::GetBlackPieces() const
-{
-    return this->black;
-}
-
-/**
- * @brief get bitboard of black pawns
- * @return bitboard of black pawns as uint64_t
- */
-uint64_t Board::GetBlackPawns() const
-{
-    return this->black & this->pawns;
-}
-
-/**
- * @brief get bitboard of black queen
- * @return bitboard of black queen as uint64_t
- */
-uint64_t Board::GetBlackQueen() const
-{
-    return this->black & this->queens;
-}
-
-/**
- * @brief get bitboard of black king
- * @return bitboard of black king as uint64_t
- */
-uint64_t Board::GetBlackKing() const
-{
-    return this->black & this->kings;
-}
-
-/**
- * @brief get bitboard of black bishops
- * @return bitboard of black bishops as uint64_t
- */
-uint64_t Board::GetBlackBishops() const
-{
-    return this->black & this->bishops;
-}
-
-/**
- * @brief get bitboard of black knights
- * @return bitboard of black knights as uint64_t
- */
-uint64_t Board::GetBlackKnights() const
-{
-    return this->black & this->knights;
-}
-
-/**
- * @brief get bitboard of black rook
- * @return bitboard of black rook as uint64_t
- */
-uint64_t Board::GetBlackRooks() const
-{
-    return this->black & this->rooks;
-}
-
-/**
- * @brief get bitboard of white pawns
- * @return bitboard of white pawns as uint64_t
- */
-uint64_t Board::GetWhitePawns() const
-{
-    return this->white & this->pawns;
-}
-
-/**
- * @brief get bitboard of white queen
- * @return bitboard of white queen as uint64_t
- */
-uint64_t Board::GetWhiteQueen() const
-{
-    return this->white & this->queens;
-}
-
-/**
- * @brief get bitboard of white king
- * @return bitboard of white king as uint64_t
- */
-uint64_t Board::GetWhiteKing() const
-{
-    return this->white & this->kings;
-}
-
-/**
- * @brief get bitboard of white bishops
- * @return bitboard of white bishops as uint64_t
- */
-uint64_t Board::GetWhiteBishops() const
-{
-    return this->white & this->bishops;
-}
-
-/**
- * @brief get bitboard of white knights
- * @return bitboard of white knights as uint64_t
- */
-uint64_t Board::GetWhiteKnights() const
-{
-    return this->white & this->knights;
-}
-
-/**
- * @brief get bitboard of white rook
- * @return bitboard of white rook as uint64_t
- */
-uint64_t Board::GetWhiteRooks() const
-{
-    return this->white & this->rooks;
-}
-
-/**
- * @brief
- * @return bitboard of white rook as uint64_t
- */
-uint64_t &Board::GetFromWhiteAttackedFields()
-{
-    return this->attackedFromWhite;
-}
-
-/**
- * @brief get bitboard of white rook
- * @return bitboard of white rook as uint64_t
- */
-uint64_t &Board::GetFromBlackAttackedFields()
-{
-    return this->attackedFromBlack;
-}
 
 /**
  * @brief check if player's piece is on position with row and column
@@ -754,26 +493,6 @@ uint8_t Board::GetPosition(string position) const
     return (col << 3) | row;
 }
 
-#define WHITE_KING_SIDE 0b00000010U
-#define WHITE_QUEEN_SIDE 0b00100000U
-#define BLACK_KING_SIDE (WHITE_KING_SIDE << 56ULL)
-#define BLACK_QUEEN_SIDE (WHITE_QUEEN_SIDE << 56ULL)
-#define MOVE_X_MASK 0b00111000U
-#define MOVE_Y_MASK 0b00000111U
-#define NO_WHITE_CASTLING 0b00111111U
-#define NO_BLACK_CASTLING 0b11001111U
-#define BLACK_KINGSIDE_TOWER (1ULL << 56ULL)
-#define BLACK_QUEENSIDE_TOWER (1ULL << 63ULL)
-#define WHITE_KINGSIDE_TOWER (1ULL)
-#define WHITE_QUEENSIDE_TOWER (1ULL << 7ULL)
-#define BLACK_KINGSIDE_TOWER_AFTER (1ULL << 58ULL)
-#define BLACK_QUEENSIDE_TOWER_AFTER (1ULL << 60ULL)
-#define WHITE_KINGSIDE_TOWER_AFTER (1ULL << 3ULL)
-#define WHITE_QUEENSIDE_TOWER_AFTER (1ULL << 4ULL)
-#define ROW_1_AND_8 0xff000000000000ffULL
-#define NOT_ROW_1_AND_8 0x00ffffffffffff00ULL
-#include <bitset>
-#include <bit>
 
 void Board::DoMove(MOVE move)
 {
@@ -884,13 +603,13 @@ void Board::DoMove(MOVE move)
     this->fullmove_number = this->fullmove_number + bool(black & from);
 
     // add queen if pawns reached one of the ends
-    this->queens = this->queens | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_QUEEN));
+    this->queens = this->queens | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_QUEEN));
     // add knight if pawns reached one of the ends
-    this->knights = this->knights | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_KNIGHT));
+    this->knights = this->knights | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_KNIGHT));
     // add bishop if pawns reached one of the ends
-    this->bishops = this->bishops | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_BISHOP));
+    this->bishops = this->bishops | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_BISHOP));
     // add rook if pawns reached one of the ends
-    this->rooks = this->rooks | ((this->pawns & ROW_1_AND_8) * bool(move & 0b111100000000U == UPGRADE_ROOK));
+    this->rooks = this->rooks | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_ROOK));
     // delete pawns that reached one of the ends
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
 
@@ -898,6 +617,15 @@ void Board::DoMove(MOVE move)
     this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
 
     MarkFields();
+}
+
+void UndoMove(MOVE move)
+{
+    uint16_t move_flags = move & UPGRADE_FLAGS;
+    if (move_flags == EN_PASSANTE)
+    {
+
+    }
 }
 
 void Board::MarkFields(){
@@ -995,27 +723,27 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 uint64_t isBlack = this->black & currentField;
                 if (this->bishops & isBlack)
                 {
-                    bishop::possibleMoves(moves, this->black | this->white, this->black, x, y, direction);
+                    bishop::possibleMoves(moves, this, x, y, direction);
                 }
                 if (this->kings & isBlack)
                 {
-                    king::possibleMoves(moves, this->move_rights, this->attackedFromWhite, this->black | this->white, this->black, x, y);
+                    king::possibleMoves(moves, this, x, y);
                 }
                 if (this->knights & isBlack)
                 {
-                    knight::possibleMoves(moves, this->black | this->white, this->black, x, y);
+                    knight::possibleMoves(moves, this, x, y);
                 }
                 if (this->pawns & isBlack)
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->black, x, y, BLACK, this->en_passant);
+                    pawn::possibleMoves(moves, this, x, y, this->en_passant);
                 }
                 if (this->rooks & isBlack)
                 {
-                    rook::possibleMoves(moves, this->black | this->white, this->black, x, y, direction);
+                    rook::possibleMoves(moves, this, x, y, direction);
                 }
                 if (this->queens & isBlack)
                 {
-                    queen::possibleMoves(moves,  this->black | this->white, this->black, x, y, direction);
+                    queen::possibleMoves(moves,  this, x, y, direction);
                 }
             }
             else
@@ -1024,505 +752,30 @@ void Board::GetMoves(MOVE_ARRAY &moves)
                 if(currentField & this->pinnedWhitePieces) direction = GetDirection(whiteKingX, whiteKingY, x, y);
                 if (this->bishops & isWhite)
                 {
-                    bishop::possibleMoves(moves, this->black | this->white, this->white, x, y, direction);
+                    bishop::possibleMoves(moves, this, x, y, direction);
                 }
                 if (this->kings & isWhite)
                 {
-                    king::possibleMoves(moves, this->move_rights, this->attackedFromBlack, this->black | this->white, this->white, x, y);
+                    king::possibleMoves(moves, this, x, y);
                 }
                 if (this->knights & isWhite)
                 {
-                    knight::possibleMoves(moves, this->black | this->white, this->white, x, y);
+                    knight::possibleMoves(moves, this, x, y);
                 }
                 if (this->pawns & isWhite)
                 {
-                    pawn::possibleMoves(moves, this->black | this->white, this->white, x, y, WHITE, this->en_passant);
+                    pawn::possibleMoves(moves, this, x, y, this->en_passant);
                 }
                 if (this->rooks & isWhite)
                 {
-                    rook::possibleMoves(moves, this->black | this->white, this->white, x, y,direction);
+                    rook::possibleMoves(moves, this, x, y,direction);
                 }
                 if (this->queens & isWhite)
                 {
-                    queen::possibleMoves(moves, this->black | this->white, this->white, x, y, direction);
+                    queen::possibleMoves(moves, this, x, y, direction);
                 }
             }
         }
-    }
-}
-
-MOVE Board::GetMove()
-{
-    // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
-    // for (int i = 0; i < moves.size()-1; i++) {
-    //     std::cout << moves[i] << ", ";
-    // }
-    // std::cout << moves[moves.size()-1] << std::endl;
-    NEW_MOVE_ARRAY(moves);
-    this->GetMoves(moves);
-
-    MOVE move = 0;
-    if (this->move_rights & 1)
-    {
-        move = this->AlphaBetaIterative(moves, 1000 , BLACK);
-    }
-    else
-    {
-        move = this->AlphaBetaIterative(moves, 1000 , WHITE);
-    }
-    // std::cout << "PICKED MOVE: " << move << std::endl;
-    // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
-    // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
-    // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
-    return move;
-}
-
-MOVE Board::GetMoveMinMax()
-{
-    // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
-    // for (int i = 0; i < moves.size()-1; i++) {
-    //     std::cout << moves[i] << ", ";
-    // }
-    // std::cout << moves[moves.size()-1] << std::endl;
-    NEW_MOVE_ARRAY(moves);
-    this->GetMoves(moves);
-    MOVE move = 0;
-    if (this->move_rights & 1)
-    {
-        move = this->MiniMaxIterative(moves, 1000, BLACK);
-    }
-    else
-    {
-        move = this->MiniMaxIterative(moves, 1000, WHITE);
-    }
-    // std::cout << "PICKED MOVE: " << move << std::endl;
-    // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
-    // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
-    // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
-    return move;
-}
-
-
-
-int Board::MaterialWorth()
-{
-    int ranking = 0;
-
-    ranking = ranking + 10000 * popcount(this->GetWhiteKing());
-    ranking = ranking + 900 * popcount(this->GetWhiteQueen());
-    ranking = ranking + 500 * popcount(this->GetWhiteRooks());
-    ranking = ranking + 300 * popcount(this->GetWhiteBishops());
-    ranking = ranking + 300 * popcount(this->GetWhiteKnights());
-    ranking = ranking + 100 * popcount(this->GetWhitePawns());
-    ranking = ranking - 10000 * popcount(this->GetBlackKing());
-    ranking = ranking - 900 * popcount(this->GetBlackQueen());
-    ranking = ranking - 500 * popcount(this->GetBlackRooks());
-    ranking = ranking - 300 * popcount(this->GetBlackBishops());
-    ranking = ranking - 300 * popcount(this->GetBlackKnights());
-    ranking = ranking - 100 * popcount(this->GetBlackPawns());
-
-    return ranking;
-}
-
-int Board::AttackedFields()
-{
-    int ranking = 0;
-
-    ranking = ranking + 10000 * popcount(this->attackedFromWhite & this->GetBlackKing());
-    ranking = ranking + 900 * popcount(this->attackedFromWhite & this->GetBlackQueen());
-    ranking = ranking + 500 * popcount(this->attackedFromWhite & this->GetBlackRooks());
-    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetBlackBishops());
-    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetBlackKnights());
-    ranking = ranking + 100 * popcount(this->attackedFromWhite & this->GetBlackPawns());
-
-    ranking = ranking - 10000 * popcount(this->attackedFromBlack & this->GetWhiteKing());
-    ranking = ranking - 900 * popcount(this->attackedFromBlack & this->GetWhiteQueen());
-    ranking = ranking - 500 * popcount(this->attackedFromBlack & this->GetWhiteRooks());
-    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetWhiteBishops());
-    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetWhiteKnights());
-    ranking = ranking - 100 * popcount(this->attackedFromBlack & this->GetWhitePawns());
-
-    return ranking;
-}
-
-int Board::PawnFileCounts()
-{
-    int ranking = 0;
-
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnA) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnB) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnC) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnD) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnE) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnF) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnG) - 1);
-    ranking = ranking - 400 * (popcount(this->GetWhitePawns() & BoardColumnH) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnA) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnB) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnC) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnD) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnE) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnF) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnG) - 1);
-    ranking = ranking + 400 * (popcount(this->GetBlackPawns() & BoardColumnH) - 1);
-
-    return ranking;
-}
-
-int Board::Defence()
-{
-    int ranking = 0;
-
-    ranking = ranking + 10000 * popcount(this->attackedFromWhite & this->GetWhiteKing());
-    ranking = ranking + 900 * popcount(this->attackedFromWhite & this->GetWhiteQueen());
-    ranking = ranking + 500 * popcount(this->attackedFromWhite & this->GetWhiteRooks());
-    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetWhiteBishops());
-    ranking = ranking + 300 * popcount(this->attackedFromWhite & this->GetWhiteKnights());
-    ranking = ranking + 100 * popcount(this->attackedFromWhite & this->GetWhitePawns());
-
-    ranking = ranking - 10000 * popcount(this->attackedFromBlack & this->GetBlackKing());
-    ranking = ranking - 900 * popcount(this->attackedFromBlack & this->GetBlackQueen());
-    ranking = ranking - 500 * popcount(this->attackedFromBlack & this->GetBlackRooks());
-    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetBlackBishops());
-    ranking = ranking - 300 * popcount(this->attackedFromBlack & this->GetBlackKnights());
-    ranking = ranking - 100 * popcount(this->attackedFromBlack & this->GetBlackPawns());
-
-    return ranking;
-}
-
-int Board::BoardRanking(PLAYER player)
-{
-    int materialWorth = this->MaterialWorth();
-    int attackedFields = this->AttackedFields();
-    int pawnFileCounts = this->PawnFileCounts();
-    int defence = this->Defence();
-    float materialWorthWeight = 0.5;
-    return (int) (materialWorth * 0.45 + attackedFields * 0.30 + pawnFileCounts * 0.1 + defence * 0.15);
-}
-
-MOVE Board::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
-{
-    int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
-                        std::chrono::system_clock::now().time_since_epoch())
-                        .count();
-
-    unsigned int searchDepth = 1;
-    MOVE result;
-
-    int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
-                      std::chrono::system_clock::now().time_since_epoch())
-                      .count();
-
-    while (true)
-    {
-        int countStates = 0;
-        this->AlphaBetaMax(searchDepth, moves, countStates,INT_MIN, INT_MAX, &result, player);
-        searchDepth = searchDepth + 1;
-        end = std::chrono::duration_cast<std::chrono::milliseconds>(
-                          std::chrono::system_clock::now().time_since_epoch())
-                          .count();
-
-        PrintMove(result);
-        std::cout << searchDepth-1 << std::endl;
-        std::cout << end - start << std::endl;
-        std::cout << maxTime << std::endl;
-        std::cout << "States: "<<countStates<< std::endl;
-        if (end - start > maxTime)
-        {
-            break;
-        }
-    }
-
-    std::cout << "time is over iterations to depth:" << searchDepth << std::endl;
-
-    return result;
-}
-
-int Board::AlphaBetaMax(
-        int searchDepth,
-        MOVE_ARRAY moves,
-        int &states,
-        int alpha,
-        int beta,
-        MOVE *result,
-        PLAYER player)
-{
-    states += 1;
-    if (searchDepth <= 0)
-    {
-        return BoardRanking(player);
-    }
-
-    uint64_t zobristKey = 0;
-
-    if (this->transpositionTable && this->keyGenerator)
-    {
-        zobristKey = keyGenerator->CalculateZobristKey(this->black, this->white, this->kings, this->queens,
-                                                       this->bishops, this->knights, this->rooks, this->pawns);
-
-        auto entryIt = transpositionTable->find(zobristKey);
-
-        if (entryIt != transpositionTable->end() && entryIt->second.depth >= searchDepth)
-        {
-            TranspositionEntry &entry = entryIt->second;
-            if (entry.score > alpha)
-            {
-                alpha = entry.score;
-                if (result != nullptr)
-                {
-                    *result = entry.bestMove;
-                }
-            }
-            if (entry.score >= beta)
-            {
-                return entry.score;
-            }
-        }
-    }
-
-    int best = INT_MIN;
-
-    MOVE defaultMove;  // Default value for result if it's nullptr
-    MOVE &currentMove = (result != nullptr) ? *result : defaultMove;
-
-    for (int i = 1; i < moves[0]; i++)
-    {
-        Board copyBoard = Board(this); // copy board, because we have no move undo
-        copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves); // get all moves possible
-        int val = copyBoard.AlphaBetaMin(searchDepth - 1, nextMoves, states, alpha, beta, &currentMove, player);
-        if (val > best)
-        {
-            best = val;
-            if (result != nullptr)
-            {
-                *result = currentMove;
-            }
-        }
-        alpha = std::max(alpha, best);
-
-        if (beta <= alpha)
-        {
-            break;
-        }
-    }
-
-    if (this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000)
-    {
-        TranspositionEntry entry;
-        entry.depth = searchDepth;
-        entry.score = best;
-        if (result != nullptr)
-        {
-            entry.bestMove = *result;
-        }
-        transpositionTable->insert(std::make_pair(zobristKey, entry));
-    }
-
-    return best;
-}
-
-int Board::AlphaBetaMin(
-        int searchDepth,
-        MOVE_ARRAY moves,
-        int &states,
-        int alpha,
-        int beta,
-        MOVE *result,
-        PLAYER player)
-{
-    states += 1;
-    if (searchDepth <= 0)
-    {
-        return BoardRanking(player);
-    }
-
-    uint64_t zobristKey = 0;
-
-    if (this->transpositionTable && this->keyGenerator)
-    {
-        // Check if the current position is stored in the transposition table
-        zobristKey = this->keyGenerator->CalculateZobristKey(this->black, this->white, this->kings,
-                                                             this->queens, this->bishops,
-                                                             this->knights, this->rooks, this->pawns);
-        auto entryIt = this->transpositionTable->find(zobristKey);
-        if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth)
-        {
-            TranspositionEntry &entry = entryIt->second;
-            if (entry.score < beta)
-            {
-                beta = entry.score;
-                if (result != nullptr)
-                {
-                    *result = entry.bestMove;
-                }
-            }
-            if (entry.score <= alpha)
-            {
-                return entry.score;
-            }
-        }
-    }
-
-    int best = INT_MAX;
-
-    MOVE defaultMove;  // Default value for result if it's nullptr
-    MOVE& currentMove = (result != nullptr) ? *result : defaultMove;
-
-    for (int i = 1; i < moves[0]; i++)
-    {
-        Board copyBoard = Board(this); // copy board, because we have no move undo
-        copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves); // get all moves possible
-        int val = copyBoard.AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, &currentMove, player);
-        if (val < best)
-        {
-            best = val;
-            if (result != nullptr)
-            {
-                *result = currentMove;
-            }
-        }
-        beta = std::min(beta, best);
-
-        if (beta <= alpha)
-        {
-            break;
-        }
-    }
-    if (this->transpositionTable && this->keyGenerator && this->transpositionTable->size() < 30000)
-    {
-        TranspositionEntry entry;
-        entry.depth = searchDepth;
-        entry.score = best;
-        if (result != nullptr)
-        {
-            entry.bestMove = *result;
-        }
-        transpositionTable->insert(std::make_pair(zobristKey, entry));
-    }
-
-    return best;
-}
-
-
-MOVE Board::MiniMaxIterative(MOVE_ARRAY moves, int maxTime, PLAYER player)
-{
-    int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch())
-            .count();
-
-    unsigned int searchDepth = 1;
-    MOVE result;
-
-    int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch())
-            .count();
-
-    while (true)
-    {
-        int countStates = 0;
-        this->MiniMaxMax(searchDepth, moves, countStates,&result, player);
-        searchDepth = searchDepth + 1;
-        int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now().time_since_epoch())
-                .count();
-
-        PrintMove(result);
-        std::cout << searchDepth-1 << std::endl;
-        std::cout << end - start << std::endl;
-        std::cout << maxTime << std::endl;
-        std::cout << "States: "<<countStates<< std::endl;
-
-        if (end - start > maxTime)
-        {
-            break;
-        }
-    }
-
-    std::cout << "time is over iterations to depth:" << searchDepth << std::endl;
-
-    return result;
-}
-
-int Board::MiniMaxMax(
-        int searchDepth,
-        MOVE_ARRAY moves,
-        int &states,
-        MOVE *result,
-        PLAYER player)
-{
-    states +=1;
-    if (searchDepth <= 0)
-    {
-        return BoardRanking(player);
-    }
-
-    int best = INT_MIN;
-
-    for (int i = 1; i < moves[0]; i++)
-    {
-        Board copyBoard = Board(this); // copy board, because we have no move undo
-        copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves);             // get all moves possible
-        int val = copyBoard.MiniMaxMin(searchDepth - 1, nextMoves, states, NULL, player);
-        if (val > best && result != NULL)
-        {
-            *result = moves[i];
-            //std::cout << i << std::endl;
-        }
-        best = max(best, val);
-    }
-    return best;
-}
-
-int Board::MiniMaxMin(
-        int searchDepth,
-        MOVE_ARRAY moves,
-        int &states,
-        MOVE *result,
-        PLAYER player)
-{
-    states+=1;
-    if (searchDepth <= 0)
-    {
-        return BoardRanking(player);
-    }
-
-    int best = INT_MAX;
-
-    for (int i = 1; i < moves[0]; i++)
-    {
-        Board copyBoard = Board(this); // copy board, because we have no move undo
-        copyBoard.DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);; // allocate memory for next moves
-        copyBoard.GetMoves(nextMoves); // get all moves possible
-        int val = copyBoard.MiniMaxMax(searchDepth - 1, nextMoves, states, NULL, player);
-        if (val < best && result != NULL)
-        {
-            *result = moves[i];
-            //std::cout << i << std::endl;
-        }
-        best = min(best, val);
-    }
-    return best;
-}
-
-#define NO_END 0
-#define WHITE_WIN 1
-#define BLACK_WIN 2
-
-void Board::PlayGame()
-{
-    Presenter presenter = Presenter();
-    while (this->End() == NO_END)
-    {
-
-        this->DoMove(this->GetMove());
-        std::cout << presenter.ToString(*this) << std::endl;
     }
 }
 
@@ -1545,4 +798,229 @@ int Board::End()
         return BLACK_WIN; // WHITE KING IS NOT ON FIELD
     }
     return NO_END;
+}
+
+
+uint8_t Board::GetMoveRights() const
+{
+    return this->move_rights;
+}
+
+uint8_t Board::GetEnPassant() const
+{
+    return this->en_passant;
+}
+
+uint8_t Board::GetHalfMoveClock() const
+{
+    return this->halfmove_clock;
+}
+
+uint16_t Board::GetFullMoveNumber() const
+{
+    return this->fullmove_number;
+}
+
+uint64_t Board::GetCurrentColorBoard() const
+{
+    if(this->move_rights & 1) return this->black;
+    return this->white;
+}
+
+COLOR Board::GetCurrentColor() const
+{
+    return (COLOR)(this->move_rights & 1);
+}
+
+uint64_t Board::GetWhite() const
+{
+    return this->white;
+}
+
+uint64_t Board::GetBlack() const
+{
+    return this->black;
+}
+
+uint64_t Board::GetKings() const
+{
+    return this->kings;
+}
+
+uint64_t Board::GetQueens() const
+{
+    return this->queens;
+}
+
+uint64_t Board::GetBishops() const
+{
+    return this->bishops;
+}
+
+uint64_t Board::GetKnights() const
+{
+    return this->knights;
+}
+
+uint64_t Board::GetRooks() const
+{
+    return this->rooks;
+}
+
+uint64_t Board::GetPawns() const
+{
+    return this->pawns;
+}
+
+/**
+ * @brief Get the bitboard of all pieces
+ * @return new complete bit-board-collection
+ */
+uint64_t Board::GetAllPieces() const
+{
+    return this->black | this->white;
+}
+
+/**
+ * @brief Get the bitboard of all white pieces
+ * @return new complete bit-board-collection
+ */
+uint64_t Board::GetWhitePieces() const
+{
+    return this->white;
+}
+
+/**
+ * @brief Get the bitboard of all black pieces
+ * @return new complete bit-board-collection
+ */
+uint64_t Board::GetBlackPieces() const
+{
+    return this->black;
+}
+
+/**
+ * @brief get bitboard of black pawns
+ * @return bitboard of black pawns as uint64_t
+ */
+uint64_t Board::GetBlackPawns() const
+{
+    return this->black & this->pawns;
+}
+
+/**
+ * @brief get bitboard of black queen
+ * @return bitboard of black queen as uint64_t
+ */
+uint64_t Board::GetBlackQueen() const
+{
+    return this->black & this->queens;
+}
+
+/**
+ * @brief get bitboard of black king
+ * @return bitboard of black king as uint64_t
+ */
+uint64_t Board::GetBlackKing() const
+{
+    return this->black & this->kings;
+}
+
+/**
+ * @brief get bitboard of black bishops
+ * @return bitboard of black bishops as uint64_t
+ */
+uint64_t Board::GetBlackBishops() const
+{
+    return this->black & this->bishops;
+}
+
+/**
+ * @brief get bitboard of black knights
+ * @return bitboard of black knights as uint64_t
+ */
+uint64_t Board::GetBlackKnights() const
+{
+    return this->black & this->knights;
+}
+
+/**
+ * @brief get bitboard of black rook
+ * @return bitboard of black rook as uint64_t
+ */
+uint64_t Board::GetBlackRooks() const
+{
+    return this->black & this->rooks;
+}
+
+/**
+ * @brief get bitboard of white pawns
+ * @return bitboard of white pawns as uint64_t
+ */
+uint64_t Board::GetWhitePawns() const
+{
+    return this->white & this->pawns;
+}
+
+/**
+ * @brief get bitboard of white queen
+ * @return bitboard of white queen as uint64_t
+ */
+uint64_t Board::GetWhiteQueen() const
+{
+    return this->white & this->queens;
+}
+
+/**
+ * @brief get bitboard of white king
+ * @return bitboard of white king as uint64_t
+ */
+uint64_t Board::GetWhiteKing() const
+{
+    return this->white & this->kings;
+}
+
+/**
+ * @brief get bitboard of white bishops
+ * @return bitboard of white bishops as uint64_t
+ */
+uint64_t Board::GetWhiteBishops() const
+{
+    return this->white & this->bishops;
+}
+
+/**
+ * @brief get bitboard of white knights
+ * @return bitboard of white knights as uint64_t
+ */
+uint64_t Board::GetWhiteKnights() const
+{
+    return this->white & this->knights;
+}
+
+/**
+ * @brief get bitboard of white rook
+ * @return bitboard of white rook as uint64_t
+ */
+uint64_t Board::GetWhiteRooks() const
+{
+    return this->white & this->rooks;
+}
+
+/**
+ * @brief
+ * @return bitboard of white rook as uint64_t
+ */
+uint64_t &Board::GetFromWhiteAttackedFields()
+{
+    return this->attackedFromWhite;
+}
+
+/**
+ * @brief get bitboard of white rook
+ * @return bitboard of white rook as uint64_t
+ */
+uint64_t &Board::GetFromBlackAttackedFields()
+{
+    return this->attackedFromBlack;
 }
