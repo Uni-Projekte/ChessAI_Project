@@ -365,9 +365,9 @@ inline uint8_t GetFromX(MOVE move);
 
 inline uint8_t GetFromY(MOVE move);
 
-inline uint8_t FieldIndex(uint8_t x, uint8_t y);
+uint8_t FieldIndex(uint8_t x, uint8_t y);
 
-inline BOARD SingleBitBoard(uint8_t x, uint8_t y);
+BOARD SingleBitBoard(uint8_t x, uint8_t y);
 
 inline BOARD GetSingleBitBoardTo(MOVE move)
 {
@@ -381,7 +381,7 @@ inline BOARD GetSingleBitBoardFrom(MOVE move)
 
 void PrintMove(MOVE move);
 
-inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags);
+MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, int flags);
 
 bool InBounds(uint8_t x, uint8_t y);
 

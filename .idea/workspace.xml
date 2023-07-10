@@ -28,33 +28,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ZobristKeyGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/ZobristKeyGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ZobristKeyGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ZobristKeyGenerator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/MoveGeneratorHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/MoveGeneratorHelper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/rook.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/bishop.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/bishop.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/bishop.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/bishop.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/king.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/king.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/king.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/king.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/knight.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/knight.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/knight.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/knight.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/pawn.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/pawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/pawn.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/queen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/queen.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/queen.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/queen.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/rook.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/pieces/rook.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/rook.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components_tests/Helper_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Helper_Tests.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
     </list>
-    <list id="c775655f-bc19-4c5e-939f-973842b6d9cf" name="Changes by Mateusz Pawelczyk" comment="">
-      <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
-    </list>
+    <list id="c775655f-bc19-4c5e-939f-973842b6d9cf" name="Changes by Mateusz Pawelczyk" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,42 +48,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/components/helper.h">
-      <ranges>
-        <range start1="300" end1="303" start2="300" end2="301" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="307" end1="308" start2="305" end2="307" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="310" end1="316" start2="309" end2="322" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="317" end1="318" start2="323" end2="326" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="324" end1="324" start2="332" end2="346" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="364" end1="386" start2="386" end2="386" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="388" end1="390" start2="388" end2="388" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp">
-      <ranges>
-        <range start1="5" end1="10" start2="5" end2="10" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="86" end1="87" start2="86" end2="87" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="413" end1="414" start2="413" end2="414" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="426" end1="427" start2="426" end2="427" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="441" end1="442" start2="441" end2="442" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/components/helper.cpp">
-      <ranges>
-        <range start1="3" end1="3" start2="3" end2="4" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="163" end1="164" start2="164" end2="165" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="168" end1="169" start2="169" end2="170" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="173" end1="174" start2="174" end2="175" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="178" end1="179" start2="179" end2="180" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="183" end1="184" start2="184" end2="185" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="188" end1="189" start2="189" end2="190" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="272" end1="273" start2="273" end2="274" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-        <range start1="281" end1="397" start2="282" end2="282" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="402" end1="409" start2="287" end2="294" changelist="c775655f-bc19-4c5e-939f-973842b6d9cf" />
-      </ranges>
-    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -119,38 +65,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Negamax&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "refactoring",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\tasch\Desktop\Programmieren\ChessAI\ChessAI_Project\components\MoveGenerator" />
     </key>
   </component>
-  <component name="RunManager" selected="Google Test.BoardTest.DoMoveBenchmarkMiddleTranspostionTable">
+  <component name="RunManager" selected="Google Test.BoardTest.PlayGame">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="All in Board_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Board_Tests.cpp)" TEST_MODE="PATTERN">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="BoardTest.DoMoveBenchmarkEnd" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkEnd" TEST_MODE="SUITE_TEST">
@@ -171,7 +111,13 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.DoMoveBenchmarkStart" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="DoMoveBenchmarkStart" TEST_MODE="SUITE_TEST">
+    <configuration name="BoardTest.FromFENTestInitalBoard" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="FromFENTestInitalBoard" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.PlayGame" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="PlayGame" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -221,19 +167,19 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
+      <item itemvalue="Google Test.BoardTest.FromFENTestInitalBoard" />
+      <item itemvalue="Google Test.BoardTest.PlayGame" />
       <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
       <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddle" />
-      <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkStart" />
       <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddleTranspostionTable" />
-      <item itemvalue="Google Test.All in Board_Tests.cpp" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.BoardTest.PlayGame" />
+        <item itemvalue="Google Test.BoardTest.FromFENTestInitalBoard" />
         <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddleTranspostionTable" />
         <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkMiddle" />
         <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkEnd" />
-        <item itemvalue="Google Test.BoardTest.DoMoveBenchmarkStart" />
-        <item itemvalue="Google Test.All in Board_Tests.cpp" />
       </list>
     </recent_temporary>
   </component>
@@ -276,16 +222,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/components/MoveAlgorithms.h</url>
-          <line>48</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -2,15 +2,15 @@
 
 void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, uint8_t direction)
 {
-    uint8_t newX;
-    uint8_t newY;
+    uint8_t newX = x;
+    uint8_t newY = y;
 
     BOARD currentColor = board->GetCurrentColorBoard();
     BOARD allPieces = board->GetAllPieces();
 
     if(direction == 0 || direction==1){
         // east
-        uint8_t newX = x+1;
+        newX = x+1;
         while (newX < 8 && !(currentColor & SingleBitBoard(newX, y)))
         {
             BOARD toBitboard = SingleBitBoard(newX, y);
@@ -45,7 +45,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
 
     if(direction == 0 || direction==2){
         //south
-        uint8_t newY = y-1;
+        newY = y-1;
         while (newY < 255 && !(currentColor & SingleBitBoard(x, newY)))
         {
             BOARD toBitboard = SingleBitBoard(x, newY);

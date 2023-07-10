@@ -39,7 +39,7 @@ PIECE GetCapturedPiece(Board* board, BOARD to_bitboard)
     return capture_piece;
 }
 
-void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, uint16_t flags)
+void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, int flags)
 {
     moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
     moves[0] = moves[0] + 1;

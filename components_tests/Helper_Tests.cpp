@@ -4,7 +4,7 @@
 #include "../components/helper.h"
 
 TEST(HelperTest, FieldIndexTest) {
-    uint16_t fieldIndex = FieldIndex(2,2);
+    uint8_t fieldIndex = FieldIndex(2,2);
     EXPECT_EQ(fieldIndex, 0b010101);
 }
 

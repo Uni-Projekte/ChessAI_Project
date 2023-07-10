@@ -210,12 +210,12 @@ inline uint8_t GetFromY(MOVE move)
     return (move & MOVE_FROM_Y) >> 9;
 }
 
-inline uint8_t FieldIndex(uint8_t x, uint8_t y)
+uint8_t FieldIndex(uint8_t x, uint8_t y)
 {
     return (y << 3) | (~x & 0b111);
 }
 
-inline BOARD SingleBitBoard(uint8_t x, uint8_t y)
+BOARD SingleBitBoard(uint8_t x, uint8_t y)
 {
     return 1ULL << FieldIndex(x, y);
 }
@@ -271,7 +271,7 @@ void showDifference(const std::unordered_set<int>& set1, const std::unordered_se
     std::cout << std::endl;
 }
 
-inline MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, int flags)
+MOVE CreateMove(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, int flags)
 {
     return (flags | ((uint16_t)(FieldIndex(xFrom, yFrom)) << 6) | FieldIndex(xTo, yTo));
 }
