@@ -9,6 +9,7 @@ uint64_t GetRowFromIndex(int index)
     {
         case 0:
             return BoardRow1;
+
         case 1:
             return BoardRow2;
         case 2:

@@ -48,7 +48,7 @@ TEST(PiecesTest, BishopTest1) {
 }
 
 TEST(PiecesTest, BishopTest2) {
-    Board board("8/2r5/8/4b3/8/8/8/8 w - - 0 1");
+    Board board("8/2r5/8/4b3/8/8/8/8 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -67,17 +67,17 @@ TEST(PiecesTest, BishopTest2) {
             CreateMove(4, 4, 3, 5, 0),
     };
 
-    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
-
 
     NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, &board, board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111,0);
     std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    showDifference(expectedMovesSet, movesSet);
     EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
 TEST(PiecesTest, BishopTest3) {
-    Board board("8/8/8/8/3Q4/8/1b6/8 w - - 0 1");
+    Board board("8/8/8/8/3Q4/8/1b6/8 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -178,13 +178,13 @@ TEST(PiecesTest, QueenTest2) {
             CreateMove(4, 4, 4, 7, 0),
     };
 
-    std::unordered_set<int> expectedMovesSet(expectedMoves + 1, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
 
 
     NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, &board, board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111, 0);
 
-    std::unordered_set<int> movesSet(moves + 1, moves + moves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
 
     showDifference(expectedMovesSet, movesSet);
 
@@ -228,13 +228,10 @@ TEST(PiecesTest, QueenTest3) {
     NEW_MOVE_ARRAY(moves);
     queen::possibleMoves(moves, &board,  board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111, 0);
 
-    std::unordered_set<int> expectedMovesSet(expectedMoves + 1, expectedMoves + expectedMoves[0]);
-    std::unordered_set<int> actualMoves;
-    for (unsigned int i = 1; i < moves[0]; ++i) {
-        actualMoves.insert(moves[i]);
-    }
-
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> actualMoves(moves, moves + moves[0]);
     showDifference(expectedMovesSet, actualMoves);
+
     EXPECT_EQ(expectedMoves[0], moves[0]) << "Different number of moves";
     EXPECT_EQ(expectedMovesSet == actualMoves, true);
 
@@ -274,7 +271,7 @@ TEST(PiecesTest, RookTest1) {
 }
 
 TEST(PiecesTest, RookTest2) {
-    Board board("r7/8/8/8/8/8/8/R7 w - - 0 1");
+    Board board("r7/8/8/8/8/8/8/R7 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -298,6 +295,9 @@ TEST(PiecesTest, RookTest2) {
 
     NEW_MOVE_ARRAY(moves);
     rook::possibleMoves(moves, &board, board.GetPosition("a8") >> 3, board.GetPosition("a8") & 0b111, 0);
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
 
     for (unsigned int i = 0; i < moves[0]; ++i)
     {
@@ -306,7 +306,7 @@ TEST(PiecesTest, RookTest2) {
 }
 
 TEST(PiecesTest, RookTest3) {
-    Board board("r7/8/8/8/8/8/8/r7 w - - 0 1");
+    Board board("r7/8/8/8/8/8/8/r7 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -337,7 +337,7 @@ TEST(PiecesTest, RookTest3) {
 }
 
 TEST(PiecesTest, KnightTest1) {
-    Board board("8/8/8/8/4n3/8/8/8 w - - 0 1");
+    Board board("8/8/8/8/4n3/8/8/8 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -363,7 +363,7 @@ TEST(PiecesTest, KnightTest1) {
 }
 
 TEST(PiecesTest, KnightTest2) {
-    Board board("8/1n6/8/2N5/8/8/8/8 w - - 0 1");
+    Board board("8/1n6/8/2N5/8/8/8/8 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -385,7 +385,7 @@ TEST(PiecesTest, KnightTest2) {
 }
 
 TEST(PiecesTest, KnightTest3) {
-    Board board("8/8/8/8/8/4q3/6n1/8 w - - 0 1");
+    Board board("8/8/8/8/8/4q3/6n1/8 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -398,6 +398,10 @@ TEST(PiecesTest, KnightTest3) {
 
     NEW_MOVE_ARRAY(moves);
     knight::possibleMoves(moves, &board, board.GetPosition("g2") >> 3,board.GetPosition("g2") & 0b111);
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
 
     for (unsigned int i = 0; i < moves[0]; ++i)
     {
@@ -418,7 +422,7 @@ TEST(PiecesTest, PawnEatsPawnTest)
 
 TEST(PiecesTest, EnPassantTest)
 {
-    Board board("2k5/8/8/8/6p1/8/5P2/3K4 w - - 0 1");
+    Board board("2k5/8/8/8/6p1/8/5P2/3K4 b - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
@@ -438,15 +442,16 @@ TEST(PiecesTest, EnPassantTest2)
 
     board.DoMove(CreateMove(5, 6, 5, 4, 0));
     EXPECT_EQ("rnbqkbnr/1pppp1pp/p7/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3", board.toFEN());
+    std::cout << std::endl << presenter.ToString(board);
 
     board.DoMove(CreateMove(4, 4, 5, 5, EN_PASSANTE));
     std::cout << std::endl << presenter.ToString(board);
     EXPECT_EQ("rnbqkbnr/1pppp1pp/p4P2/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3", board.toFEN());
 }
 
-/*TEST(PiecesTest, KingMoveInCheckedField1)
+TEST(PiecesTest, KingMoveInCheckedField1)
 {
-    Board board("4r3/8/8/8/8/3K4/8/8 w - - 0 1");
+    Board board("5r2/8/8/8/8/3K4/8/8 b - - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -460,31 +465,26 @@ TEST(PiecesTest, EnPassantTest2)
             CreateMove(3, 2, 2, 3, 0),
     };
 
-    NEW_MOVE_ARRAY(moves1);
-    rook::possibleMoves(moves1, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+    board.DoMove(CreateMove(5,7,4,7,0));
+
+    std::cout << std::endl << presenter.ToString(board);
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
 
-    int i = 0;
-
-    for(int k: moves){
-        i++;
-    }
-
-    std::cout << "legnth: "<<i;
-
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
 
     presenter.displayUINT64(board.GetFromBlackAttackedFields());
+    presenter.displayUINT64(~board.GetFromBlackAttackedFields());
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
+
 
 TEST(PiecesTest, KingMoveInCheckedField2)
 {
-    Board board("4r3/8/8/8/2q5/3K4/4R3/8 w - - 0 1");
+    Board board("4r3/8/8/2q5/8/3K4/4R3/8 b - - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -492,34 +492,29 @@ TEST(PiecesTest, KingMoveInCheckedField2)
     MOVE expectedMoves[3] = {
             3,
             CreateMove(3, 2, 3, 1, 0),
-            CreateMove(3, 2, 2, 3, CAPTURE),
+            CreateMove(3, 2, 2, 3, CAPTURE_QUEEN),
     };
 
-    NEW_MOVE_ARRAY(moves1);
-    rook::possibleMoves(moves1, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8")>>3, board.GetPosition("e8") & 0b111);
+    board.DoMove(CreateMove(2,4,2,3,0));
 
-    NEW_MOVE_ARRAY(moves2);
-    queen::possibleMoves(moves2, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("c4")>>3, board.GetPosition("c4") & 0b111);
+    std::cout << std::endl << presenter.ToString(board);
+    presenter.displayUINT64(board.GetFromBlackAttackedFields());
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("d3") >> 3, board.GetPosition("d3") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-        PrintMove(moves[i]);
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
 
-    std::cout << moves[0] << std::endl;
-
-
-    presenter.displayUINT64(board.GetFromBlackAttackedFields());
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
+
 
 TEST(PiecesTest, KingMoveInCheckedField3)
 {
-    Board board("4r3/8/8/8/8/4K3/8/8 w - - 0 1");
+    Board board("4r3/8/8/8/8/4K3/8/8 b - - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -534,21 +529,21 @@ TEST(PiecesTest, KingMoveInCheckedField3)
             CreateMove(4, 2, 3, 3, 0),
     };
 
-    NEW_MOVE_ARRAY(moves1);
-    rook::possibleMoves(moves1, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8")>>3, board.GetPosition("e8") & 0b111);
+    board.DoMove(CreateMove(4,7,4,6,0));
+    presenter.displayUINT64(board.GetFromBlackAttackedFields());
 
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e3") >> 3, board.GetPosition("e3") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("e3") >> 3, board.GetPosition("e3") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
 
-    std::cout << moves[0] << std::endl;
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
+
 
 TEST(PiecesTest,WhiteCastling){
     Board board("8/8/8/8/8/8/8/R3K2R w KQ - 0 1");
@@ -558,8 +553,8 @@ TEST(PiecesTest,WhiteCastling){
 
     MOVE expectedMoves[8] = {
             8,
-            CreateMove(4, 0, 6, 0, 0),
-            CreateMove(4, 0, 2, 0, 0),
+            CreateMove(4, 0, 6, 0, CASTLING),
+            CreateMove(4, 0, 2, 0, CASTLING),
             CreateMove(4, 0, 4, 1, 0),
             CreateMove(4, 0, 5, 1, 0),
             CreateMove(4, 0, 5, 0, 0),
@@ -568,13 +563,14 @@ TEST(PiecesTest,WhiteCastling){
     };
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+    king::possibleMoves(moves, &board,board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
 TEST(PiecesTest,WhiteCastlingNotWorking){
@@ -584,25 +580,25 @@ TEST(PiecesTest,WhiteCastlingNotWorking){
     std::cout << std::endl << presenter.ToString(board);
 
     MOVE expectedMoves[5] = {
-            5,
-            CreateMove(4, 0, 4, 1, 0),
+            4,
             CreateMove(4, 0, 5, 1, 0),
             CreateMove(4, 0, 3, 0, 0),
             CreateMove(4, 0, 3, 1, 0),
     };
 
+    board.MarkFields(BLACK);
 
-    NEW_MOVE_ARRAY(dummy);
-    bishop::possibleMoves(dummy, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("h3") >> 3, board.GetPosition("h3") & 0b111);
+    presenter.displayUINT64(board.GetFromBlackAttackedFields());
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
 TEST(PiecesTest,WhiteCastlingNotWorkingCheck){
@@ -619,30 +615,29 @@ TEST(PiecesTest,WhiteCastlingNotWorkingCheck){
             CreateMove(4, 0, 3, 0, 0),
     };
 
-
-    NEW_MOVE_ARRAY(dummy);
-    bishop::possibleMoves(dummy, board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("c3") >> 3, board.GetPosition("c3") & 0b111);
+    board.MarkFields(BLACK);
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("e1") >> 3, board.GetPosition("e1") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
 TEST(PiecesTest, BlackCastling){
-    Board board("r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1");
+    Board board("r3k2r/8/8/8/8/8/8/4K3 b kq - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
     MOVE expectedMoves[8] = {
             8,
-            CreateMove(4, 7, 6, 7, 0),
-            CreateMove(4, 7, 2, 7, 0),
+            CreateMove(4, 7, 6, 7, CASTLING),
+            CreateMove(4, 7, 2, 7, CASTLING),
             CreateMove(4, 7, 5, 7, 0),
             CreateMove(4, 7, 5, 6, 0),
             CreateMove(4, 7, 4, 6, 0),
@@ -650,48 +645,49 @@ TEST(PiecesTest, BlackCastling){
             CreateMove(4, 7, 3, 7, 0),
     };
 
+    board.MarkFields(WHITE);
+
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
-
 TEST(PiecesTest, BlackCastlingNotWorking){
-    Board board("r3kN1r/8/8/B7/8/8/8/4K3 w kq - 0 1");
+    Board board("r3kN1r/8/8/B7/8/8/8/4K3 b kq - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
     MOVE expectedMoves[5] = {
             5,
-            CreateMove(4, 7, 5, 7, CAPTURE),
+            CreateMove(4, 7, 5, 7, CAPTURE_KNIGHT),
             CreateMove(4, 7, 5, 6, 0),
             CreateMove(4, 7, 4, 6, 0),
             CreateMove(4, 7, 3, 6, 0),
     };
 
-
-    NEW_MOVE_ARRAY(dummy);
-    bishop::possibleMoves(dummy, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("a5") >> 3, board.GetPosition("a5") & 0b111);
+    board.MarkFields(WHITE);
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
 
 TEST(PiecesTest, BlackCastlingNotWorkingCheck){
-    Board board("r3k2r/8/8/1B6/8/8/8/4K3 w kq - 0 1");
+    Board board("r3k2r/8/8/1B6/8/8/8/4K3 b kq - 0 1");
 
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
@@ -705,25 +701,20 @@ TEST(PiecesTest, BlackCastlingNotWorkingCheck){
     };
 
 
-    NEW_MOVE_ARRAY(dummy);
-    bishop::possibleMoves(dummy, board.GetAllPieces(), board.GetWhitePieces(), board.GetPosition("b5") >> 3, board.GetPosition("b5") & 0b111);
+    board.MarkFields(WHITE);
 
     NEW_MOVE_ARRAY(moves);
-    king::possibleMoves(moves, board.GetMoveRights(), board.GetAllPieces(), board.GetBlackPieces(), board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
+    king::possibleMoves(moves, &board, board.GetPosition("e8") >> 3, board.GetPosition("e8") & 0b111);
 
 
-    for (int i = 0; i < moves[0]; ++i)
-    {
-        EXPECT_EQ(expectedMoves[i], moves[i]) << "i = " << i << std::endl;
-    }
+    std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
+    std::unordered_set<int> movesSet(moves, moves + moves[0]);
+    showDifference(expectedMovesSet, movesSet);
+
+    EXPECT_EQ(expectedMovesSet == movesSet, true);
 }
 
-Test(PiecesTest, DoMoveCastlig){
-
-}
-
-
-TEST(PiecesTest, BishopTestManyMoves) {
+/*TEST(PiecesTest, BishopTestManyMoves) {
     const std::string game[27] = {
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
             "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
@@ -775,9 +766,8 @@ TEST(PiecesTest, BishopTestManyMoves) {
         board.DoMove(moves[i]);
     }
 
-}
+}*/
 
-*/
 TEST(PiecesTest, BishopMarkFields){
     Board board("6k1/8/4b3/8/2B5/8/8/8 w - - 0 1");
 

@@ -3,15 +3,13 @@
 
 void king::possibleMoves(MOVE_ARRAY &moves, Board *board, uint8_t x, uint8_t y)
 {
-
-    BOARD currentColor = board->GetCurrentColorBoard();
     BOARD allPieces = board->GetAllPieces();
     uint8_t moveRights = board->GetMoveRights();
     BOARD attackedFieldsEnemy;
     if (moveRights & 1){
-        BOARD attackedFieldsEnemy = board->GetFromWhiteAttackedFields();
+        attackedFieldsEnemy = board->GetFromWhiteAttackedFields();
     }else{
-        BOARD attackedFieldsEnemy = board->GetFromBlackAttackedFields();
+        attackedFieldsEnemy = board->GetFromBlackAttackedFields();
     }
 
     BOARD whiteKingStartPostition = 0b1000;

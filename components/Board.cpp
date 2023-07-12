@@ -511,9 +511,6 @@ void Board::DoMove(MOVE move)
     const BOARD rook = this->rooks;
     const BOARD knights = this->knights;
 
-    // change player turn (x xor 1 = !x)
-    this->move_rights = this->move_rights ^ 0b1U;
-
     // disable white castling when king moved
     this->move_rights = this->move_rights & (NO_WHITE_CASTLING | (!bool(white & this->kings & from) << 6) | (!bool(white & this->kings & from) << 7));
     // disable black castling when king moved
@@ -616,7 +613,10 @@ void Board::DoMove(MOVE move)
     // en_passant
     this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
 
-    MarkFields();
+    MarkFields((COLOR)(this->move_rights & 1));
+
+    // change player turn (x xor 1 = !x)
+    this->move_rights = this->move_rights ^ 0b1U;
 }
 
 void UndoMove(MOVE move)
@@ -628,8 +628,8 @@ void UndoMove(MOVE move)
     }
 }
 
-void Board::MarkFields(){
-    if(this->move_rights&1){
+void Board::MarkFields(COLOR currentColor){
+    if(currentColor){
         this->pinnedWhitePieces = 0;
         this->attackedFromBlack = 0;
     }
@@ -641,7 +641,7 @@ void Board::MarkFields(){
     {
         for (uint8_t y = 0; y < 8; y = y + 1)
         {
-            if (this->move_rights & 1)
+            if (currentColor)
             {
                 if (this->bishops & this->black & SingleBitBoard(x, y))
                 {

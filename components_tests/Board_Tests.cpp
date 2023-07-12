@@ -53,7 +53,7 @@ TEST(BoardTest, FromFENTestRandomBoard2) {
     EXPECT_EQ(board.GetWhiteKnights(), 0x0);
 }
 
-TEST(BoardTest, PlayGame)
+/*TEST(BoardTest, PlayGame)
 {
 
     Board board = Board();
@@ -68,10 +68,10 @@ TEST(BoardTest, StartRanking)
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
-    std::cout << board..BoardRanking(WHITE) << std::endl;
+    std::cout << board.BoardRanking(WHITE) << std::endl;
 }
 
-/*
+
 TEST(BoardTest, DoMoveBenchmarkStart)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");

@@ -17,7 +17,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
             if (allPieces & ~currentColor & toBitboard){
                 PIECE capturePiece = GetCapturedPiece(board, toBitboard);
                 int captureFlag = capturePiece << 15;
-                AddMove(moves, x, y, newX, newY, captureFlag);
+                AddMove(moves, x, y, newX, y, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, newX, y, 0);
@@ -34,7 +34,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
             {
                 PIECE capturePiece = GetCapturedPiece(board, toBitboard);
                 int captureFlag = capturePiece << 15;
-                AddMove(moves, x, y, newX, newY, captureFlag);
+                AddMove(moves, x, y, newX, y, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, newX, y, 0);
@@ -53,7 +53,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
             {
                 PIECE capturePiece = GetCapturedPiece(board, toBitboard);
                 int captureFlag = capturePiece << 15;
-                AddMove(moves, x, y, newX, newY, captureFlag);
+                AddMove(moves, x, y, x, newY, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, x, newY, 0);
@@ -70,7 +70,7 @@ void rook::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
             {
                 PIECE capturePiece = GetCapturedPiece(board, toBitboard);
                 int captureFlag = capturePiece << 15;
-                AddMove(moves, x, y, newX, newY, captureFlag);
+                AddMove(moves, x, y, x, newY, captureFlag);
                 break;
             } else {
                 AddMove(moves, x, y, x, newY, 0);

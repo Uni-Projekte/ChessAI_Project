@@ -39,6 +39,13 @@ PIECE GetCapturedPiece(Board* board, BOARD to_bitboard)
     return capture_piece;
 }
 
+int GetCastlingFlag(uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo){
+    if(xFrom+2 == xTo || xFrom-2 == xTo){
+        return CASTLING;
+    }
+    return 0;
+}
+
 void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo, int flags)
 {
     moves[moves[0]] = CreateMove(xFrom, yFrom, xTo, yTo, flags);
@@ -46,7 +53,7 @@ void AddMove(MOVE_ARRAY &moves, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8
 }
 
 void TryAddMove(MOVE_ARRAY &moves, Board* board, uint8_t xFrom, uint8_t yFrom, uint8_t xTo, uint8_t yTo) {
-    if (!InBounds(xTo, yTo))
+    if (!InBounds(xTo, yTo) || (SingleBitBoard(xTo, yTo) & board->GetCurrentColorBoard()))
     {
         return;
     }
@@ -84,14 +91,14 @@ bool TryAddMoveNoCaptureKing(MOVE_ARRAY &moves, Board *board, uint8_t xFrom, uin
         BOARD allPieces = board->GetAllPieces();
         BOARD attackedFieldsEnemy;
         if (board->GetCurrentColor()){
-            BOARD attackedFieldsEnemy = board->GetFromWhiteAttackedFields();
+            attackedFieldsEnemy = board->GetFromWhiteAttackedFields();
         }else{
-            BOARD attackedFieldsEnemy = board->GetFromBlackAttackedFields();
+            attackedFieldsEnemy = board->GetFromBlackAttackedFields();
         }
+
         if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~allPieces & ~currentColor)
         {
-            int capture_flag = GetCapturedPiece(board, SingleBitBoard(xTo, yTo)) << 15;
-            AddMoveKing(moves, xFrom, yFrom, xTo, yTo, capture_flag);
+            AddMoveKing(moves, xFrom, yFrom, xTo, yTo, GetCastlingFlag(xFrom, yFrom, xTo, yTo));
             return true;
         }
     }
@@ -107,9 +114,9 @@ bool TryAddMoveOnlyCaptureKing(MOVE_ARRAY &moves, Board *board, uint8_t xFrom, u
         uint8_t moveRights = board->GetMoveRights();
         BOARD attackedFieldsEnemy;
         if (moveRights & 1){
-            BOARD attackedFieldsEnemy = board->GetFromWhiteAttackedFields();
+            attackedFieldsEnemy = board->GetFromWhiteAttackedFields();
         }else{
-            BOARD attackedFieldsEnemy = board->GetFromBlackAttackedFields();
+            attackedFieldsEnemy = board->GetFromBlackAttackedFields();
         }
         if (~attackedFieldsEnemy & SingleBitBoard(xTo, yTo) & ~currentColor & allPieces)
         {

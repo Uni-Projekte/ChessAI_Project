@@ -95,7 +95,7 @@ public:
 
     void GetMoves(MOVE_ARRAY &moves);
 
-    void MarkFields();
+    void MarkFields(COLOR currentColor);
 
     uint8_t GetEnPassant() const;
     uint8_t GetMoveRights() const;
