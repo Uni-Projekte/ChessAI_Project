@@ -344,8 +344,16 @@ enum PIECE {
 #define EN_PASSANTE     1U << 18
 #define CASTLING        1U << 19
 
+// Define a type for the transposition table entry
+struct TranspositionEntry {
+    int depth;
+    int score;
+    MOVE bestMove;
+};
 
-inline bool GetCapture(MOVE move);
+
+
+inline uint8_t GetCapture(MOVE move);
 
 inline bool GetCastling(MOVE move);
 

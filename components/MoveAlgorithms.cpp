@@ -3,9 +3,12 @@
 
 using namespace std;
 
-MoveAlgorithms::MoveAlgorithms(Board *board)
+MoveAlgorithms::MoveAlgorithms(Board *board, std::unordered_map<uint64_t, TranspositionEntry> *transpositionTable,
+                               ZobristKeyGenerator *keyGenerator)
 {
     this->board = board;
+    this->transpositionTable = transpositionTable;
+    this->keyGenerator = keyGenerator;
 }
 
 MOVE MoveAlgorithms::GetMoveAlphaBeta()
@@ -128,11 +131,11 @@ int MoveAlgorithms::AlphaBetaMax(
 
     uint64_t zobristKey = 0;
 
-    zobristKey = keyGenerator.CalculateZobristKey(this->board);
+    zobristKey = this->keyGenerator->CalculateZobristKey(this->board);
 
-    auto entryIt = transpositionTable->find(zobristKey);
+    auto entryIt = this->transpositionTable->find(zobristKey);
 
-    if (entryIt != transpositionTable->end() && entryIt->second.depth >= searchDepth)
+    if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth)
     {
         TranspositionEntry &entry = entryIt->second;
         if (entry.score > alpha)
@@ -178,14 +181,14 @@ int MoveAlgorithms::AlphaBetaMax(
 
     if (this->transpositionTable->size() < 30000)
     {
-        TranspositionEntry entry;
+        TranspositionEntry entry{};
         entry.depth = searchDepth;
         entry.score = best;
         if (result != nullptr)
         {
             entry.bestMove = *result;
         }
-        transpositionTable->insert(std::make_pair(zobristKey, entry));
+        this->transpositionTable->insert(std::make_pair(zobristKey, entry));
     }
 
     return best;
@@ -207,7 +210,7 @@ int MoveAlgorithms::AlphaBetaMin(
     }
 
     // Check  if the current position is stored in the transposition table
-    uint64_t zobristKey = this->keyGenerator.CalculateZobristKey(this->board);
+    uint64_t zobristKey = this->keyGenerator->CalculateZobristKey(this->board);
     auto entryIt = this->transpositionTable->find(zobristKey);
     if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth)
     {
@@ -255,14 +258,14 @@ int MoveAlgorithms::AlphaBetaMin(
     }
     if (this->transpositionTable->size() < 30000)
     {
-        TranspositionEntry entry;
+        TranspositionEntry entry{};
         entry.depth = searchDepth;
         entry.score = best;
         if (result != nullptr)
         {
             entry.bestMove = *result;
         }
-        transpositionTable->insert(std::make_pair(zobristKey, entry));
+        this->transpositionTable->insert(std::make_pair(zobristKey, entry));
     }
 
     return best;
@@ -485,3 +488,4 @@ int MoveAlgorithms::Defence()
 
     return ranking;
 }
+

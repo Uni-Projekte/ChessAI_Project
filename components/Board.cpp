@@ -619,13 +619,63 @@ void Board::DoMove(MOVE move)
     this->move_rights = this->move_rights ^ 0b1U;
 }
 
-void UndoMove(MOVE move)
+void Board::UndoMove(MOVE move)
 {
+
+
+    const BOARD from = GetSingleBitBoardFrom(move);
+    const BOARD to = GetSingleBitBoardTo(move);
+    const bool castling = GetCastling(move);
+    uint8_t capturedPiece = GetCapture(move);
+
     uint16_t move_flags = move & UPGRADE_FLAGS;
     if (move_flags == EN_PASSANTE)
     {
 
     }
+
+    COLOR colorThatMoved = BLACK;
+    if(to & this->white){
+        colorThatMoved = WHITE;
+    }
+
+    if(colorThatMoved){
+        this->black = this->black | from;
+    }
+    else{
+        this->white = this->white | from;
+    }
+
+
+    switch (capturedPiece) {
+        case 0:
+            switch (colorThatMoved) {
+                case WHITE:
+                    this->white = this->white ^ to;
+                    break;
+                case BLACK:
+                    this->black = this->black ^ to;
+            }
+        case 1:
+            // enpassant check missing
+            this->pawns = this->pawns | to;
+            break;
+        case 2:
+            this->rooks = this->rooks | to;
+            break;
+        case 3:
+            this->knights = this->knights | to;
+            break;
+        case 4:
+            this->bishops = this->bishops | to;
+            break;
+        case 5:
+            this->queens = this->queens | to;
+            break;
+        default:
+            break;
+    }
+
 }
 
 void Board::MarkFields(COLOR currentColor){

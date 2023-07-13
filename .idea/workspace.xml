@@ -30,12 +30,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/MoveGeneratorHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/MoveGeneratorHelper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/pieces/king.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/king.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/pieces/rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/rook.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
     </list>
     <list id="c775655f-bc19-4c5e-939f-973842b6d9cf" name="Changes by Mateusz Pawelczyk" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,30 +65,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "true",
-    "cf.advertisement.text.has.clang-format": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "refactoring",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
+    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactoring&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\tasch\Desktop\Programmieren\ChessAI\ChessAI_Project\components\MoveGenerator" />
     </key>
   </component>
-  <component name="RunManager" selected="Google Test.All in Pieces_Tests.cpp">
+  <component name="RunManager" selected="Google Test.All in Board_Tests.cpp">
+    <configuration name="All in Board_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Board_Tests.cpp)" TEST_MODE="PATTERN">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in Pieces_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp)" TEST_MODE="PATTERN">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -120,18 +125,7 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PiecesTest.WhiteCastlingNotWorkingCheck" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="WhiteCastlingNotWorkingCheck" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ChessAI_Project" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="ChessAI_Project" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="ChessAI_Project">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -169,19 +163,19 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
+      <item itemvalue="Google Test.All in Board_Tests.cpp" />
       <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
       <item itemvalue="Google Test.PiecesTest.BishopMarkFields" />
       <item itemvalue="Google Test.PiecesTest.BlackCastling" />
       <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
-      <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorkingCheck" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.All in Board_Tests.cpp" />
         <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
         <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
         <item itemvalue="Google Test.PiecesTest.BishopMarkFields" />
         <item itemvalue="Google Test.PiecesTest.BlackCastling" />
-        <item itemvalue="Google Test.PiecesTest.WhiteCastlingNotWorkingCheck" />
       </list>
     </recent_temporary>
   </component>
@@ -202,7 +196,8 @@
       <workItem from="1688824407951" duration="8997000" />
       <workItem from="1688906373919" duration="84000" />
       <workItem from="1688906469018" duration="19867000" />
-      <workItem from="1689170024802" duration="12573000" />
+      <workItem from="1689170024802" duration="12625000" />
+      <workItem from="1689244573557" duration="3829000" />
     </task>
     <servers />
   </component>
@@ -235,9 +230,9 @@
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/components/MoveGenerator/pieces/king.cpp</url>
-          <line>5</line>
-          <option name="timeStamp" value="35" />
+          <url>file://$PROJECT_DIR$/components_tests/Board_Tests.cpp</url>
+          <line>85</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

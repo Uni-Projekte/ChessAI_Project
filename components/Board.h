@@ -93,6 +93,8 @@ public:
 
     void DoMove(MOVE move);
 
+    void UndoMove(MOVE move);
+
     void GetMoves(MOVE_ARRAY &moves);
 
     void MarkFields(COLOR currentColor);

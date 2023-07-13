@@ -53,7 +53,7 @@ TEST(BoardTest, FromFENTestRandomBoard2) {
     EXPECT_EQ(board.GetWhiteKnights(), 0x0);
 }
 
-/*TEST(BoardTest, PlayGame)
+TEST(BoardTest, PlayGame)
 {
 
     Board board = Board();
@@ -65,26 +65,31 @@ TEST(BoardTest, FromFENTestRandomBoard2) {
 TEST(BoardTest, StartRanking)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator);
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
-    std::cout << board.BoardRanking(WHITE) << std::endl;
+    std::cout << moveCalc.BoardRanking(WHITE) << std::endl;
 }
 
 
 TEST(BoardTest, DoMoveBenchmarkStart)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator);
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
-    for (int i = 0; i < 1; i++) {
-        board.GetMove();
-    }
+    std::cout << moveCalc.GetMoveAlphaBeta();
 }
 
 
-TEST(BoardTest, DoMoveBenchmarkMiddle)
+/*TEST(BoardTest, DoMoveBenchmarkMiddle)
 {
     Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
     Presenter presenter = Presenter();

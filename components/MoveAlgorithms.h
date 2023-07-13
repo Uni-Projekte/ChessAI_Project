@@ -8,21 +8,16 @@
 #include <bit>
 #include "ZobristKeyGenerator.h"
 
-// Define a type for the transposition table entry
-struct TranspositionEntry {
-    int depth;
-    int score;
-    MOVE bestMove;
-};
-
 class MoveAlgorithms {
 private:
     Board *board;
-    std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable = nullptr;//0. Best Move 1. Alpha 2. Beta
-    ZobristKeyGenerator keyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable;//0. Best Move 1. Alpha 2. Beta
+    ZobristKeyGenerator *keyGenerator;
 
 public:
-    MoveAlgorithms(Board *board);
+    MoveAlgorithms(Board *board, std::unordered_map<uint64_t ,
+                   TranspositionEntry> *transpositionTable,
+                   ZobristKeyGenerator *keyGenerator);
     MOVE GetMoveAlphaBeta();
     MOVE GetMoveMinMax();
 
