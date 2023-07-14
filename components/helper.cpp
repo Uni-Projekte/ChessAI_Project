@@ -161,9 +161,9 @@ std::string Uint8ToString(uint8_t board)
     return out;
 }
 
-inline uint8_t GetCapture(MOVE move)
+inline PIECE GetCapture(MOVE move)
 {
-    return move & CAPTURE_FLAGS;
+    return (PIECE) (move & CAPTURE_FLAGS);
 }
 
 inline bool GetCastling(MOVE move)

@@ -29,12 +29,8 @@
     <list default="true" id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
     </list>
     <list id="c775655f-bc19-4c5e-939f-973842b6d9cf" name="Changes by Mateusz Pawelczyk" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -197,7 +193,8 @@
       <workItem from="1688906373919" duration="84000" />
       <workItem from="1688906469018" duration="19867000" />
       <workItem from="1689170024802" duration="12625000" />
-      <workItem from="1689244573557" duration="3829000" />
+      <workItem from="1689244573557" duration="3891000" />
+      <workItem from="1689357326633" duration="2690000" />
     </task>
     <servers />
   </component>

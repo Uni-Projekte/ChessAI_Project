@@ -624,28 +624,43 @@ void Board::UndoMove(MOVE move)
     const BOARD from = GetSingleBitBoardFrom(move);
     const BOARD to = GetSingleBitBoardTo(move);
     const bool castling = GetCastling(move);
-    uint8_t capturedPiece = GetCapture(move);
+    PIECE capturedPiece = GetCapture(move);
 
-    //get color of move
+    //get color of moved piece
     COLOR colorThatMoved = BLACK;
     if(to & this->white){
         colorThatMoved = WHITE;
     }
 
+
+    /*
+     * reset moved piece
+     */
+
     //remove moves piece from to position on piece boards (handles upgrades too, cause it removes just the one piece on to field)
     if (this->pawns & to) {
         this->pawns = this->pawns ^ to;
+        this->pawns = this->pawns | from;
     } else if (this->rooks & to) {
         this->rooks = this->rooks ^ to;
+        this->rooks = this->rooks | from;
     } else if (this->bishops & to) {
         this->bishops = this->bishops ^ to;
+        this->bishops = this->bishops | from;
     } else if (this->queens & to) {
         this->queens = this->queens ^ to;
+        this->queens = this->queens | from;
     } else if (this->knights & to) {
         this->knights = this->knights ^ to;
+        this->knights = this->knights | from;
     } else if (this->kings & to) {
         this->kings = this->kings ^ to;
+        this->kings = this->kings | from;
     }
+
+    /*
+     * reset by move effected piece
+     */
 
     //en passant
     //bring back other color pawn
@@ -665,38 +680,21 @@ void Board::UndoMove(MOVE move)
 
     //castling
     //reset tower
-    if (move & CASTLING)
+    if (castling)
     {
-        if (to == A3) {
+        if (to == C1) {
             this->white = this->white | A1;
             this->rooks = this->rooks | A1;
-        } else if (to == A7) {
-            this->white = this->white | A8;
-            this->rooks = this->rooks | A8;
-        } else if (to == H3) {
-            this->black = this->black | H1;
+        } else if (to == G1) {
+            this->white = this->white | H1;
             this->rooks = this->rooks | H1;
-        } else if (to == H7) {
+        } else if (to == C8) {
+            this->black = this->black | A8;
+            this->rooks = this->rooks | A8;
+        } else if (to == G8) {
             this->black = this->black | H8;
             this->rooks = this->rooks | H8;
         }
-    }
-
-    //set moved piece back at correct place on color boards
-    //when capture add color piece back at to position on color boards
-    switch (colorThatMoved) {
-        case WHITE:
-            this->white = this->white ^ to;
-            if (capturedPiece) {
-                this->black = this->black | to;
-            }
-            break;
-        case BLACK:
-            this->black = this->black ^ to;
-            if (capturedPiece) {
-                this->white = this->white | to;
-            }
-            break;
     }
 
     //set removed captured piece back on correct piece board
@@ -723,6 +721,31 @@ void Board::UndoMove(MOVE move)
             std::cout << "unexpected default case in undo move" << std::endl;
             break;
     }
+
+
+    /*
+     * reset color boards
+     */
+
+
+    //set moved piece back at correct place on color boards
+    //when capture add color piece back at to position on color boards
+    switch (colorThatMoved) {
+        case WHITE:
+            this->white = this->white ^ to;
+            if (capturedPiece) {
+                this->black = this->black | to;
+            }
+            break;
+        case BLACK:
+            this->black = this->black ^ to;
+            if (capturedPiece) {
+                this->white = this->white | to;
+            }
+            break;
+    }
+
+
 
 }
 

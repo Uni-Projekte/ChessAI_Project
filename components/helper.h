@@ -318,7 +318,7 @@ enum PIECE {
     ROOK,
     KNIGHT,
     BISHOP,
-    QUEEN
+    QUEEN,
 };
 
 
@@ -353,7 +353,7 @@ struct TranspositionEntry {
 
 
 
-inline uint8_t GetCapture(MOVE move);
+inline PIECE GetCapture(MOVE move);
 
 inline bool GetCastling(MOVE move);
 
