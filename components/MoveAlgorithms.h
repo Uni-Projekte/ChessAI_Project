@@ -24,7 +24,7 @@ public:
     int MaterialWorth();
     int AttackedFields();
     int PawnFileCounts();
-    int Defence();
+    int Defense();
 
     int BoardRanking(COLOR player);
 

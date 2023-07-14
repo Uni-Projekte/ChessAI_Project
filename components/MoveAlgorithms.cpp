@@ -71,7 +71,7 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int materialWorth = this->MaterialWorth();
     int attackedFields = this->AttackedFields();
     int pawnFileCounts = this->PawnFileCounts();
-    int defence = this->Defence();
+    int defence = this->Defense();
     float materialWorthWeight = 0.5;
     return (int) (materialWorth * 0.45 + attackedFields * 0.30 + pawnFileCounts * 0.1 + defence * 0.15);
 }
@@ -472,7 +472,7 @@ int MoveAlgorithms::PawnFileCounts()
     return ranking;
 }
 
-int MoveAlgorithms::Defence()
+int MoveAlgorithms::Defense()
 {
     int ranking = 0;
 
