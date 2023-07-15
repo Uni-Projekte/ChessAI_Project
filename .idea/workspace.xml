@@ -29,10 +29,21 @@
     <list default="true" id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/pieces/pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/pawn.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Pieces_Tests.cpp" afterDir="false" />
     </list>
     <list id="c775655f-bc19-4c5e-939f-973842b6d9cf" name="Changes by Mateusz Pawelczyk" comment="" />
+    <list id="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" name="Changes by nikla" comment="">
+      <change beforePath="$PROJECT_DIR$/components/Board.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Board.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/Board.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MoveGenerator/pieces/king.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveGenerator/pieces/king.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/presenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/presenter.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,6 +55,61 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/components/helper.h">
+      <ranges>
+        <range start1="321" end1="321" start2="321" end2="322" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="352" end1="353" start2="353" end2="353" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="357" end1="357" start2="357" end2="359" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/components/Board.cpp">
+      <ranges>
+        <range start1="558" end1="559" start2="558" end2="559" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="564" end1="565" start2="564" end2="565" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="569" end1="570" start2="569" end2="570" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="602" end1="603" start2="602" end2="603" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="604" end1="605" start2="604" end2="605" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="606" end1="607" start2="606" end2="607" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="608" end1="609" start2="608" end2="609" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="612" end1="612" start2="612" end2="613" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="621" end1="622" start2="622" end2="623" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="630" end1="631" start2="631" end2="632" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="634" end1="635" start2="635" end2="635" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="638" end1="638" start2="638" end2="640" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="643" end1="643" start2="645" end2="646" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="646" end1="646" start2="649" end2="650" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="649" end1="649" start2="653" end2="654" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="652" end1="652" start2="657" end2="658" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="655" end1="655" start2="661" end2="662" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="658" end1="658" start2="665" end2="666" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="659" end1="659" start2="667" end2="686" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="687" end1="687" start2="714" end2="717" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="690" end1="690" start2="720" end2="723" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="693" end1="693" start2="726" end2="730" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="696" end1="696" start2="733" end2="736" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="704" end1="705" start2="744" end2="744" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="724" end1="728" start2="763" end2="764" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="729" end1="747" start2="765" end2="766" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="748" end1="748" start2="767" end2="768" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="749" end1="749" start2="769" end2="772" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="799" end1="800" start2="822" end2="823" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="803" end1="804" start2="826" end2="827" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="807" end1="808" start2="830" end2="831" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="1147" end1="1147" start2="1170" end2="1197" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/components/Board.h">
+      <ranges>
+        <range start1="50" end1="51" start2="50" end2="51" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="95" end1="96" start2="95" end2="96" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
+        <range start1="167" end1="167" start2="167" end2="168" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="168" end1="168" start2="169" end2="170" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="169" end1="170" start2="171" end2="172" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+        <range start1="175" end1="175" start2="177" end2="178" changelist="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" />
+      </ranges>
+    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -61,30 +127,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;refactoring&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "refactoring",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\tasch\Desktop\Programmieren\ChessAI\ChessAI_Project\components\MoveGenerator" />
     </key>
   </component>
-  <component name="RunManager" selected="Google Test.All in Board_Tests.cpp">
+  <component name="RunManager" selected="Google Test.BoardTest.UndoMoveEnPassent">
     <configuration name="All in Board_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Board_Tests.cpp)" TEST_MODE="PATTERN">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -97,19 +164,19 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BoardTest.UndoMove" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="UndoMove" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.UndoMoveEnPassent" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="BoardTest" TEST_METHOD="UndoMoveEnPassent" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Component_Tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.BishopMarkFields" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BishopMarkFields" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PiecesTest.BlackCastling" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_CLASS="PiecesTest" TEST_METHOD="BlackCastling" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -159,19 +226,19 @@
       <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Application.components" />
       <item itemvalue="Google Test.Component_Tests" />
+      <item itemvalue="Google Test.BoardTest.UndoMove" />
+      <item itemvalue="Google Test.BoardTest.UndoMoveEnPassent" />
       <item itemvalue="Google Test.All in Board_Tests.cpp" />
       <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
-      <item itemvalue="Google Test.PiecesTest.BishopMarkFields" />
-      <item itemvalue="Google Test.PiecesTest.BlackCastling" />
       <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Google Test.BoardTest.UndoMoveEnPassent" />
+        <item itemvalue="Google Test.BoardTest.UndoMove" />
         <item itemvalue="Google Test.All in Board_Tests.cpp" />
         <item itemvalue="Google Test.All in Pieces_Tests.cpp" />
         <item itemvalue="Google Test.PiecesTest.BlackCastlingNotWorking" />
-        <item itemvalue="Google Test.PiecesTest.BishopMarkFields" />
-        <item itemvalue="Google Test.PiecesTest.BlackCastling" />
       </list>
     </recent_temporary>
   </component>
@@ -194,7 +261,8 @@
       <workItem from="1688906469018" duration="19867000" />
       <workItem from="1689170024802" duration="12625000" />
       <workItem from="1689244573557" duration="3891000" />
-      <workItem from="1689357326633" duration="2690000" />
+      <workItem from="1689357326633" duration="2788000" />
+      <workItem from="1689406797020" duration="14329000" />
     </task>
     <servers />
   </component>
@@ -223,13 +291,28 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/components_tests/Pieces_Tests.cpp</url>
-          <line>599</line>
+          <line>600</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/components_tests/Board_Tests.cpp</url>
           <line>85</line>
           <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/components_tests/Board_Tests.cpp</url>
+          <line>138</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/components/Board.cpp</url>
+          <line>881</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/components/Board.cpp</url>
+          <line>910</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

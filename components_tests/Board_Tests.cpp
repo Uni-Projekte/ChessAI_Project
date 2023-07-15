@@ -88,6 +88,88 @@ TEST(BoardTest, DoMoveBenchmarkStart)
     std::cout << moveCalc.GetMoveAlphaBeta();
 }
 
+TEST(BoardTest, UndoMove){
+    Board board("r3k2r/pppp3p/1qn5/6pP/8/1QN5/PPPP4/R3K2R w KQkq g5 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+    board.MarkFields(BLACK);
+    board.MarkFields(WHITE);
+    board.GetMoves(nextMoves); // get all moves possible
+    for(int i = 1; i < nextMoves[0];i=i+1) {
+        uint8_t oldMoveRights = board.GetMoveRights();
+        uint8_t oldHalfmoveClock = board.GetHalfMoveClock();
+        uint8_t oldEnPassent = board.GetEnPassant();
+        Board oldBoard(board);
+        board.DoMove(nextMoves[i]);
+        Board movedBoard(board);
+        board.UndoMove(nextMoves[i], oldMoveRights, oldEnPassent, oldHalfmoveClock);
+        EXPECT_EQ(board.Equals(oldBoard),true) << "N-TH MOVE: " << i << "---" << MoveToString(nextMoves[i]) << std::endl
+        << presenter.ToString(oldBoard) << std::endl
+        << "MOVE-RIGHTS: " << Uint8ToString(oldBoard.GetMoveRights()) << std::endl
+        << "HALFMOVE:    " << Uint8ToString(oldBoard.GetHalfMoveClock()) << std::endl
+        << "EN-PASSENT:  " << Uint8ToString(oldBoard.GetEnPassant()) << std::endl
+        << "F-W-ATTACK:  " << oldBoard.GetFromWhiteAttackedFields() << std::endl
+        << "F-B-ATTACK:  " << oldBoard.GetFromBlackAttackedFields() << std::endl
+        << "W-PINNED:    " << oldBoard.GetWhitePinnedPieces() << std::endl << std::endl
+        << "B-PINNED:    " << oldBoard.GetBlackPinnedPieces() << std::endl << std::endl
+        << "FULL-MOVE:   " << oldBoard.GetFullMoveNumber() << std::endl
+        << presenter.ToString(movedBoard) << std::endl
+        << presenter.ToString(board)<< std::endl
+        << "MOVE-RIGHTS: " << Uint8ToString(board.GetMoveRights()) << std::endl
+        << "HALFMOVE:    " << Uint8ToString(board.GetHalfMoveClock()) << std::endl
+        << "EN-PASSENT:  " << Uint8ToString(board.GetEnPassant()) << std::endl
+        << "F-W-ATTACK:  " << board.GetFromWhiteAttackedFields() << std::endl
+        << "F-B-ATTACK:  " << board.GetFromBlackAttackedFields() << std::endl
+        << "W-PINNED:    " << board.GetWhitePinnedPieces() << std::endl << std::endl
+        << "B-PINNED:    " << board.GetBlackPinnedPieces() << std::endl << std::endl
+        << "FULL-MOVE:   " << board.GetFullMoveNumber() << std::endl;
+        board = oldBoard;
+    }
+}
+
+TEST(BoardTest, UndoMoveEnPassent){
+    Board board("8/8/8/P6p/6pP/8/8/8 b - h4 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+    board.MarkFields(BLACK);
+    board.MarkFields(WHITE);
+    board.GetMoves(nextMoves); // get all moves possible
+    EXPECT_EQ(3,nextMoves[0]);
+    for(int i = 1; i < nextMoves[0];i=i+1) {
+        uint8_t oldMoveRights = board.GetMoveRights();
+        uint8_t oldHalfmoveClock = board.GetHalfMoveClock();
+        uint8_t oldEnPassent = board.GetEnPassant();
+        Board oldBoard(board);
+        board.DoMove(nextMoves[i]);
+        Board movedBoard(board);
+        board.UndoMove(nextMoves[i], oldMoveRights, oldEnPassent, oldHalfmoveClock);
+        EXPECT_EQ(board.Equals(oldBoard),true) << "N-TH MOVE: " << i << "---" << MoveToString(nextMoves[i]) << std::endl
+                                               << presenter.ToString(oldBoard) << std::endl
+                                               << "MOVE-RIGHTS: " << Uint8ToString(oldBoard.GetMoveRights()) << std::endl
+                                               << "HALFMOVE:    " << Uint8ToString(oldBoard.GetHalfMoveClock()) << std::endl
+                                               << "EN-PASSENT:  " << Uint8ToString(oldBoard.GetEnPassant()) << std::endl
+                                               << "F-W-ATTACK:  " << oldBoard.GetFromWhiteAttackedFields() << std::endl
+                                               << "F-B-ATTACK:  " << oldBoard.GetFromBlackAttackedFields() << std::endl
+                                               << "W-PINNED:    " << oldBoard.GetWhitePinnedPieces() << std::endl << std::endl
+                                               << "B-PINNED:    " << oldBoard.GetBlackPinnedPieces() << std::endl << std::endl
+                                               << "FULL-MOVE:   " << oldBoard.GetFullMoveNumber() << std::endl
+                                               << presenter.ToString(movedBoard) << std::endl
+                                               << presenter.ToString(board)<< std::endl
+                                               << "MOVE-RIGHTS: " << Uint8ToString(board.GetMoveRights()) << std::endl
+                                               << "HALFMOVE:    " << Uint8ToString(board.GetHalfMoveClock()) << std::endl
+                                               << "EN-PASSENT:  " << Uint8ToString(board.GetEnPassant()) << std::endl
+                                               << "F-W-ATTACK:  " << board.GetFromWhiteAttackedFields() << std::endl
+                                               << "F-B-ATTACK:  " << board.GetFromBlackAttackedFields() << std::endl
+                                               << "W-PINNED:    " << board.GetWhitePinnedPieces() << std::endl << std::endl
+                                               << "B-PINNED:    " << board.GetBlackPinnedPieces() << std::endl << std::endl
+                                               << "FULL-MOVE:   " << board.GetFullMoveNumber() << std::endl;
+        board = oldBoard;
+    }
+}
 
 /*TEST(BoardTest, DoMoveBenchmarkMiddle)
 {

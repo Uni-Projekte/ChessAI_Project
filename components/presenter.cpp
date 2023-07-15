@@ -23,53 +23,37 @@ std::string Presenter::ToString(Board &board)
         for (int c = 0; c < 8; c++)
         {
             int i = ((7 - r) << 3) + c;
-            if (board.IsOnField(board.GetWhite(), board.GetKings(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetWhite(), board.GetWhite(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("WKING");
+                boards[i] = boards[i].append("W");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetQueens(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetBlack(), board.GetBlack(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("WQUEEN");
+                boards[i] = boards[i].append("B");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetPawns(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetPawns(), board.GetPawns(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("WPAWN");
+                boards[i] = boards[i].append("PAWN");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetRooks(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("WTOWER");
+                boards[i] = boards[i].append("ROOK");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetKnights(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetKnights(), board.GetKnights(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("WKNIGHT");
+                boards[i] = boards[i].append("KNIGHT");
             }
-            if (board.IsOnField(board.GetWhite(), board.GetBishops(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetBishops(), board.GetBishops(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("WBISHOP");
+                boards[i] = boards[i].append("BISHOP");
             }
-            if (board.IsOnField(board.GetBlack(), board.GetKings(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetKings(), board.GetKings(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("BKING");
+                boards[i] = boards[i].append("KING");
             }
-            if (board.IsOnField(board.GetBlack(), board.GetQueens(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
+            if (board.IsOnField(board.GetQueens(), board.GetQueens(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
             {
-                boards[i] = boards[i].append("BQUEEN");
-            }
-            if (board.IsOnField(board.GetBlack(), board.GetPawns(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
-            {
-                boards[i] = boards[i].append("BPAWN");
-            }
-            if (board.IsOnField(board.GetBlack(), board.GetRooks(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
-            {
-                boards[i] = boards[i].append("BTOWER");
-            }
-            if (board.IsOnField(board.GetBlack(), board.GetKnights(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
-            {
-                boards[i] = boards[i].append("BKNIGHT");
-            }
-            if (board.IsOnField(board.GetBlack(), board.GetBishops(), GetRowFromIndex(r), GetColumnFromIndex(c)) > 0)
-            {
-                boards[i] = boards[i].append("BBISHOP");
+                boards[i] = boards[i].append("QUEEN");
             }
             if (boards[i].length() > maxWidth)
             {

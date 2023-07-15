@@ -556,18 +556,18 @@ void Board::DoMove(MOVE move)
     this->black = this->black | (to * bool(black & from));
     // delete captured piece pos
     this->black = this->black & ~(to * ((capture && (white & from))));
-    this->black = this->black & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->black = this->black & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && GetMoveEnPassante(move))); // delete en passant pawn
     // delete moved piece old pos
     this->black = this->black & ~from;
 
     this->white = this->white | (to * bool(white & from));
     this->white = this->white & ~(to * ((capture && (black & from))));
-    this->white = this->white & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->white = this->white & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && GetMoveEnPassante(move))); // delete en passant pawn
     this->white = this->white & ~from;
 
     this->pawns = this->pawns | (to * bool(pawns & from)); // add moved pawn new pos
     this->pawns = this->pawns & ~(to * ((capture && ((allPieces & ~pawns) & from))));
-    this->pawns = this->pawns & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && capture)); // delete en passant pawn
+    this->pawns = this->pawns & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && GetMoveEnPassante(move))); // delete en passant pawn
     this->pawns = this->pawns & ~from;
     // cout << "en_passant: " << std::bitset<8>(this->en_passant).to_string() << endl;
 
@@ -600,15 +600,16 @@ void Board::DoMove(MOVE move)
     this->fullmove_number = this->fullmove_number + bool(black & from);
 
     // add queen if pawns reached one of the ends
-    this->queens = this->queens | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_QUEEN));
+    this->queens = this->queens | ((this->pawns & ROW_1_AND_8) * bool((move & UPGRADE_FLAGS) == UPGRADE_QUEEN));
     // add knight if pawns reached one of the ends
-    this->knights = this->knights | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_KNIGHT));
+    this->knights = this->knights | ((this->pawns & ROW_1_AND_8) * bool((move & UPGRADE_FLAGS) == UPGRADE_KNIGHT));
     // add bishop if pawns reached one of the ends
-    this->bishops = this->bishops | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_BISHOP));
+    this->bishops = this->bishops | ((this->pawns & ROW_1_AND_8) * bool((move & UPGRADE_FLAGS) == UPGRADE_BISHOP));
     // add rook if pawns reached one of the ends
-    this->rooks = this->rooks | ((this->pawns & ROW_1_AND_8) * bool((move & 0b111100000000U) == UPGRADE_ROOK));
+    this->rooks = this->rooks | ((this->pawns & ROW_1_AND_8) * bool((move & UPGRADE_FLAGS) == UPGRADE_ROOK));
     // delete pawns that reached one of the ends
     this->pawns = this->pawns & NOT_ROW_1_AND_8;
+
 
     // en_passant
     this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
@@ -619,7 +620,7 @@ void Board::DoMove(MOVE move)
     this->move_rights = this->move_rights ^ 0b1U;
 }
 
-void Board::UndoMove(MOVE move)
+void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uint8_t oldHalfmoveClock)
 {
     const BOARD from = GetSingleBitBoardFrom(move);
     const BOARD to = GetSingleBitBoardTo(move);
@@ -628,34 +629,60 @@ void Board::UndoMove(MOVE move)
 
     //get color of moved piece
     COLOR colorThatMoved = BLACK;
-    if(to & this->white){
+    if(to & this->white) {
         colorThatMoved = WHITE;
     }
-
 
     /*
      * reset moved piece
      */
 
+    PIECE piece;
+
     //remove moves piece from to position on piece boards (handles upgrades too, cause it removes just the one piece on to field)
     if (this->pawns & to) {
         this->pawns = this->pawns ^ to;
         this->pawns = this->pawns | from;
+        piece = PAWN;
     } else if (this->rooks & to) {
         this->rooks = this->rooks ^ to;
         this->rooks = this->rooks | from;
+        piece = ROOK;
     } else if (this->bishops & to) {
         this->bishops = this->bishops ^ to;
         this->bishops = this->bishops | from;
+        piece = BISHOP;
     } else if (this->queens & to) {
         this->queens = this->queens ^ to;
         this->queens = this->queens | from;
+        piece = QUEEN;
     } else if (this->knights & to) {
         this->knights = this->knights ^ to;
         this->knights = this->knights | from;
+        piece = KNIGHT;
     } else if (this->kings & to) {
         this->kings = this->kings ^ to;
         this->kings = this->kings | from;
+        piece = KING;
+    }
+
+    //set moved piece back at correct place on color boards
+    //when capture add color piece back at to position on color boards
+    switch (colorThatMoved) {
+        case WHITE:
+            this->white = this->white ^ to;
+            this->white = this->white | from;
+            if (capturedPiece) {
+                this->black = this->black | to;
+            }
+            break;
+        case BLACK:
+            this->black = this->black ^ to;
+            this->black = this->black | from;
+            if (capturedPiece) {
+                this->white = this->white | to;
+            }
+            break;
     }
 
     /*
@@ -685,15 +712,28 @@ void Board::UndoMove(MOVE move)
         if (to == C1) {
             this->white = this->white | A1;
             this->rooks = this->rooks | A1;
+            this->white = this->white ^ D1;
+            this->rooks = this->rooks ^ D1;
+            this->move_rights = this->move_rights | 0b01000000;
         } else if (to == G1) {
             this->white = this->white | H1;
             this->rooks = this->rooks | H1;
+            this->white = this->white ^ F1;
+            this->rooks = this->rooks ^ F1;
+            this->move_rights = this->move_rights | 0b10000000;
         } else if (to == C8) {
             this->black = this->black | A8;
             this->rooks = this->rooks | A8;
+            this->white = this->white ^ D8;
+            this->rooks = this->rooks ^ D8;
+            this->move_rights = this->move_rights | 0b00010000;
+
         } else if (to == G8) {
             this->black = this->black | H8;
             this->rooks = this->rooks | H8;
+            this->white = this->white ^ F8;
+            this->rooks = this->rooks ^ F8;
+            this->move_rights = this->move_rights | 0b00100000;
         }
     }
 
@@ -702,7 +742,6 @@ void Board::UndoMove(MOVE move)
         case 0:
             break;
         case 1:
-            // enpassant check missing
             this->pawns = this->pawns | to;
             break;
         case 2:
@@ -722,31 +761,15 @@ void Board::UndoMove(MOVE move)
             break;
     }
 
+    this->en_passant = oldEnPassent;
 
-    /*
-     * reset color boards
-     */
+    MarkFields(colorThatMoved);
 
+    this->move_rights = oldMoveRights;
 
-    //set moved piece back at correct place on color boards
-    //when capture add color piece back at to position on color boards
-    switch (colorThatMoved) {
-        case WHITE:
-            this->white = this->white ^ to;
-            if (capturedPiece) {
-                this->black = this->black | to;
-            }
-            break;
-        case BLACK:
-            this->black = this->black ^ to;
-            if (capturedPiece) {
-                this->white = this->white | to;
-            }
-            break;
-    }
+    this->halfmove_clock = oldHalfmoveClock;
 
-
-
+    this->fullmove_number = this->fullmove_number - colorThatMoved;
 }
 
 void Board::MarkFields(COLOR currentColor){
@@ -797,15 +820,15 @@ void Board::MarkFields(COLOR currentColor){
                 }
                 if (this->kings & this->white & SingleBitBoard(x, y))
                 {
-                    king::markFields(this->attackedFromBlack, x, y);
+                    king::markFields(this->attackedFromWhite, x, y);
                 }
                 if (this->knights & this->white & SingleBitBoard(x, y))
                 {
-                    knight::markFields(this->attackedFromBlack, x, y);
+                    knight::markFields(this->attackedFromWhite, x, y);
                 }
                 if (this->pawns & this->white & SingleBitBoard(x, y))
                 {
-                    pawn::markFields(this->attackedFromBlack, x, y, 0);
+                    pawn::markFields(this->attackedFromWhite, x, y, 0);
                 }
                 if (this->rooks & this->white & SingleBitBoard(x, y))
                 {
@@ -1144,4 +1167,31 @@ uint64_t &Board::GetFromWhiteAttackedFields()
 uint64_t &Board::GetFromBlackAttackedFields()
 {
     return this->attackedFromBlack;
+}
+
+uint64_t Board::GetWhitePinnedPieces() const {
+    return this->pinnedWhitePieces;
+}
+
+uint64_t Board::GetBlackPinnedPieces() const {
+    return this->pinnedBlackPieces;
+}
+
+bool Board::Equals(Board other) const {
+    return this->black == other.black
+    && this->white == other.white
+    && this->attackedFromWhite == other.attackedFromWhite
+    && this->attackedFromBlack == other.attackedFromBlack
+    && this->pinnedWhitePieces == other.pinnedWhitePieces
+    && this->pinnedBlackPieces == other.pinnedBlackPieces
+    && this->pawns == other.pawns
+    && this->rooks == other.rooks
+    && this->knights == other.knights
+    && this->bishops == other.bishops
+    && this->queens == other.queens
+    && this->kings == other.kings
+    && this->move_rights == other.move_rights
+    && this->en_passant == other.en_passant
+    && this->halfmove_clock == other.halfmove_clock
+    && this->fullmove_number == other.fullmove_number;
 }

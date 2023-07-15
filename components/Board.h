@@ -48,7 +48,7 @@ private:
 
     // bit sequence representing the en passant square.
     // first 3 bits are the file, next 3 bits are the rank.
-    //on/off | c | xxx | yyy
+    //on/off | c | yyy | xxx
     uint8_t en_passant;
 
     // bit sequence representing the turn and castling rights.
@@ -93,7 +93,7 @@ public:
 
     void DoMove(MOVE move);
 
-    void UndoMove(MOVE move);
+    void UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uint8_t oldHalfmoveClock);
 
     void GetMoves(MOVE_ARRAY &moves);
 
@@ -165,13 +165,16 @@ public:
     // Returns the bitboard representing from Black attacked fields
     uint64_t& GetFromBlackAttackedFields();
 
+    bool Equals(Board other) const;
 
+    uint64_t GetWhitePinnedPieces() const;
 
-
+    uint64_t GetBlackPinnedPieces() const;
 
     void PlayGame();
 
     int End();
+
 
 
 };

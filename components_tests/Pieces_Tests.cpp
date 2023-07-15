@@ -422,11 +422,12 @@ TEST(PiecesTest, PawnEatsPawnTest)
 
 TEST(PiecesTest, EnPassantTest)
 {
-    Board board("2k5/8/8/8/6p1/8/5P2/3K4 b - - 0 1");
+    Board board("2k5/8/8/8/6p1/8/5P2/3K4 w - - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl << presenter.ToString(board);
 
     board.DoMove(CreateMove(5, 1, 5, 3, 0));
+    presenter.ToString(board);
     EXPECT_EQ("2k5/8/8/8/5Pp1/8/8/3K4 b - f3 0 1", board.toFEN());
     board.DoMove(CreateMove(6, 3, 5, 2, EN_PASSANTE));
     std::cout << std::endl << presenter.ToString(board);

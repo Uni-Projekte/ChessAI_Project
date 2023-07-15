@@ -163,7 +163,12 @@ std::string Uint8ToString(uint8_t board)
 
 inline PIECE GetCapture(MOVE move)
 {
-    return (PIECE) (move & CAPTURE_FLAGS);
+    return (PIECE) ((move & CAPTURE_FLAGS) >> 15);
+}
+
+inline bool GetMoveEnPassante(MOVE move)
+{
+    return move & EN_PASSANTE;
 }
 
 inline bool GetCastling(MOVE move)
@@ -224,17 +229,7 @@ BOARD SingleBitBoard(uint8_t x, uint8_t y)
 
 void PrintMove(MOVE move)
 {
-    std::cout << "FROM X: " << (int)GetFromX(move)
-              << " FROM Y: " << (int)GetFromY(move)
-              << " TO X: " << (int)GetToX(move)
-              << " TO Y: " << (int)GetToY(move)
-              << " CAPTURE: " << GetCapture(move)
-              << " CASTLING: " << GetCastling(move)
-              << " UPGRADE ROOK: " << GetUpgradeRook(move)
-              << " UPGRADE KNIGHT: " << GetUpgradeKnight(move)
-              << " UPGRADE BISHOP: " << GetUpgradeBishop(move)
-              << " UPGRADE QUEEN: " << GetUpgradeQueen(move)
-              << std::endl;
+    std::cout << MoveToString(move);
 }
 
 std::string MoveToString(MOVE move)
@@ -250,6 +245,7 @@ std::string MoveToString(MOVE move)
        << " UPGRADE KNIGHT: " << GetUpgradeKnight(move)
        << " UPGRADE BISHOP: " << GetUpgradeBishop(move)
        << " UPGRADE QUEEN: " << GetUpgradeQueen(move)
+       << " EN PASSANT: " << GetMoveEnPassante(move)
        << std::endl;
 
     std::string result = ss.str();
