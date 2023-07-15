@@ -13,11 +13,13 @@ private:
     Board *board;
     std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable;//0. Best Move 1. Alpha 2. Beta
     ZobristKeyGenerator *keyGenerator;
+    bool useTranspositionTable;
 
 public:
     MoveAlgorithms(Board *board, std::unordered_map<uint64_t ,
                    TranspositionEntry> *transpositionTable,
-                   ZobristKeyGenerator *keyGenerator);
+                   ZobristKeyGenerator *keyGenerator,
+                   bool useTranspositionTable);
     MOVE GetMoveAlphaBeta();
     MOVE GetMoveMinMax();
 

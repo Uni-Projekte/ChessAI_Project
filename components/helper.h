@@ -348,8 +348,10 @@ enum PIECE {
 // Define a type for the transposition table entry
 struct TranspositionEntry {
     int depth;
-    int score;
-    MOVE bestMove;
+    int alpha;
+    int beta;
+    MOVE bestMoveAlpha;
+    MOVE bestMoveBeta;
 };
 
 

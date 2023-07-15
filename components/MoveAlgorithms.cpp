@@ -4,46 +4,33 @@
 using namespace std;
 
 MoveAlgorithms::MoveAlgorithms(Board *board, std::unordered_map<uint64_t, TranspositionEntry> *transpositionTable,
-                               ZobristKeyGenerator *keyGenerator)
+                               ZobristKeyGenerator *keyGenerator,bool useTranspositionTable)
 {
     this->board = board;
     this->transpositionTable = transpositionTable;
     this->keyGenerator = keyGenerator;
+    this->useTranspositionTable = useTranspositionTable;
 }
 
 MOVE MoveAlgorithms::GetMoveAlphaBeta()
 {
-    // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
-    // for (int i = 0; i < moves.size()-1; i++) {
-    //     std::cout << moves[i] << ", ";
-    // }
-    // std::cout << moves[moves.size()-1] << std::endl;
     NEW_MOVE_ARRAY(moves);
     this->board->GetMoves(moves);
 
     MOVE move = 0;
     if (this->board->GetMoveRights() & 1)
     {
-        move = this->AlphaBetaIterative(moves, 1000 , BLACK);
+        move = this->AlphaBetaIterative(moves, 20000 , BLACK);
     }
     else
     {
-        move = this->AlphaBetaIterative(moves, 1000 , WHITE);
+        move = this->AlphaBetaIterative(moves, 20000 , WHITE);
     }
-    // std::cout << "PICKED MOVE: " << move << std::endl;
-    // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
-    // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
-    // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
     return move;
 }
 
 MOVE MoveAlgorithms::GetMoveMinMax()
 {
-    // std::cout << "NUMBER OF MOVES: " << moves.size() << std::endl;
-    // for (int i = 0; i < moves.size()-1; i++) {
-    //     std::cout << moves[i] << ", ";
-    // }
-    // std::cout << moves[moves.size()-1] << std::endl;
     NEW_MOVE_ARRAY(moves);
     this->board->GetMoves(moves);
     MOVE move = 0;
@@ -55,10 +42,6 @@ MOVE MoveAlgorithms::GetMoveMinMax()
     {
         move = this->MinMaxIterative(moves, 1000, WHITE);
     }
-    // std::cout << "PICKED MOVE: " << move << std::endl;
-    // std::cout << "FLAGS:" << ((move & 0b1111000000000000U) >> 12) << std::endl;
-    // std::cout << "FROM:" << GET_MOVE_FROM_X(move) << ", " << GET_MOVE_FROM_Y(move) << std::endl;
-    // std::cout << "TO:" << GET_MOVE_TO_X(move) << ", " << GET_MOVE_TO_Y(move) << std::endl;
     return move;
 }
 
@@ -72,8 +55,7 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int attackedFields = this->AttackedFields();
     int pawnFileCounts = this->PawnFileCounts();
     int defence = this->Defense();
-    float materialWorthWeight = 0.5;
-    return (int) (materialWorth * 0.45 + attackedFields * 0.30 + pawnFileCounts * 0.1 + defence * 0.15);
+    return (int) (materialWorth * 0.7 + attackedFields * 0.10 + pawnFileCounts * 0.1 + defence * 0.1);
 }
 
 MOVE MoveAlgorithms::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, COLOR player)
@@ -85,9 +67,7 @@ MOVE MoveAlgorithms::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, COLOR pla
     unsigned int searchDepth = 1;
     MOVE result;
 
-    int64_t end = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch())
-            .count();
+    int64_t end;
 
     while (true)
     {
@@ -98,11 +78,12 @@ MOVE MoveAlgorithms::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, COLOR pla
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
 
+        std::cout << std::endl;
         PrintMove(result);
-        std::cout << searchDepth-1 << std::endl;
-        std::cout << end - start << std::endl;
-        std::cout << maxTime << std::endl;
-        std::cout << "States: "<<countStates<< std::endl;
+        std::cout << "Depth:" << searchDepth-1 << std::endl;
+        std::cout << "Time:" << end - start << std::endl;
+        std::cout << "Max Time:" << maxTime << std::endl;
+        std::cout << "States: "<< countStates<< std::endl;
         if (end - start > maxTime)
         {
             break;
@@ -128,50 +109,42 @@ int MoveAlgorithms::AlphaBetaMax(
     {
         return BoardRanking(player);
     }
+    std::unordered_map<uint64_t, TranspositionEntry>::iterator entryA;
+    uint64_t boardKey = 0;
 
-    uint64_t zobristKey = 0;
-
-    zobristKey = this->keyGenerator->CalculateZobristKey(this->board);
-
-    auto entryIt = this->transpositionTable->find(zobristKey);
-
-    if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth)
-    {
-        TranspositionEntry &entry = entryIt->second;
-        if (entry.score > alpha)
-        {
-            alpha = entry.score;
-            if (result != nullptr)
-            {
-                *result = entry.bestMove;
+    if(this->useTranspositionTable){
+        boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+        entryA = this->transpositionTable->find(boardKey);
+        if(entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
+            TranspositionEntry &entry = entryA->second;
+            if (result != nullptr) *result = entry.bestMoveAlpha;
+            if (entry.alpha >= beta) {
+                return entry.alpha;
             }
-        }
-        if (entry.score >= beta)
-        {
-            return entry.score;
+            alpha = std::max(alpha, entry.alpha);
         }
     }
 
     int best = INT_MIN;
 
-    MOVE defaultMove;  // Default value for result if it's nullptr
-    MOVE &currentMove = (result != nullptr) ? *result : defaultMove;
+    uint8_t oldMoveRights = this->board->GetMoveRights();
+    uint8_t oldEnpassent = this->board->GetEnPassant();
+    uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
 
     for (int i = 1; i < moves[0]; i++)
     {
         this->board->DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        this->board->GetMoves(nextMoves); // get all moves possible
-        int val = AlphaBetaMin(searchDepth - 1, nextMoves, states, alpha, beta, &currentMove, player);
-        if (val > best)
+        this->board->GetMoves(nextMoves);             // get all moves possible
+        int val = AlphaBetaMin(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
+        if (val > best && result != NULL)
         {
-            best = val;
-            if (result != nullptr)
-            {
-                *result = currentMove;
-            }
+            *result = moves[i];
         }
+        best = std::max(best, val);
         alpha = std::max(alpha, best);
+
+        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
 
         if (beta <= alpha)
         {
@@ -179,16 +152,19 @@ int MoveAlgorithms::AlphaBetaMax(
         }
     }
 
-    if (this->transpositionTable->size() < 30000)
-    {
-        TranspositionEntry entry{};
-        entry.depth = searchDepth;
-        entry.score = best;
-        if (result != nullptr)
-        {
-            entry.bestMove = *result;
+    if(this->useTranspositionTable){
+        if(entryA == this->transpositionTable->end() && this->transpositionTable->size() < 500000){
+            TranspositionEntry newEntry{};
+            newEntry.depth = searchDepth;
+            newEntry.alpha = best;
+            if(result != NULL) newEntry.bestMoveAlpha = *result;
+            this->transpositionTable->insert({boardKey, newEntry});
         }
-        this->transpositionTable->insert(std::make_pair(zobristKey, entry));
+        else if(entryA != this->transpositionTable->end() && entryA->second.depth < searchDepth && entryA->second.alpha > best){
+            entryA->second.depth = searchDepth;
+            entryA->second.alpha = best;
+            if (result != NULL) entryA->second.bestMoveAlpha = *result;
+        }
     }
 
     return best;
@@ -208,68 +184,68 @@ int MoveAlgorithms::AlphaBetaMin(
     {
         return BoardRanking(player);
     }
+    std::unordered_map<uint64_t, TranspositionEntry>::iterator entryA;
+    uint64_t boardKey = 0;
 
-    // Check  if the current position is stored in the transposition table
-    uint64_t zobristKey = this->keyGenerator->CalculateZobristKey(this->board);
-    auto entryIt = this->transpositionTable->find(zobristKey);
-    if (entryIt != this->transpositionTable->end() && entryIt->second.depth >= searchDepth)
-    {
-        TranspositionEntry &entry = entryIt->second;
-        if (entry.score < beta)
-        {
-            beta = entry.score;
-            if (result != nullptr)
-            {
-                *result = entry.bestMove;
+    if(this->useTranspositionTable){
+        boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+        entryA = this->transpositionTable->find(boardKey);
+        if(entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
+            TranspositionEntry &entry = entryA->second;
+            if (result != nullptr) *result = entry.bestMoveBeta;
+            if (entry.beta <= alpha) {
+                return entry.beta;
             }
-        }
-        if (entry.score <= alpha)
-        {
-            return entry.score;
+            beta = std::min(beta, entry.beta);
         }
     }
 
-
     int best = INT_MAX;
 
-    MOVE defaultMove;  // Default value for result if it's nullptr
-    MOVE& currentMove = (result != nullptr) ? *result : defaultMove;
+    uint8_t oldMoveRights = this->board->GetMoveRights();
+    uint8_t oldEnpassent = this->board->GetEnPassant();
+    uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
 
     for (int i = 1; i < moves[0]; i++)
     {
         this->board->DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        this->board->GetMoves(nextMoves); // get all moves possible
-        int val = AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, &currentMove, player);
-        if (val < best)
+        this->board->GetMoves(nextMoves);             // get all moves possible
+        int val = AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
+        if (val < best && result != NULL)
         {
-            best = val;
-            if (result != nullptr)
-            {
-                *result = currentMove;
-            }
+            *result = moves[i];
         }
-        beta = min(beta, best);
+        best = std::min(best, val);
+        beta = std::min(beta, best);
+
+        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
 
         if (beta <= alpha)
         {
             break;
         }
     }
-    if (this->transpositionTable->size() < 30000)
-    {
-        TranspositionEntry entry{};
-        entry.depth = searchDepth;
-        entry.score = best;
-        if (result != nullptr)
-        {
-            entry.bestMove = *result;
+
+    if(this->useTranspositionTable){
+        if(entryA == this->transpositionTable->end() && this->transpositionTable->size() < 500000){
+            TranspositionEntry newEntry{};
+            newEntry.depth = searchDepth;
+            newEntry.beta = best;
+            if(result != NULL) newEntry.bestMoveBeta = *result;
+            this->transpositionTable->insert({boardKey, newEntry});
         }
-        this->transpositionTable->insert(std::make_pair(zobristKey, entry));
+        else if(entryA != this->transpositionTable->end() && entryA->second.depth < searchDepth && entryA->second.beta < best){
+            entryA->second.depth = searchDepth;
+            entryA->second.beta = best;
+            if (result != NULL) entryA->second.bestMoveBeta = *result;
+        }
     }
 
     return best;
 }
+
+
 
 MOVE MoveAlgorithms::MinMaxIterative(MOVE_ARRAY moves, int maxTime, COLOR player)
 {

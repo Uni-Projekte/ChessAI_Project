@@ -67,7 +67,7 @@ TEST(BoardTest, StartRanking)
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
     ZobristKeyGenerator zobristKeyGenerator;
     std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
-    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator);
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, false);
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
@@ -81,7 +81,7 @@ TEST(BoardTest, DoMoveBenchmarkStart)
     ZobristKeyGenerator zobristKeyGenerator;
     std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
     zobristKeyGenerator.InitRandomFields();
-    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator);
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, true);
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
@@ -171,33 +171,38 @@ TEST(BoardTest, UndoMoveEnPassent){
     }
 }
 
-/*TEST(BoardTest, DoMoveBenchmarkMiddle)
+TEST(BoardTest, DoMoveBenchmarkMiddleWithTranspostionTable)
 {
     Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
     Presenter presenter = Presenter();
-    std::cout << std::endl
-              << presenter.ToString(board);
+    std::cout << std::endl<< presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, true);
+    MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        board.GetMove();
+        recommendedMove = moveCalc.GetMoveAlphaBeta();
     }
-    std::cout << board.GetMove();
+    std::cout << recommendedMove;
 }
 
-TEST(BoardTest, DoMoveBenchmarkMiddleTranspostionTable)
+TEST(BoardTest, DoMoveBenchmarkMiddleWithoutTranspostionTable)
 {
-    ZobristKeyGenerator *zobristKeyGenerator = new ZobristKeyGenerator();
-    zobristKeyGenerator->InitRandomFields();
-    std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable = new std::unordered_map<uint64_t , TranspositionEntry>();
-    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1", transpositionTable, zobristKeyGenerator);
+    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
     Presenter presenter = Presenter();
-    std::cout << std::endl
-              << presenter.ToString(board);
+    std::cout << std::endl<< presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, false);
+    MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        board.GetMove();
+        recommendedMove = moveCalc.GetMoveAlphaBeta();
     }
-    std::cout << board.GetMove();
+    std::cout << recommendedMove;
 }
 
 TEST(BoardTest, DoMoveBenchmarkEnd)
@@ -206,21 +211,33 @@ TEST(BoardTest, DoMoveBenchmarkEnd)
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator,true);
+    MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        board.GetMove();
+        recommendedMove = moveCalc.GetMoveAlphaBeta();
     }
+    std::cout << recommendedMove;
 }
 
 TEST(BoardTest, BenchmarkStartMinMax)
 {
 Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
 Presenter presenter = Presenter();
-std::cout << std::endl
-<< presenter.ToString(board);
-for (int i = 0; i < 1; i++) {
-board.GetMoveMinMax();
-}
+std::cout << std::endl<< presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, true);
+    MOVE recommendedMove;
+    for (int i = 0; i < 1; i++)
+    {
+        recommendedMove = moveCalc.GetMoveMinMax();
+    }
+    std::cout << recommendedMove;
 }
 
 
@@ -230,11 +247,16 @@ TEST(BoardTest, BenchmarkMiddleMinMax)
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, true);
+    MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        board.GetMoveMinMax();
+        recommendedMove = moveCalc.GetMoveMinMax();
     }
-    std::cout << board.GetMoveMinMax();
+    std::cout << recommendedMove;
 }
 
 TEST(BoardTest, DoMoveBenchmarkEndMinMax)
@@ -243,10 +265,16 @@ TEST(BoardTest, DoMoveBenchmarkEndMinMax)
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, true);
+    MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        board.GetMoveMinMax();
+        recommendedMove = moveCalc.GetMoveMinMax();
     }
+    std::cout << recommendedMove;
 }
 
 TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
@@ -255,10 +283,16 @@ TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, true);
+    MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        board.GetMoveMinMax();
+        recommendedMove = moveCalc.GetMoveMinMax();
     }
-}*/
+    std::cout << recommendedMove;
+}
 
 
