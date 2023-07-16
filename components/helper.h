@@ -354,6 +354,21 @@ struct TranspositionEntry {
     MOVE bestMoveBeta;
 };
 
+// Define a type for the transposition table entry Negamax
+struct TranspositionEntryNegamax {
+    int depth;
+    int value;
+    int flag;
+    MOVE bestMove;
+};
+
+
+enum TranspositionFlag {
+    EXACT,
+    LOWERBOUND,
+    UPPERBOUND
+};
+
 
 inline PIECE GetCapture(MOVE move);
 
