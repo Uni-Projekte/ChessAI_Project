@@ -345,6 +345,12 @@ enum PIECE {
 #define EN_PASSANTE     1U << 18
 #define CASTLING        1U << 19
 
+enum FlagEntry {
+    EXACT,
+    LOWERBOUND,
+    UPPERBOUND
+};
+
 // Define a type for the transposition table entry
 struct TranspositionEntry {
     int depth;
@@ -354,21 +360,14 @@ struct TranspositionEntry {
     MOVE bestMoveBeta;
 };
 
-// Define a type for the transposition table entry Negamax
 struct TranspositionEntryNegamax {
     int depth;
     int value;
-    int flag;
+    FlagEntry flag;
     MOVE bestMove;
 };
 
-
-enum TranspositionFlag {
-    EXACT,
-    LOWERBOUND,
-    UPPERBOUND
-};
-
+COLOR opponent(COLOR color);
 
 inline PIECE GetCapture(MOVE move);
 

@@ -5,19 +5,6 @@ using namespace std;
 
 MoveAlgorithms::MoveAlgorithms(Board *board,
                                std::unordered_map<uint64_t, TranspositionEntry> *transpositionTable,
-                               std::unordered_map<uint64_t, TranspositionEntryNegamax> *transpositionTableNegamax,
-                               ZobristKeyGenerator *keyGenerator,
-                               bool useTranspositionTable)
-{
-    this->board = board;
-    this->transpositionTable = transpositionTable;
-    this->transpositionTableNegamax = transpositionTableNegamax;
-    this->keyGenerator = keyGenerator;
-    this->useTranspositionTable = useTranspositionTable;
-}
-
-MoveAlgorithms::MoveAlgorithms(Board *board,
-                               std::unordered_map<uint64_t, TranspositionEntry> *transpositionTable,
                                ZobristKeyGenerator *keyGenerator,
                                bool useTranspositionTable)
 {
@@ -27,7 +14,7 @@ MoveAlgorithms::MoveAlgorithms(Board *board,
     this->useTranspositionTable = useTranspositionTable;
 }
 
-MOVE MoveAlgorithms::GetMoveNegamax(int maxTime)
+MOVE MoveAlgorithms::GetMoveNegamax(int maxTime, bool usePVS)
 {
     NEW_MOVE_ARRAY(moves);
     this->board->GetMoves(moves);
@@ -35,11 +22,11 @@ MOVE MoveAlgorithms::GetMoveNegamax(int maxTime)
     MOVE move = 0;
     if (this->board->GetMoveRights() & 1)
     {
-        move = this->NegamaxIterative(moves, maxTime , BLACK);
+        move = this->NegamaxIterative(moves, maxTime , usePVS, BLACK);
     }
     else
     {
-        move = this->NegamaxIterative(moves, maxTime , WHITE);
+        move = this->NegamaxIterative(moves, maxTime , usePVS , WHITE);
     }
     return move;
 }
@@ -87,10 +74,10 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int attackedFields = this->AttackedFields();
     int pawnFileCounts = this->PawnFileCounts();
     int defence = this->Defense();
-    return (int) (materialWorth * 0.75 + attackedFields * 0.10 + pawnFileCounts * 0.05 + defence * 0.1);
+    return (int) (materialWorth);
 }
 
-MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, COLOR player)
+MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player)
 {
     int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch())
@@ -104,7 +91,14 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, COLOR playe
     while (true)
     {
         int countStates = 0;
-        this->Negamax(searchDepth, moves, countStates, INT_MIN, INT_MAX, &result, player);
+        if(usePVS)
+        {
+            this->NegamaxPVS(searchDepth, moves, countStates, INT_MIN, INT_MAX, &result, player);
+        }
+        else
+        {
+            this->Negamax(searchDepth, moves, countStates, INT_MIN, INT_MAX, &result, player);
+        }
         searchDepth = searchDepth + 1;
         end = std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::system_clock::now().time_since_epoch())
@@ -216,6 +210,127 @@ int MoveAlgorithms::Negamax(
 }
 
 
+int MoveAlgorithms::NegamaxPVS(
+        int searchDepth,
+        MOVE_ARRAY moves,
+        int &states,
+        int alpha,
+        int beta,
+        MOVE *result,
+        COLOR player)
+{
+    states += 1;
+
+    if (searchDepth <= 0)
+    {
+        return BoardRanking(player);
+    }
+
+    std::unordered_map<uint64_t, TranspositionEntry>::iterator entryA;
+    uint64_t boardKey = 0;
+
+    if (this->useTranspositionTable)
+    {
+        boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+        entryA = this->transpositionTable->find(boardKey);
+
+        if (entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth)
+        {
+            TranspositionEntry &entry = entryA->second;
+
+            if (result != nullptr) *result = player ? entry.bestMoveAlpha : entry.bestMoveBeta;
+
+            if (entry.alpha >= beta)
+            {
+                return entry.alpha;
+            }
+
+            if (entry.beta <= alpha)
+            {
+                return entry.beta;
+            }
+
+            alpha = std::max(alpha, entry.alpha);
+            beta = std::min(beta, entry.beta);
+        }
+    }
+
+    int best = INT_MIN;
+    MOVE defaultMove;  // Default value for result if it's nullptr
+    MOVE &currentMove = (result != nullptr) ? *result : defaultMove;
+
+    uint8_t oldMoveRights = this->board->GetMoveRights();
+    uint8_t oldEnpassent = this->board->GetEnPassant();
+    uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
+
+    for (int i = 1; i < moves[0]; i++)
+    {
+        this->board->DoMove(moves[i]);    // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+        this->board->GetMoves(nextMoves);             // get all moves possible
+
+        int val;
+        if (i == 1) // Principal Variation Search (PVS) with first move searched thoroughly
+        {
+            val = -NegamaxPVS(searchDepth - 1, nextMoves, states, -beta, -alpha, &currentMove, opponent(player));
+        }
+        else // Null window search for other moves with narrow alpha-beta window
+        {
+            val = -NegamaxPVS(searchDepth - 1, nextMoves, states, -alpha - 1, -alpha, NULL, opponent(player));
+
+            if (val > alpha && val < beta) // Re-search with full-width window
+            {
+                val = -NegamaxPVS(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
+            }
+        }
+
+        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+
+        best = std::max(best, val);
+        alpha = std::max(alpha, val);
+
+        if (alpha >= beta) // Beta cutoff (pruning)
+        {
+            break;
+        }
+    }
+
+    if (this->useTranspositionTable)
+    {
+        if (entryA == this->transpositionTable->end() && this->transpositionTable->size() < 500000)
+        {
+            TranspositionEntry newEntry{};
+            newEntry.depth = searchDepth;
+            newEntry.alpha = best;
+            newEntry.beta = best;
+
+            if (result != nullptr)
+            {
+                newEntry.bestMoveAlpha = *result;
+                newEntry.bestMoveBeta = *result;
+            }
+
+            this->transpositionTable->insert({boardKey, newEntry});
+        }
+        else if (entryA != this->transpositionTable->end() && entryA->second.depth < searchDepth && entryA->second.alpha > best)
+        {
+            entryA->second.depth = searchDepth;
+            entryA->second.alpha = best;
+            entryA->second.beta = best;
+
+            if (result != nullptr)
+            {
+                entryA->second.bestMoveAlpha = *result;
+                entryA->second.bestMoveBeta = *result;
+            }
+        }
+    }
+
+    return best;
+}
+
+
+
 MOVE MoveAlgorithms::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, COLOR player)
 {
     int64_t start = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -300,7 +415,7 @@ int MoveAlgorithms::AlphaBetaMax(
             *result = moves[i];
         }
         best = std::max(best, val);
-        alpha = std::max(alpha, best);
+        alpha = std::max(alpha, val);
 
         this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
 
@@ -375,7 +490,7 @@ int MoveAlgorithms::AlphaBetaMin(
             *result = moves[i];
         }
         best = std::min(best, val);
-        beta = std::min(beta, best);
+        beta = std::min(beta, val);
 
         this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
 
