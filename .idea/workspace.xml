@@ -28,17 +28,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2980441a-563c-47fd-b50b-8efb6134a3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
     </list>
     <list id="c775655f-bc19-4c5e-939f-973842b6d9cf" name="Changes by Mateusz Pawelczyk" comment="" />
     <list id="7ee570e1-f32a-43ba-8608-a0d3a11f4a6c" name="Changes by nikla" comment="" />
-    <list id="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" name="Changes by Taschfin" comment="">
-      <change beforePath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/MoveAlgorithms.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/helper.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/helper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components_tests/Board_Tests.cpp" afterDir="false" />
-    </list>
+    <list id="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" name="Changes by Taschfin" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,68 +43,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/components/MoveAlgorithms.cpp">
-      <ranges>
-        <range start1="6" end1="7" start2="6" end2="7" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="11" end1="11" start2="11" end2="12" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="15" end1="20" start2="16" end2="16" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="26" end1="27" start2="22" end2="23" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="30" end1="31" start2="26" end2="27" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="32" end1="36" start2="28" end2="28" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="41" end1="46" start2="33" end2="33" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="57" end1="61" start2="44" end2="44" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="74" end1="76" start2="57" end2="58" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="87" end1="90" start2="69" end2="70" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="100" end1="100" start2="80" end2="81" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="101" end1="105" start2="82" end2="86" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="130" end1="136" start2="111" end2="113" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="137" end1="146" start2="114" end2="122" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="147" end1="151" start2="123" end2="124" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="156" end1="158" start2="129" end2="132" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="163" end1="173" start2="137" end2="144" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="174" end1="174" start2="145" end2="147" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="181" end1="189" start2="154" end2="161" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="190" end1="191" start2="162" end2="167" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="210" end1="210" start2="186" end2="188" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="211" end1="228" start2="189" end2="199" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="230" end1="231" start2="201" end2="201" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="234" end1="236" start2="204" end2="207" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="241" end1="252" start2="212" end2="222" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="258" end1="266" start2="228" end2="236" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="267" end1="268" start2="237" end2="242" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="272" end1="272" start2="246" end2="248" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/components_tests/Board_Tests.cpp">
-      <ranges>
-        <range start1="69" end1="70" start2="69" end2="70" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="83" end1="84" start2="83" end2="84" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="173" end1="174" start2="173" end2="174" changelist="2980441a-563c-47fd-b50b-8efb6134a3b6" />
-        <range start1="177" end1="179" start2="177" end2="183" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="181" end1="182" start2="185" end2="186" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="183" end1="184" start2="187" end2="188" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="186" end1="187" start2="190" end2="191" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="188" end1="192" start2="192" end2="193" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="193" end1="195" start2="194" end2="200" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="197" end1="198" start2="202" end2="203" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="199" end1="200" start2="204" end2="205" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="208" end1="208" start2="213" end2="218" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="210" end1="211" start2="220" end2="221" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="212" end1="212" start2="222" end2="223" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="218" end1="223" start2="229" end2="240" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="232" end1="232" start2="249" end2="254" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="234" end1="235" start2="256" end2="257" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="236" end1="237" start2="258" end2="259" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="245" end1="245" start2="267" end2="272" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="247" end1="248" start2="274" end2="275" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="249" end1="249" start2="276" end2="277" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="257" end1="257" start2="285" end2="290" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="259" end1="260" start2="292" end2="293" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-        <range start1="261" end1="262" start2="294" end2="296" changelist="69f8d6d7-05d2-43a5-9c50-e4c3c5dbd3c1" />
-      </ranges>
-    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -129,43 +60,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "TODO_SCOPE": "All Places",
-    "WebServerToolWindowFactoryState": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
-    "WebServerToolWindowPanel.toolwindow.show.date": "false",
-    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
-    "WebServerToolWindowPanel.toolwindow.show.size": "false",
-    "cf.advertisement.text.has.clang-format": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "refactoring",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
+    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactoring&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\tasch\Desktop\Programmieren\ChessAI\ChessAI_Project\components\MoveGenerator" />
     </key>
   </component>
   <component name="RunManager" selected="Google Test.BoardTest.DoMoveBenchmarkMiddle">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="All in Board_Tests.cpp" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ChessAI_Project" TARGET_NAME="Component_Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ChessAI_Project" RUN_TARGET_NAME="Component_Tests" TEST_PATTERN="all-tests(file://$PROJECT_DIR$/components_tests/Board_Tests.cpp)" TEST_MODE="PATTERN">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -278,6 +204,8 @@
       <workItem from="1689357326633" duration="2788000" />
       <workItem from="1689406797020" duration="14329000" />
       <workItem from="1689423515615" duration="9008000" />
+      <workItem from="1689591707797" duration="654000" />
+      <workItem from="1689595336921" duration="2000" />
     </task>
     <servers />
   </component>
