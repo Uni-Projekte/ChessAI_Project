@@ -74,7 +74,7 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int attackedFields = this->AttackedFields();
     int pawnFileCounts = this->PawnFileCounts();
     int defence = this->Defense();
-    return (int) (materialWorth);
+    return (int) (materialWorth * 0.8 + attackedFields * 0.10 + pawnFileCounts * 0.05 + defence * 0.05);
 }
 
 MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player)
@@ -106,10 +106,10 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
 
         std::cout << std::endl;
         PrintMove(result);
-        std::cout << "Depth:" << searchDepth-1 << std::endl;
-        std::cout << "Time:" << end - start << std::endl;
-        std::cout << "Max Time:" << maxTime << std::endl;
-        std::cout << "States: "<< countStates<< std::endl;
+        //std::cout << "Depth:" << searchDepth-1 << std::endl;
+        //std::cout << "Time:" << end - start << std::endl;
+        //std::cout << "Max Time:" << maxTime << std::endl;
+        //std::cout << "States: "<< countStates<< std::endl;
         if (end - start > maxTime)
         {
             break;
@@ -167,7 +167,7 @@ int MoveAlgorithms::Negamax(
         this->board->DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
         this->board->GetMoves(nextMoves);             // get all moves possible
-        int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, player ? BLACK : WHITE);
+        int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
         if (val > best && result != NULL)
         {
             *result = moves[i];
@@ -256,8 +256,6 @@ int MoveAlgorithms::NegamaxPVS(
     }
 
     int best = INT_MIN;
-    MOVE defaultMove;  // Default value for result if it's nullptr
-    MOVE &currentMove = (result != nullptr) ? *result : defaultMove;
 
     uint8_t oldMoveRights = this->board->GetMoveRights();
     uint8_t oldEnpassent = this->board->GetEnPassant();
@@ -272,7 +270,7 @@ int MoveAlgorithms::NegamaxPVS(
         int val;
         if (i == 1) // Principal Variation Search (PVS) with first move searched thoroughly
         {
-            val = -NegamaxPVS(searchDepth - 1, nextMoves, states, -beta, -alpha, &currentMove, opponent(player));
+            val = -NegamaxPVS(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
         }
         else // Null window search for other moves with narrow alpha-beta window
         {
@@ -285,6 +283,11 @@ int MoveAlgorithms::NegamaxPVS(
         }
 
         this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+
+        if (val > best && result != NULL)
+        {
+            *result = moves[i];
+        }
 
         best = std::max(best, val);
         alpha = std::max(alpha, val);

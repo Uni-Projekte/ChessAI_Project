@@ -24,6 +24,6 @@ set(ChessAI_Project_Src
         MoveGenerator/pieces/queen.cpp
         MoveGenerator/pieces/queen.h
         MoveGenerator/pieces/rook.cpp
-        MoveGenerator/pieces/rook.h ZobristKeyGenerator.cpp ZobristKeyGenerator.h MoveAlgorithms.cpp MoveAlgorithms.h MoveGenerator/MoveGeneratorHelper.cpp MoveGenerator/MoveGeneratorHelper.h)
+        MoveGenerator/pieces/rook.h ZobristKeyGenerator.cpp ZobristKeyGenerator.h MoveAlgorithms.cpp MoveAlgorithms.h MoveGenerator/MoveGeneratorHelper.cpp MoveGenerator/MoveGeneratorHelper.h Game.cpp Game.h)
 
 add_library(components ${ChessAI_Project_Src} )

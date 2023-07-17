@@ -2,6 +2,7 @@
 #include "../components/Board.h"
 #include "../components/MoveAlgorithms.h"
 #include "../components/presenter.h"
+#include "../components/Game.h"
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -89,7 +90,7 @@ TEST(BoardTest, DoMoveBenchmarkStart)
 }
 
 TEST(BoardTest, UndoMove){
-    Board board("r3k2r/pppp3p/1qn5/6pP/8/1QN5/PPPP4/R3K2R w KQkq g5 0 1");
+    Board board("r1bqkbnr/pppppppp/2n5/8/8/P7/RPPPPPPP/1NBQKBNR w Kkq - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
@@ -183,7 +184,7 @@ TEST(BoardTest, AlphaBetaMiddleWithTranspostionTable)
     MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        recommendedMove = moveCalc.GetMoveAlphaBeta(15000);
+        recommendedMove = moveCalc.GetMoveAlphaBeta(10000);
     }
     std::cout << recommendedMove;
 }
@@ -200,7 +201,7 @@ TEST(BoardTest, AlphaBetaWithoutTranspostionTable)
     MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
-        recommendedMove = moveCalc.GetMoveAlphaBeta();
+        recommendedMove = moveCalc.GetMoveAlphaBeta(1000);
     }
     std::cout << recommendedMove;
 }
@@ -329,6 +330,11 @@ TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
         recommendedMove = moveCalc.GetMoveMinMax();
     }
     std::cout << recommendedMove;
+}
+
+TEST(BoardTest, PlayGameTest)
+{
+    PlayGameWithItself(1000);
 }
 
 
