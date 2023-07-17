@@ -16,12 +16,15 @@ private:
     bool useTranspositionTable;
 
 public:
-    MoveAlgorithms(Board *board, std::unordered_map<uint64_t ,
-                   TranspositionEntry> *transpositionTable,
+    MoveAlgorithms(Board *board,
+                   std::unordered_map<uint64_t ,TranspositionEntry> *transpositionTable,
                    ZobristKeyGenerator *keyGenerator,
                    bool useTranspositionTable);
-    MOVE GetMoveAlphaBeta();
-    MOVE GetMoveMinMax();
+
+
+    MOVE GetMoveNegamax(int maxTime = 1000, bool usePVS = true);
+    MOVE GetMoveAlphaBeta(int maxTime = 1000);
+    MOVE GetMoveMinMax(int maxTime = 1000);
 
     int MaterialWorth();
     int AttackedFields();
@@ -29,6 +32,27 @@ public:
     int Defense();
 
     int BoardRanking(COLOR player);
+
+    MOVE NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player);
+
+    int Negamax(
+            int searchDepth,
+            MOVE_ARRAY moves,
+            int &states,
+            int alpha,
+            int beta,
+            MOVE *result,
+            COLOR player);
+
+    int NegamaxPVS(
+            int searchDepth,
+            MOVE_ARRAY moves,
+            int &states,
+            int alpha,
+            int beta,
+            MOVE *result,
+            COLOR player);
+
 
     MOVE AlphaBetaIterative(MOVE_ARRAY moves,
                             int maxTime,

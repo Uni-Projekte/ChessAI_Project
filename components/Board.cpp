@@ -508,22 +508,22 @@ void Board::DoMove(MOVE move)
     const BOARD bishops = this->bishops;
     const BOARD queens = this->queens;
     const BOARD kings = this->kings;
-    const BOARD rook = this->rooks;
+    const BOARD rooks = this->rooks;
     const BOARD knights = this->knights;
 
     // disable white castling when king moved
-    this->move_rights = this->move_rights & (NO_WHITE_CASTLING | (!bool(white & this->kings & from) << 6) | (!bool(white & this->kings & from) << 7));
+    this->move_rights = this->move_rights & (NO_WHITE_CASTLING | (!bool(white & kings & from) << 6) | (!bool(white & kings & from) << 7));
     // disable black castling when king moved
-    this->move_rights = this->move_rights & (NO_BLACK_CASTLING | (!bool(black & this->kings & from) << 4) | (!bool(black & this->kings & from) << 5));
+    this->move_rights = this->move_rights & (NO_BLACK_CASTLING | (!bool(black & kings & from) << 4) | (!bool(black & kings & from) << 5));
 
     // disable white kingside castling when white kingside-tower moved
-    this->move_rights = this->move_rights & ~(bool(white & this->rooks & from & WHITE_KINGSIDE_TOWER) << 7);
+    this->move_rights = this->move_rights & ~(bool(white & rooks & from & WHITE_KINGSIDE_TOWER) << 7);
     // disable white queenside castling when white queenside-tower moved
-    this->move_rights = this->move_rights & ~(bool(white & this->rooks & from & WHITE_QUEENSIDE_TOWER) << 6);
+    this->move_rights = this->move_rights & ~(bool(white & rooks & from & WHITE_QUEENSIDE_TOWER) << 6);
     // disable black kingside castling when black kingside-tower moved
-    this->move_rights = this->move_rights & ~(bool(black & this->rooks & from & BLACK_KINGSIDE_TOWER) << 5);
+    this->move_rights = this->move_rights & ~(bool(black & rooks & from & BLACK_KINGSIDE_TOWER) << 5);
     // disable black queenside castling when black queenside-tower moved
-    this->move_rights = this->move_rights & ~(bool(black & this->rooks & from & BLACK_QUEENSIDE_TOWER) << 4);
+    this->move_rights = this->move_rights & ~(bool(black & rooks & from & BLACK_QUEENSIDE_TOWER) << 4);
 
     // delete moved tower old pos when castling
     this->rooks = this->rooks & ~(BLACK_KINGSIDE_TOWER * ((to & BLACK_KING_SIDE) && castling)); // ~(((to & BLACK_KING_SIDE) & (castling << 57)));
@@ -561,7 +561,7 @@ void Board::DoMove(MOVE move)
     this->black = this->black & ~from;
 
     this->white = this->white | (to * bool(white & from));
-    this->white = this->white & ~(to * ((capture && (black & from))));
+    this->white = this->white & ~(to * ((capture && (black & from))) );
     this->white = this->white & ~((uint64_t)(GetSingleBitBoardTo(this->en_passant) / ((((move & 0b111111) > 31) * 65535 + 1.0) / 256)) * bool((this->en_passant & 0b10000000) && GetMoveEnPassante(move))); // delete en passant pawn
     this->white = this->white & ~from;
 
@@ -583,8 +583,8 @@ void Board::DoMove(MOVE move)
     this->kings = this->kings & ~(to * ((capture && ((allPieces & ~kings) & from))));
     this->kings = this->kings & ~from;
 
-    this->rooks = this->rooks | (to * bool(rook & from));
-    this->rooks = this->rooks & ~(to * ((capture && ((allPieces & ~rook) & from))));
+    this->rooks = this->rooks | (to * bool(rooks & from));
+    this->rooks = this->rooks & ~(to * ((capture && ((allPieces & ~rooks) & from))));
     this->rooks = this->rooks & ~from;
 
     this->knights = this->knights | (to * bool(knights & from));
@@ -639,7 +639,7 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uin
 
     PIECE piece;
 
-    //remove moves piece from to position on piece boards (handles upgrades too, cause it removes just the one piece on to field)
+    //remove moves piece from to position on piece boards
     if (this->pawns & to) {
         this->pawns = this->pawns ^ to;
         this->pawns = this->pawns | from;
@@ -741,19 +741,19 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uin
     switch (capturedPiece) {
         case 0:
             break;
-        case 1:
+        case PAWN:
             this->pawns = this->pawns | to;
             break;
-        case 2:
+        case ROOK:
             this->rooks = this->rooks | to;
             break;
-        case 3:
+        case KNIGHT:
             this->knights = this->knights | to;
             break;
-        case 4:
+        case BISHOP:
             this->bishops = this->bishops | to;
             break;
-        case 5:
+        case QUEEN:
             this->queens = this->queens | to;
             break;
         default:

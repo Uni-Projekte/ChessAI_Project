@@ -107,6 +107,11 @@ std::string Uint64ToString(uint64_t board)
     return out;
 }
 
+COLOR opponent(COLOR color)
+{
+    return color ? WHITE : BLACK;
+}
+
 std::string Uint32ToString(uint32_t board)
 {
     std::string out = "";
@@ -145,16 +150,16 @@ std::string Uint16ToString(uint16_t board)
 
 std::string Uint8ToString(uint8_t board)
 {
-    std::string out = "";
+    std::string out;
     for (int i = 0; i < 8; i = i + 1)
     {
         if (board & 1)
         {
-            out = "1" + out;
+            out.append("1");
         }
         else
         {
-            out = "0" + out;
+            out.append("0");
         }
         board = board >> 1;
     }

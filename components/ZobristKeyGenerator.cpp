@@ -44,6 +44,7 @@ uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
                 if (kings & currentPosition)
                 {
                     zobristKey ^= this->randomKeyFields[y][x][6];
+                    //zobristKey ^= SingleBitBoard(x,y);
                 }
                 else if (queens & currentPosition)
                 {
@@ -95,5 +96,27 @@ uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
             }
         }
     }
+
+    /*uint8_t moverights = board.GetMoveRights();
+    uint8_t enPassante = board.GetEnPassant();
+
+    if(moverights & 0b10000000){
+        zobristKey ^= SingleBitBoard(8,0);
+    }
+    if(moverights & 0b01000000){
+        zobristKey ^= SingleBitBoard(0,0);
+    }
+    if(moverights & 0b00100000){
+        zobristKey ^= SingleBitBoard(8,8);
+    }
+    if(moverights & 0b00010000){
+        zobristKey ^= SingleBitBoard(0,8);
+    }
+
+    if(enPassante & 0b10000000){
+        zobristKey ^= SingleBitBoard(enPassante & 0b111 ,(enPassante & 0b111000)>>3);
+    }*/
+
+
     return zobristKey;
 }
