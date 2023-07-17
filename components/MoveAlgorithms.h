@@ -14,12 +14,14 @@ private:
     std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable;//0. Best Move 1. Alpha 2. Beta
     ZobristKeyGenerator *keyGenerator;
     bool useTranspositionTable;
+    bool copyUndo;
 
 public:
     MoveAlgorithms(Board *board,
                    std::unordered_map<uint64_t ,TranspositionEntry> *transpositionTable,
                    ZobristKeyGenerator *keyGenerator,
-                   bool useTranspositionTable);
+                   bool useTranspositionTable,
+                   bool copyUndo = false);
 
 
     MOVE GetMoveNegamax(int maxTime = 1000, bool usePVS = true);
@@ -30,6 +32,8 @@ public:
     int AttackedFields();
     int PawnFileCounts();
     int Defense();
+    int PawnStructure();
+    int PawnsInCenter();
 
     int BoardRanking(COLOR player);
 

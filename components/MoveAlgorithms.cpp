@@ -6,12 +6,14 @@ using namespace std;
 MoveAlgorithms::MoveAlgorithms(Board *board,
                                std::unordered_map<uint64_t, TranspositionEntry> *transpositionTable,
                                ZobristKeyGenerator *keyGenerator,
-                               bool useTranspositionTable)
+                               bool useTranspositionTable,
+                               bool copyUndo)
 {
     this->board = board;
     this->transpositionTable = transpositionTable;
     this->keyGenerator = keyGenerator;
     this->useTranspositionTable = useTranspositionTable;
+    this->copyUndo = copyUndo;
 }
 
 MOVE MoveAlgorithms::GetMoveNegamax(int maxTime, bool usePVS)
@@ -74,7 +76,9 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int attackedFields = this->AttackedFields();
     int pawnFileCounts = this->PawnFileCounts();
     int defence = this->Defense();
-    return (int) (materialWorth * 0.8 + attackedFields * 0.10 + pawnFileCounts * 0.05 + defence * 0.05);
+    int pawnStructure = this->PawnStructure();
+    int pawnsInCenter = this->PawnsInCenter();
+    return (int) (materialWorth * 0.75 + pawnStructure* 0.05 + pawnsInCenter * 0.1 + attackedFields * 0.05 + defence * 0.05);
 }
 
 MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player)
@@ -105,7 +109,7 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
                 .count();
 
         std::cout << std::endl;
-        PrintMove(result);
+        //PrintMove(result);
         //std::cout << "Depth:" << searchDepth-1 << std::endl;
         //std::cout << "Time:" << end - start << std::endl;
         //std::cout << "Max Time:" << maxTime << std::endl;
@@ -158,6 +162,7 @@ int MoveAlgorithms::Negamax(
 
     int best = INT_MIN;
 
+    Board oldBoard (this->board);
     uint8_t oldMoveRights = this->board->GetMoveRights();
     uint8_t oldEnpassent = this->board->GetEnPassant();
     uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
@@ -175,7 +180,11 @@ int MoveAlgorithms::Negamax(
         best = std::max(best, val);
         alpha = std::max(alpha, best);
 
-        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        if (this->copyUndo) {
+            *this->board = oldBoard;
+        } else {
+            this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        }
 
         if (beta <= alpha)
         {
@@ -257,6 +266,7 @@ int MoveAlgorithms::NegamaxPVS(
 
     int best = INT_MIN;
 
+    Board oldBoard (this->board);
     uint8_t oldMoveRights = this->board->GetMoveRights();
     uint8_t oldEnpassent = this->board->GetEnPassant();
     uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
@@ -282,7 +292,12 @@ int MoveAlgorithms::NegamaxPVS(
             }
         }
 
-        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        if (this->copyUndo) {
+            *this->board = oldBoard;
+        } else {
+            this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        }
+
 
         if (val > best && result != NULL)
         {
@@ -354,12 +369,12 @@ MOVE MoveAlgorithms::AlphaBetaIterative(MOVE_ARRAY moves, int maxTime, COLOR pla
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
 
-        std::cout << std::endl;
-        PrintMove(result);
-        std::cout << "Depth:" << searchDepth-1 << std::endl;
-        std::cout << "Time:" << end - start << std::endl;
-        std::cout << "Max Time:" << maxTime << std::endl;
-        std::cout << "States: "<< countStates<< std::endl;
+        //std::cout << std::endl;
+        //PrintMove(result);
+        //std::cout << "Depth:" << searchDepth-1 << std::endl;
+        //std::cout << "Time:" << end - start << std::endl;
+        //std::cout << "Max Time:" << maxTime << std::endl;
+        //std::cout << "States: "<< countStates<< std::endl;
         if (end - start > maxTime)
         {
             break;
@@ -403,6 +418,7 @@ int MoveAlgorithms::AlphaBetaMax(
 
     int best = INT_MIN;
 
+    Board oldBoard (this->board);
     uint8_t oldMoveRights = this->board->GetMoveRights();
     uint8_t oldEnpassent = this->board->GetEnPassant();
     uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
@@ -420,7 +436,12 @@ int MoveAlgorithms::AlphaBetaMax(
         best = std::max(best, val);
         alpha = std::max(alpha, val);
 
-        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        if (this->copyUndo) {
+            *this->board = oldBoard;
+        } else {
+            this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        }
+
 
         if (beta <= alpha)
         {
@@ -478,6 +499,7 @@ int MoveAlgorithms::AlphaBetaMin(
 
     int best = INT_MAX;
 
+    Board oldBoard (this->board);
     uint8_t oldMoveRights = this->board->GetMoveRights();
     uint8_t oldEnpassent = this->board->GetEnPassant();
     uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
@@ -495,7 +517,11 @@ int MoveAlgorithms::AlphaBetaMin(
         best = std::min(best, val);
         beta = std::min(beta, val);
 
-        this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        if (this->copyUndo) {
+            *this->board = oldBoard;
+        } else {
+            this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        }
 
         if (beta <= alpha)
         {
@@ -642,18 +668,18 @@ int MoveAlgorithms::MaterialWorth()
     uint64_t blackKnights = this->board->GetBlackKnights();
     uint64_t blackPawns = this->board->GetBlackPawns();
 
-    ranking = ranking + 10000 * popcount(whiteKing);
-    ranking = ranking + 900 * popcount(whiteQueen);
-    ranking = ranking + 500 * popcount(whiteRooks);
-    ranking = ranking + 300 * popcount(whiteBishops);
-    ranking = ranking + 300 * popcount(whiteKnights);
-    ranking = ranking + 100 * popcount(whitePawns);
-    ranking = ranking - 10000 * popcount(blackKing);
-    ranking = ranking - 900 * popcount(blackQueen);
-    ranking = ranking - 500 * popcount(blackRooks);
-    ranking = ranking - 300 * popcount(blackBishops);
-    ranking = ranking - 300 * popcount(blackKnights);
-    ranking = ranking - 100 * popcount(blackBishops);
+    ranking = ranking + 10 * popcount(whiteKing);
+    ranking = ranking + 9 * popcount(whiteQueen);
+    ranking = ranking + 5 * popcount(whiteRooks);
+    ranking = ranking + 3 * popcount(whiteBishops);
+    ranking = ranking + 3 * popcount(whiteKnights);
+    ranking = ranking + 1 * popcount(whitePawns);
+    ranking = ranking - 10 * popcount(blackKing);
+    ranking = ranking - 9 * popcount(blackQueen);
+    ranking = ranking - 5 * popcount(blackRooks);
+    ranking = ranking - 3 * popcount(blackBishops);
+    ranking = ranking - 3 * popcount(blackKnights);
+    ranking = ranking - 1 * popcount(blackBishops);
 
     return ranking;
 }
@@ -680,19 +706,19 @@ int MoveAlgorithms::AttackedFields()
     uint64_t blackPawns = this->board->GetBlackPawns();
 
 
-    ranking = ranking + 10000 * popcount(attackedFromWhite & blackKing);
-    ranking = ranking + 900 * popcount(attackedFromWhite & blackQueen);
-    ranking = ranking + 500 * popcount(attackedFromWhite & blackRooks);
-    ranking = ranking + 300 * popcount(attackedFromWhite & blackBishops);
-    ranking = ranking + 300 * popcount(attackedFromWhite & blackKnights);
-    ranking = ranking + 100 * popcount(attackedFromWhite & blackPawns);
+    ranking = ranking + 1000 * popcount(attackedFromWhite & blackKing);
+    ranking = ranking + 9 * popcount(attackedFromWhite & blackQueen);
+    ranking = ranking + 5 * popcount(attackedFromWhite & blackRooks);
+    ranking = ranking + 3 * popcount(attackedFromWhite & blackBishops);
+    ranking = ranking + 3 * popcount(attackedFromWhite & blackKnights);
+    ranking = ranking + 1 * popcount(attackedFromWhite & blackPawns);
 
-    ranking = ranking - 10000 * popcount(attackedFromBlack & whiteKing);
-    ranking = ranking - 900 * popcount(attackedFromBlack & whiteQueen);
-    ranking = ranking - 500 * popcount(attackedFromBlack & whiteRooks);
-    ranking = ranking - 300 * popcount(attackedFromBlack & whiteBishops);
-    ranking = ranking - 300 * popcount(attackedFromBlack & whiteKnights);
-    ranking = ranking - 100 * popcount(attackedFromBlack & whitePawns);
+    ranking = ranking - 1000 * popcount(attackedFromBlack & whiteKing);
+    ranking = ranking - 9 * popcount(attackedFromBlack & whiteQueen);
+    ranking = ranking - 5 * popcount(attackedFromBlack & whiteRooks);
+    ranking = ranking - 3 * popcount(attackedFromBlack & whiteBishops);
+    ranking = ranking - 3 * popcount(attackedFromBlack & whiteKnights);
+    ranking = ranking - 1 * popcount(attackedFromBlack & whitePawns);
 
     return ranking;
 }
@@ -704,22 +730,22 @@ int MoveAlgorithms::PawnFileCounts()
     uint64_t whitePawns = this->board->GetWhitePawns();
     uint64_t blackPawns = this->board->GetBlackPawns();
 
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnA) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnB) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnC) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnD) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnE) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnF) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnG) - 1);
-    ranking = ranking - 400 * (popcount(whitePawns & BoardColumnH) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnA) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnB) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnC) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnD) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnE) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnF) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnG) - 1);
-    ranking = ranking + 400 * (popcount(blackPawns & BoardColumnH) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnA) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnB) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnC) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnD) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnE) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnF) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnG) - 1);
+    ranking = ranking - 4 * (popcount(whitePawns & BoardColumnH) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnA) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnB) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnC) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnD) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnE) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnF) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnG) - 1);
+    ranking = ranking + 4 * (popcount(blackPawns & BoardColumnH) - 1);
 
     return ranking;
 }
@@ -741,3 +767,40 @@ int MoveAlgorithms::Defense()
     return ranking;
 }
 
+int MoveAlgorithms::PawnsInCenter()
+{
+    int ranking = 0;
+
+    uint64_t midFields = 0b0001100000011000<<16;
+
+    uint64_t pawns = this->board->GetPawns();
+
+    uint64_t white = this->board->GetWhite();
+    uint64_t black = this->board->GetBlack();
+
+    ranking = ranking + popcount(pawns & midFields & white);
+
+    ranking = ranking - popcount(pawns & midFields & black);
+
+    return ranking;
+}
+
+int MoveAlgorithms::PawnStructure()
+{
+    int ranking = 0;
+
+    uint64_t pawns = this->board->GetPawns();
+
+    uint64_t white = this->board->GetWhite();
+    uint64_t black = this->board->GetBlack();
+
+    uint64_t whiteAttacked = this->board->GetFromWhiteAttackedFields();
+    uint64_t blackAttacked = this->board->GetFromBlackAttackedFields();
+
+
+    ranking = ranking + popcount(pawns & white & whiteAttacked);
+
+    ranking = ranking - popcount(pawns & black & blackAttacked);
+
+    return ranking;
+}

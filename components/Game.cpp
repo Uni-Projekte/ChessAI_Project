@@ -1,7 +1,7 @@
 #include "Game.h"
 #include <iostream>
 
-void PlayGameWithItself(int maxTime) {
+void PlayGameWithItself() {
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     Presenter presenter = Presenter();
 
@@ -9,15 +9,15 @@ void PlayGameWithItself(int maxTime) {
     std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
 
     zobristKeyGenerator.InitRandomFields();
-    MoveAlgorithms moveCalc(&board, &transpositionTable, &zobristKeyGenerator, true);
+    MoveAlgorithms moveCalc(&board, &transpositionTable, &zobristKeyGenerator, false, true);
     MOVE recommendedMove;
-    std::cout << presenter.ToString(board) << std::endl;
 
-    while (true)
+    while (!board.End())
     {
-        recommendedMove = moveCalc.GetMoveNegamax(maxTime, false);
+        recommendedMove = moveCalc.GetMoveAlphaBeta(500);
         board.DoMove(recommendedMove);
-        std::cout << presenter.ToString(board) << std::endl;
+        std::cout<< presenter.ToString(board) << std::endl;
+        int i = 0;
         std::cout << recommendedMove;
     }
 

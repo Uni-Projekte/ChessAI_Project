@@ -620,7 +620,7 @@ void Board::DoMove(MOVE move)
     this->move_rights = this->move_rights ^ 0b1U;
 }
 
-void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uint8_t oldHalfmoveClock)
+void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassant, uint8_t oldHalfmoveClock)
 {
     const BOARD from = GetSingleBitBoardFrom(move);
     const BOARD to = GetSingleBitBoardTo(move);
@@ -641,27 +641,27 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uin
 
     //remove moves piece from to position on piece boards
     if (this->pawns & to) {
-        this->pawns = this->pawns ^ to;
+        this->pawns = this->pawns &~ to;
         this->pawns = this->pawns | from;
         piece = PAWN;
     } else if (this->rooks & to) {
-        this->rooks = this->rooks ^ to;
+        this->rooks = this->rooks &~ to;
         this->rooks = this->rooks | from;
         piece = ROOK;
     } else if (this->bishops & to) {
-        this->bishops = this->bishops ^ to;
+        this->bishops = this->bishops &~ to;
         this->bishops = this->bishops | from;
         piece = BISHOP;
     } else if (this->queens & to) {
-        this->queens = this->queens ^ to;
+        this->queens = this->queens &~ to;
         this->queens = this->queens | from;
         piece = QUEEN;
     } else if (this->knights & to) {
-        this->knights = this->knights ^ to;
+        this->knights = this->knights &~ to;
         this->knights = this->knights | from;
         piece = KNIGHT;
     } else if (this->kings & to) {
-        this->kings = this->kings ^ to;
+        this->kings = this->kings &~ to;
         this->kings = this->kings | from;
         piece = KING;
     }
@@ -670,14 +670,14 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uin
     //when capture add color piece back at to position on color boards
     switch (colorThatMoved) {
         case WHITE:
-            this->white = this->white ^ to;
+            this->white = this->white &~ to;
             this->white = this->white | from;
             if (capturedPiece) {
                 this->black = this->black | to;
             }
             break;
         case BLACK:
-            this->black = this->black ^ to;
+            this->black = this->black &~ to;
             this->black = this->black | from;
             if (capturedPiece) {
                 this->white = this->white | to;
@@ -712,27 +712,27 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uin
         if (to == C1) {
             this->white = this->white | A1;
             this->rooks = this->rooks | A1;
-            this->white = this->white ^ D1;
-            this->rooks = this->rooks ^ D1;
+            this->white = this->white &~ D1;
+            this->rooks = this->rooks &~ D1;
             this->move_rights = this->move_rights | 0b01000000;
         } else if (to == G1) {
             this->white = this->white | H1;
             this->rooks = this->rooks | H1;
-            this->white = this->white ^ F1;
-            this->rooks = this->rooks ^ F1;
+            this->white = this->white &~ F1;
+            this->rooks = this->rooks &~ F1;
             this->move_rights = this->move_rights | 0b10000000;
         } else if (to == C8) {
             this->black = this->black | A8;
             this->rooks = this->rooks | A8;
-            this->white = this->white ^ D8;
-            this->rooks = this->rooks ^ D8;
+            this->white = this->white &~ D8;
+            this->rooks = this->rooks &~ D8;
             this->move_rights = this->move_rights | 0b00010000;
 
         } else if (to == G8) {
             this->black = this->black | H8;
             this->rooks = this->rooks | H8;
-            this->white = this->white ^ F8;
-            this->rooks = this->rooks ^ F8;
+            this->white = this->white &~ F8;
+            this->rooks = this->rooks &~ F8;
             this->move_rights = this->move_rights | 0b00100000;
         }
     }
@@ -761,7 +761,7 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uin
             break;
     }
 
-    this->en_passant = oldEnPassent;
+    this->en_passant = oldEnPassant;
 
     MarkFields(colorThatMoved);
 

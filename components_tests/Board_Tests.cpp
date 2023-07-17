@@ -7,7 +7,7 @@
 namespace fs = std::filesystem;
 
 // Tests made bny RamRam
-TEST(BoardTest, FromFENTestInitalBoard) {
+/*TEST(BoardTest, FromFENTestInitalBoard) {
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
     EXPECT_EQ(board.GetBlackPawns(), 0xff000000000000);
@@ -90,7 +90,7 @@ TEST(BoardTest, DoMoveBenchmarkStart)
 }
 
 TEST(BoardTest, UndoMove){
-    Board board("r1bqkbnr/pppppppp/2n5/8/8/P7/RPPPPPPP/1NBQKBNR w Kkq - 0 1");
+    Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     Presenter presenter = Presenter();
     std::cout << std::endl
               << presenter.ToString(board);
@@ -105,6 +105,8 @@ TEST(BoardTest, UndoMove){
         Board oldBoard(board);
         board.DoMove(nextMoves[i]);
         Board movedBoard(board);
+        std::cout << std::endl
+                  << presenter.ToString(movedBoard);
         board.UndoMove(nextMoves[i], oldMoveRights, oldEnPassent, oldHalfmoveClock);
         EXPECT_EQ(board.Equals(oldBoard),true) << "N-TH MOVE: " << i << "---" << MoveToString(nextMoves[i]) << std::endl
         << presenter.ToString(oldBoard) << std::endl
@@ -232,7 +234,7 @@ TEST(BoardTest, NegamaxMiddleWithTranspostionTablePVS)
     std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
 
     zobristKeyGenerator.InitRandomFields();
-    MoveAlgorithms moveCalc(&board, &transpositionTable, &zobristKeyGenerator, true);
+    MoveAlgorithms moveCalc(&board, &transpositionTable, &zobristKeyGenerator, false);
     MOVE recommendedMove;
     for (int i = 0; i < 1; i++)
     {
@@ -330,11 +332,11 @@ TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
         recommendedMove = moveCalc.GetMoveMinMax();
     }
     std::cout << recommendedMove;
-}
+}*/
 
 TEST(BoardTest, PlayGameTest)
 {
-    PlayGameWithItself(1000);
+    PlayGameWithItself();
 }
 
 

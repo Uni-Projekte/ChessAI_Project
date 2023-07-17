@@ -8,7 +8,7 @@
 #include <unordered_map>
 
 
-void PlayGameWithItself(int maxTime);
+void PlayGameWithItself();
 
 
 
