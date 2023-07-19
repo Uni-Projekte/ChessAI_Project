@@ -97,26 +97,223 @@ uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
         }
     }
 
-    /*uint8_t moverights = board.GetMoveRights();
-    uint8_t enPassante = board.GetEnPassant();
-
-    if(moverights & 0b10000000){
-        zobristKey ^= SingleBitBoard(8,0);
-    }
-    if(moverights & 0b01000000){
-        zobristKey ^= SingleBitBoard(0,0);
-    }
-    if(moverights & 0b00100000){
-        zobristKey ^= SingleBitBoard(8,8);
-    }
-    if(moverights & 0b00010000){
-        zobristKey ^= SingleBitBoard(0,8);
-    }
-
-    if(enPassante & 0b10000000){
-        zobristKey ^= SingleBitBoard(enPassante & 0b111 ,(enPassante & 0b111000)>>3);
-    }*/
-
-
     return zobristKey;
 }
+
+/*uint64_t ZobristKeyGenerator::updateZobristKey(std::uint64_t key, const Board board, const MOVE move) {
+
+    const BOARD from = GetSingleBitBoardFrom(move);
+    const BOARD to = GetSingleBitBoardTo(move);
+    COLOR player = board.GetCurrentColor();
+    const bool castling = GetCastling(move);
+
+    uint8_t xFrom = (move & 0b000111000000) >> 6;
+    uint8_t yFrom = (move & 0b111000000000) >> 9;
+    uint8_t xTo = (move & 0b000000000111);
+    uint8_t yTo = (move & 0b000000111000) >> 3;
+
+    if (board.GetKings() & to)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yTo][xTo][6];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yTo][xTo][0];
+                break;
+        }
+    }
+    else if (board.GetQueens() & to)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yTo][xTo][7];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yTo][xTo][1];
+                break;
+        }
+    }
+    else if (board.GetBishops() & to)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yTo][xTo][8];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yTo][xTo][2];
+                break;
+        }
+    }
+    else if (board.GetKnights() & to)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yTo][xTo][9];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yTo][xTo][3];
+                break;
+        }
+    }
+    else if (board.GetRooks() & to)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yTo][xTo][10];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yTo][xTo][4];
+                break;
+        }
+    }
+    else if (board.GetPawns() & to)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yTo][xTo][11];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yTo][xTo][5];
+                break;
+        }
+    }
+
+
+    if (board.GetKings() & from)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yFrom][xFrom][0];
+                key ^= this->randomKeyFields[yTo][xTo][0];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yFrom][xFrom][6];
+                key ^= this->randomKeyFields[yTo][xTo][6];
+                break;
+        }
+    }
+    else if (board.GetQueens() & from)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yFrom][xFrom][1];
+                key ^= this->randomKeyFields[yTo][xTo][1];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yFrom][xFrom][7];
+                key ^= this->randomKeyFields[yTo][xTo][7];
+                break;
+        }
+    }
+    else if (board.GetBishops() & from)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yFrom][xFrom][2];
+                key ^= this->randomKeyFields[yTo][xTo][2];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yFrom][xFrom][8];
+                key ^= this->randomKeyFields[yTo][xTo][8];
+                break;
+        }
+    }
+    else if (board.GetKnights() & from)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yFrom][xFrom][3];
+                key ^= this->randomKeyFields[yTo][xTo][3];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yFrom][xFrom][9];
+                key ^= this->randomKeyFields[yTo][xTo][9];
+                break;
+        }
+    }
+    else if (board.GetRooks() & from)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yFrom][xFrom][4];
+                key ^= this->randomKeyFields[yTo][xTo][4];
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yFrom][xFrom][10];
+                key ^= this->randomKeyFields[yTo][xTo][10];
+                break;
+        }
+    }
+    else if (board.GetPawns() & from)
+    {
+        switch(player){
+            case WHITE:
+                key ^= this->randomKeyFields[yFrom][xFrom][5];
+                switch (move & UPGRADE_FLAGS) {
+                    case UPGRADE_ROOK:
+                        key ^= this->randomKeyFields[yTo][xTo][4];
+                        break;
+                    case UPGRADE_BISHOP:
+                        key ^= this->randomKeyFields[yTo][xTo][2];
+                        break;
+                    case UPGRADE_KNIGHT:
+                        key ^= this->randomKeyFields[yTo][xTo][3];
+                        break;
+                    case UPGRADE_QUEEN:
+                        key ^= this->randomKeyFields[yTo][xTo][1];
+                        break;
+                    default:
+                        key ^= this->randomKeyFields[yTo][xTo][5];
+                        break;
+                }
+                break;
+            case BLACK:
+                key ^= this->randomKeyFields[yFrom][xFrom][11];
+                switch (move & UPGRADE_FLAGS) {
+                    case UPGRADE_ROOK:
+                        key ^= this->randomKeyFields[yTo][xTo][10];
+                        break;
+                    case UPGRADE_BISHOP:
+                        key ^= this->randomKeyFields[yTo][xTo][9];
+                        break;
+                    case UPGRADE_KNIGHT:
+                        key ^= this->randomKeyFields[yTo][xTo][8];
+                        break;
+                    case UPGRADE_QUEEN:
+                        key ^= this->randomKeyFields[yTo][xTo][7];
+                        break;
+                    default:
+                        key ^= this->randomKeyFields[yTo][xTo][11];
+                        break;
+                }
+                break;
+        }
+    }
+
+    if(castling){
+        if(xTo == 2){
+            switch(player){
+                case WHITE:
+                    key ^= this->randomKeyFields[7][3][4];
+                    break;
+                case BLACK:
+                    key ^= this->randomKeyFields[0][3][10];
+                    break;
+            }
+        }
+        else if(xTo == 6){
+            switch(player){
+                case WHITE:
+                    key ^= this->randomKeyFields[7][5][4];
+                    break;
+                case BLACK:
+                    key ^= this->randomKeyFields[0][5][10];
+                    break;
+            }
+        }
+    }
+
+
+    return key;
+}*/

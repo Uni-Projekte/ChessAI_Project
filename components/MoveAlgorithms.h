@@ -7,6 +7,7 @@
 #include <bitset>
 #include <bit>
 #include "ZobristKeyGenerator.h"
+#include "helper.h"
 
 class MoveAlgorithms {
 private:
@@ -39,6 +40,17 @@ public:
 
     MOVE NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player);
 
+    bool isQuiet(Board board);
+    bool inCheck(Board board);
+
+    int QuiescenceSearch(int searchDepth,
+                         MOVE_ARRAY moves,
+                         int &states,
+                         int alpha,
+                         int beta,
+                         MOVE *result,
+                         COLOR player);
+
     int Negamax(
             int searchDepth,
             MOVE_ARRAY moves,
@@ -56,7 +68,6 @@ public:
             int beta,
             MOVE *result,
             COLOR player);
-
 
     MOVE AlphaBetaIterative(MOVE_ARRAY moves,
                             int maxTime,

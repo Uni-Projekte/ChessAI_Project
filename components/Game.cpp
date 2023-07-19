@@ -14,12 +14,10 @@ void PlayGameWithItself() {
 
     while (!board.End())
     {
-        recommendedMove = moveCalc.GetMoveAlphaBeta(500);
+        recommendedMove = moveCalc.GetMoveNegamax(1000, false);
         board.DoMove(recommendedMove);
         std::cout<< presenter.ToString(board) << std::endl;
         int i = 0;
         std::cout << recommendedMove;
     }
-
-
 }

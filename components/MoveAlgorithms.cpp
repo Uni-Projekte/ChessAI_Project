@@ -78,7 +78,8 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int defence = this->Defense();
     int pawnStructure = this->PawnStructure();
     int pawnsInCenter = this->PawnsInCenter();
-    return (int) (materialWorth * 0.75 + pawnStructure* 0.05 + pawnsInCenter * 0.1 + attackedFields * 0.05 + defence * 0.05);
+    return ((int) ((MaterialWorth() << 10) + (AttackedFields() <<7) *  + (PawnFileCounts() << 6) + (Defense() << 6) +
+            (PawnStructure() << 6)  + (PawnsInCenter() << 6)));
 }
 
 MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player)
@@ -109,11 +110,11 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
                 .count();
 
         std::cout << std::endl;
-        //PrintMove(result);
-        //std::cout << "Depth:" << searchDepth-1 << std::endl;
-        //std::cout << "Time:" << end - start << std::endl;
-        //std::cout << "Max Time:" << maxTime << std::endl;
-        //std::cout << "States: "<< countStates<< std::endl;
+        PrintMove(result);
+        std::cout << "Depth:" << searchDepth-1 << std::endl;
+        std::cout << "Time:" << end - start << std::endl;
+        std::cout << "Max Time:" << maxTime << std::endl;
+        std::cout << "States: "<< countStates<< std::endl;
         if (end - start > maxTime)
         {
             break;
@@ -125,21 +126,59 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
     return result;
 }
 
+bool MoveAlgorithms::isQuiet(Board board)
+{
+    MOVE_ARRAY moves;
+    board.GetMoves(moves);
 
-int MoveAlgorithms::Negamax(
-        int searchDepth,
-        MOVE_ARRAY moves,
-        int &states,
-        int alpha,
-        int beta,
-        MOVE *result,
-        COLOR player)
+    for (int i = 1; i < moves[0]; ++i)
+    {
+        MOVE move = moves[i];
+        Board newBoard(board);
+        newBoard.DoMove(move);
+        if (inCheck(newBoard) || (move & CAPTURE_FLAGS) != 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MoveAlgorithms::inCheck(Board board)
+{
+    COLOR currentColor = board.GetCurrentColor();
+    BOARD attackedFields;
+    BOARD king;
+
+    if (currentColor == WHITE)
+    {
+        attackedFields = board.GetFromBlackAttackedFields();
+        king = board.GetWhiteKing();
+    }
+    else
+    {
+        attackedFields = board.GetFromWhiteAttackedFields();
+        king = board.GetBlackKing();
+    }
+
+    bool in_check = attackedFields & king;
+    return in_check;
+}
+
+int MoveAlgorithms::QuiescenceSearch(int searchDepth,
+                     MOVE_ARRAY moves,
+                     int &states,
+                     int alpha,
+                     int beta,
+                     MOVE *result,
+                     COLOR player)
 {
     states += 1;
     if (searchDepth <= 0)
     {
         return BoardRanking(player);
     }
+
     std::unordered_map<uint64_t, TranspositionEntry>::iterator entryA;
     uint64_t boardKey = 0;
 
@@ -148,7 +187,6 @@ int MoveAlgorithms::Negamax(
         entryA = this->transpositionTable->find(boardKey);
         if(entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
             TranspositionEntry &entry = entryA->second;
-            if (result != nullptr) *result = player ? entry.bestMoveAlpha : entry.bestMoveBeta;
             if (entry.alpha >= beta) {
                 return entry.alpha;
             }
@@ -171,8 +209,8 @@ int MoveAlgorithms::Negamax(
     {
         this->board->DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        this->board->GetMoves(nextMoves);             // get all moves possible
-        int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
+        this->board->GetMoves(nextMoves);             // get all moves
+        int val = Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
         if (val > best && result != NULL)
         {
             *result = moves[i];
@@ -198,20 +236,102 @@ int MoveAlgorithms::Negamax(
             newEntry.depth = searchDepth;
             newEntry.alpha = best;
             newEntry.beta = best;
-            if(result != NULL) {
-                newEntry.bestMoveAlpha = *result;
-                newEntry.bestMoveBeta = *result;
-            }
             this->transpositionTable->insert({boardKey, newEntry});
         }
         else if(entryA != this->transpositionTable->end() && entryA->second.depth < searchDepth && entryA->second.alpha > best){
             entryA->second.depth = searchDepth;
             entryA->second.alpha = best;
             entryA->second.beta = best;
-            if (result != NULL) {
-                entryA->second.bestMoveAlpha = *result;
-                entryA->second.bestMoveBeta = *result;
+        }
+    }
+
+    return best;
+}
+
+int MoveAlgorithms::Negamax(
+        int searchDepth,
+        MOVE_ARRAY moves,
+        int &states,
+        int alpha,
+        int beta,
+        MOVE *result,
+        COLOR player)
+{
+    states += 1;
+    if (searchDepth <= 0)
+    {
+        return BoardRanking(player);
+    }
+
+    std::unordered_map<uint64_t, TranspositionEntry>::iterator entryA;
+    uint64_t boardKey = 0;
+
+    if(this->useTranspositionTable){
+        boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+        entryA = this->transpositionTable->find(boardKey);
+        if(entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
+            TranspositionEntry &entry = entryA->second;
+            if (entry.alpha >= beta) {
+                return entry.alpha;
             }
+            if (entry.beta <= alpha) {
+                return entry.beta;
+            }
+            alpha = std::max(alpha, entry.alpha);
+            beta = std::min(beta, entry.beta);
+        }
+    }
+
+    /*if (isQuiet(this->board))
+    {
+        int value = QuiescenceSearch(3, moves, states, beta, alpha, NULL, player);
+        return value;
+    }*/
+
+    int best = INT_MIN;
+
+    Board oldBoard (this->board);
+    uint8_t oldMoveRights = this->board->GetMoveRights();
+    uint8_t oldEnpassent = this->board->GetEnPassant();
+    uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
+
+    for (int i = 1; i < moves[0]; i++)
+    {
+        this->board->DoMove(moves[i]);    // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
+        this->board->GetMoves(nextMoves);             // get all moves
+        int val = Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
+        if (val > best && result != NULL)
+        {
+            *result = moves[i];
+        }
+        best = std::max(best, val);
+        alpha = std::max(alpha, best);
+
+        if (this->copyUndo) {
+            *this->board = oldBoard;
+        } else {
+            this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
+        }
+
+        if (beta <= alpha)
+        {
+            break;
+        }
+    }
+
+    if(this->useTranspositionTable){
+        if(entryA == this->transpositionTable->end() && this->transpositionTable->size() < 500000){
+            TranspositionEntry newEntry{};
+            newEntry.depth = searchDepth;
+            newEntry.alpha = best;
+            newEntry.beta = best;
+            this->transpositionTable->insert({boardKey, newEntry});
+        }
+        else if(entryA != this->transpositionTable->end() && entryA->second.depth < searchDepth && entryA->second.alpha > best){
+            entryA->second.depth = searchDepth;
+            entryA->second.alpha = best;
+            entryA->second.beta = best;
         }
     }
 
@@ -509,7 +629,7 @@ int MoveAlgorithms::AlphaBetaMin(
         this->board->DoMove(moves[i]);    // do move with index i
         NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
         this->board->GetMoves(nextMoves);             // get all moves possible
-        int val = AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, NULL, player);
+        int val = AlphaBetaMax(searchDepth - 1, nextMoves, states, alpha, beta, result, player);
         if (val < best && result != NULL)
         {
             *result = moves[i];
@@ -771,7 +891,7 @@ int MoveAlgorithms::PawnsInCenter()
 {
     int ranking = 0;
 
-    uint64_t midFields = 0b0001100000011000<<16;
+    uint64_t midFields = 0b0001100000011000<<24;
 
     uint64_t pawns = this->board->GetPawns();
 
@@ -804,3 +924,4 @@ int MoveAlgorithms::PawnStructure()
 
     return ranking;
 }
+
