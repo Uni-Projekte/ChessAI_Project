@@ -1,21 +1,26 @@
-#include "components/Board.h"
-#include "components/helper.h"
-#include "components/presenter.h"
+
+#include "src/helper.h"
+#include "src/presenter.h"
+#include "src/contest/gameclient.h"
 #include <iostream>
   
 
 int main()
 {
-    Board board("rnbqkbnr/1ppppppp/p7/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2");
-    std::cout << board.toFEN() << std::endl;
-    Presenter presenter = Presenter();
-    std::cout << std::endl << presenter.ToString(board);
-    board.DoMove(CreateMove(5, 6, 5, 4, 0));
-    std::cout << board.toFEN() << std::endl;
-    std::cout << std::endl << presenter.ToString(board);
-    board.DoMove(CreateMove(4, 4, 5, 5, CAPTURE));
-    std::cout << board.toFEN() << std::endl;
-    std::cout << std::endl << presenter.ToString(board);
+    GameClient c;
+    c.Connect();
+
+    LoginRequest loginRequest = {"username",1,{Login,0}};
+    LoginResponse loginResponse = c.sendLoginRequest(loginRequest);
+    std::cout << "LOGIN RESPONSE" << std::endl
+    << "Player ID: " << loginResponse.playerID << std::endl
+    << "Player Name: " << loginResponse.playerName << std::endl
+    << "Rating: " <<  loginResponse.rating << std::endl;
+
+    bool run = true;
+    while(run){
+
+    }
 }
 
 // Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"

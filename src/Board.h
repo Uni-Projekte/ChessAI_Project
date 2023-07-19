@@ -6,9 +6,6 @@
 #include <string>
 #include <vector>
 
-
-
-
 #define WHITE_KING_SIDE 0b00000010U
 #define WHITE_QUEEN_SIDE 0b00100000U
 #define BLACK_KING_SIDE (WHITE_KING_SIDE << 56ULL)

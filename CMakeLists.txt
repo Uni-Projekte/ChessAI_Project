@@ -4,14 +4,15 @@ project(ChessAI_Project)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_TOOLCHAIN_FILE C:/Users/nikla/.clion-vcpkg/vcpkg/scripts/buildsystems)
 
-add_executable(${PROJECT_NAME} ChessAI_Project.cpp src/contest/gameclient.cpp src/contest/gameclient.h)
+add_executable(${PROJECT_NAME} ChessAI_Project.cpp src/contest/gameclient.cpp src/contest/gameclient.h src/jsoncpp.cpp src/json/json.h)
 
 add_subdirectory(src)
 add_subdirectory(test)
 
-find_package(jsoncpp CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} src JsonCpp::JsonCpp)
+find_package(websocketpp CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} src ws2_32 websocketpp::websocketpp)
 
 if(NOT googletest)
 	include(FetchContent)

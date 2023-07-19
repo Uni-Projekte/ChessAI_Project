@@ -612,7 +612,7 @@ void Board::DoMove(MOVE move)
 
 
     // en_passant
-    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != A4 && to != A5)) || ((pawns & (to >> 1)) && (to != H4 && to != H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
+    this->en_passant = ((pawns & from) && (to == from << 16 || from == to << 16) && ((((pawns & (to << 1)) && (to != FIELD_A4 && to != FIELD_A5)) || ((pawns & (to >> 1)) && (to != FIELD_H4 && to != FIELD_H5))))) * (0b10000000 | ((move & 0b111111) + ((((move & 0b111111) > 31) * 2 - 1) * 8)) | (bool(white & from) << 6));
 
     MarkFields((COLOR)(this->move_rights & 1));
 
@@ -709,30 +709,30 @@ void Board::UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassant, uin
     //reset tower
     if (castling)
     {
-        if (to == C1) {
-            this->white = this->white | A1;
-            this->rooks = this->rooks | A1;
-            this->white = this->white &~ D1;
-            this->rooks = this->rooks &~ D1;
+        if (to == FIELD_C1) {
+            this->white = this->white | FIELD_A1;
+            this->rooks = this->rooks | FIELD_A1;
+            this->white = this->white &~ FIELD_D1;
+            this->rooks = this->rooks &~ FIELD_D1;
             this->move_rights = this->move_rights | 0b01000000;
-        } else if (to == G1) {
-            this->white = this->white | H1;
-            this->rooks = this->rooks | H1;
-            this->white = this->white &~ F1;
-            this->rooks = this->rooks &~ F1;
+        } else if (to == FIELD_G1) {
+            this->white = this->white | FIELD_H1;
+            this->rooks = this->rooks | FIELD_H1;
+            this->white = this->white &~ FIELD_F1;
+            this->rooks = this->rooks &~ FIELD_F1;
             this->move_rights = this->move_rights | 0b10000000;
-        } else if (to == C8) {
-            this->black = this->black | A8;
-            this->rooks = this->rooks | A8;
-            this->white = this->white &~ D8;
-            this->rooks = this->rooks &~ D8;
+        } else if (to == FIELD_C8) {
+            this->black = this->black | FIELD_A8;
+            this->rooks = this->rooks | FIELD_A8;
+            this->white = this->white &~ FIELD_D8;
+            this->rooks = this->rooks &~ FIELD_D8;
             this->move_rights = this->move_rights | 0b00010000;
 
-        } else if (to == G8) {
-            this->black = this->black | H8;
-            this->rooks = this->rooks | H8;
-            this->white = this->white &~ F8;
-            this->rooks = this->rooks &~ F8;
+        } else if (to == FIELD_G8) {
+            this->black = this->black | FIELD_H8;
+            this->rooks = this->rooks | FIELD_H8;
+            this->white = this->white &~ FIELD_F8;
+            this->rooks = this->rooks &~ FIELD_F8;
             this->move_rights = this->move_rights | 0b00100000;
         }
     }
