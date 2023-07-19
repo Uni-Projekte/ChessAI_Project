@@ -10,7 +10,10 @@ int main()
     GameClient c;
     c.Connect();
 
-    LoginRequest loginRequest = {"username",1,{Login,0}};
+    LoginRequest loginRequest = {"user",1,{Login,0}};
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
     LoginResponse loginResponse = c.sendLoginRequest(loginRequest);
     std::cout << "LOGIN RESPONSE" << std::endl
     << "Player ID: " << loginResponse.playerID << std::endl

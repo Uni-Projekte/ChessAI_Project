@@ -12,7 +12,7 @@ add_subdirectory(src)
 add_subdirectory(test)
 
 find_package(websocketpp CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} src ws2_32 websocketpp::websocketpp)
+target_link_libraries(${PROJECT_NAME} src ws2_32 websocketpp::websocketpp )
 
 if(NOT googletest)
 	include(FetchContent)

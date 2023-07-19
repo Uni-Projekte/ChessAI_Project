@@ -2,6 +2,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <iostream>
+#include <thread>
 
 #include <websocketpp/config/asio_no_tls_client.hpp>
 #include <websocketpp/client.hpp>
@@ -133,7 +134,8 @@ typedef Message GameStartedResponse;
 class GameClient {
 private:
     websocketpp::client<websocketpp::config::asio_client> *client;
-    char buffer[1000];
+    websocketpp::client<websocketpp::config::asio_client>::connection_ptr connection;
+    std::thread *tMain;
 
 public:
     GameClient();
