@@ -286,7 +286,7 @@ uint64_t GetRowFromIndex(int index);
 
 uint64_t GetColumnFromIndex(int index);
 
-std::string GetColumnLetterFromIndex(int index);
+char GetColumnLetterFromIndex(int index);
 
 std::string StringMultiply(std::string src, unsigned int times);
 
@@ -300,7 +300,7 @@ std::string Uint8ToString(uint8_t board);
 
 
 
-#define MAX_MOVES (8 * 8 * 16)
+#define MAX_MOVES (8 * 8 * 8)
 
 typedef uint64_t BOARD;
 // Capture (or Upgrade) | Castling (or Upgrade) | Upgrade | Upgrade | FROM_YYY | FROM_XXX | TO_YYY | TO_XXX
@@ -366,6 +366,8 @@ struct TranspositionEntryNegamax {
     FlagEntry flag;
     MOVE bestMove;
 };
+
+std::string MoveForGameServer(MOVE move);
 
 COLOR opponent(COLOR color);
 

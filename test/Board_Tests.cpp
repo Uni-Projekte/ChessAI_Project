@@ -191,22 +191,7 @@ TEST(BoardTest, AlphaBetaMiddleWithTranspostionTable)
     std::cout << recommendedMove;
 }
 
-TEST(BoardTest, AlphaBetaWithoutTranspostionTable)
-{
-    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
-    Presenter presenter = Presenter();
-    std::cout << std::endl<< presenter.ToString(board);
-    ZobristKeyGenerator zobristKeyGenerator;
-    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
-    zobristKeyGenerator.InitRandomFields();
-    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, false);
-    MOVE recommendedMove;
-    for (int i = 0; i < 1; i++)
-    {
-        recommendedMove = moveCalc.GetMoveAlphaBeta(1000);
-    }
-    std::cout << recommendedMove;
-}
+
 
 TEST(BoardTest, NegamaxMiddleWithTranspostionTableNoPVS)
 {
@@ -333,14 +318,14 @@ TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
     }
     std::cout << recommendedMove;
 }
-
+*/
 TEST(BoardTest, PlayGameTest)
 {
     PlayGameWithItself();
-}*/
+}
 
 
-TEST(BoardTest, NegamaxStartNoTNoP)
+/*TEST(BoardTest, NegamaxStartNoTNoP)
 {
     Board board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     Presenter presenter = Presenter();
@@ -501,3 +486,20 @@ TEST(BoardTest, NegamaxEndWithTnoP)
     }
     std::cout << recommendedMove;
 }
+
+TEST(BoardTest, AlphaBetaWithoutTranspostionTable)
+{
+    Board board("r3k3/p4ppp/n1p2q1n/2b1p1B1/4P3/N7/P1PQ2PP/K1R2B1R w Kq - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl<< presenter.ToString(board);
+    ZobristKeyGenerator zobristKeyGenerator;
+    std::unordered_map<uint64_t , TranspositionEntry> transpositionTable;
+    zobristKeyGenerator.InitRandomFields();
+    MoveAlgorithms moveCalc(&board, &transpositionTable,  &zobristKeyGenerator, false);
+    MOVE recommendedMove;
+    for (int i = 0; i < 1; i++)
+    {
+        recommendedMove = moveCalc.GetMoveAlphaBeta(5000);
+    }
+    std::cout << recommendedMove;
+}*/

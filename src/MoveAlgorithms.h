@@ -34,7 +34,7 @@ public:
     int PawnFileCounts();
     int Defense();
     int PawnStructure();
-    int PawnsInCenter();
+    int PawnsInCenter(COLOR player, int fullMoveNumber);
 
     int BoardRanking(COLOR player);
 
@@ -59,51 +59,6 @@ public:
             int beta,
             MOVE *result,
             COLOR player);
-
-    int NegamaxPVS(
-            int searchDepth,
-            MOVE_ARRAY moves,
-            int &states,
-            int alpha,
-            int beta,
-            MOVE *result,
-            COLOR player);
-
-    MOVE AlphaBetaIterative(MOVE_ARRAY moves,
-                            int maxTime,
-                            COLOR player);
-
-    int AlphaBetaMax(int searchDepth,
-                     MOVE_ARRAY moves,
-                     int &states,
-                     int alpha,
-                     int beta,
-                     MOVE *result,
-                     COLOR player);
-
-    int AlphaBetaMin(int searchDepth,
-                     MOVE_ARRAY moves,
-                     int &states,
-                     int alpha,
-                     int beta,
-                     MOVE *result,
-                     COLOR player);
-
-    MOVE MinMaxIterative(MOVE_ARRAY moves,
-                         int maxTime,
-                         COLOR player);
-
-    int MinMaxMax(int searchDepth,
-                  MOVE_ARRAY moves,
-                  int &states,
-                  MOVE *result,
-                  COLOR player);
-
-    int MinMaxMin(int searchDepth,
-                  MOVE_ARRAY moves,
-                  int &states,
-                  MOVE *result,
-                  COLOR player);
 
 };
 

@@ -54,29 +54,9 @@ uint64_t GetColumnFromIndex(int index)
     }
 }
 
-std::string GetColumnLetterFromIndex(int index)
+char GetColumnLetterFromIndex(int index)
 {
-    switch (index)
-    {
-        case 0:
-            return "A";
-        case 1:
-            return "B";
-        case 2:
-            return "C";
-        case 3:
-            return "D";
-        case 4:
-            return "E";
-        case 5:
-            return "F";
-        case 6:
-            return "G";
-        case 7:
-            return "H";
-        default:
-            throw std::invalid_argument("index must be 0-7");
-    }
+    return static_cast<char>('A' + index);
 }
 
 std::string StringMultiply(std::string src, unsigned int times)
@@ -163,6 +143,22 @@ std::string Uint8ToString(uint8_t board)
         }
         board = board >> 1;
     }
+    return out;
+}
+
+std::string MoveForGameServer(MOVE move){
+    uint8_t xFrom = (move & 0b000111000000) >> 6;
+    uint8_t yFrom = (move & 0b111000000000) >> 9;
+    uint8_t xTo = (move & 0b000000000111);
+    uint8_t yTo = (move & 0b000000111000) >> 3;
+
+    std::string out = "";
+
+    out.append(std::to_string(std::tolower(GetColumnLetterFromIndex(xFrom))));
+    out.append(std::to_string(yFrom + 1));
+    out.append(std::to_string(std::tolower(GetColumnLetterFromIndex(xTo))));
+    out.append(std::to_string(yTo + 1));
+
     return out;
 }
 

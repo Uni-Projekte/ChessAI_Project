@@ -15,12 +15,12 @@ void pawn::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
         AddMove(moves, x, y, GetToX(en_passante), newY, EN_PASSANTE);
     }
 
-    if ((allPieces & SingleBitBoard(x+1, y) & ~currentColor) && InBounds(x+1, newY))
+    if ((allPieces & SingleBitBoard(x+1, newY) & ~currentColor) && InBounds(x+1, newY))
     {
         TryAddMove(moves, board, x, y, x + 1, newY);
     }
 
-    if ((allPieces & SingleBitBoard(x-1, y) & ~currentColor) && InBounds(x-1, newY))
+    if ((allPieces & SingleBitBoard(x-1, newY) & ~currentColor) && InBounds(x-1, newY))
     {
         TryAddMove(moves, board, x, y, x - 1, newY);
     }
@@ -39,7 +39,7 @@ void pawn::possibleMoves(MOVE_ARRAY &moves, Board* board, uint8_t x, uint8_t y, 
         else
         {
             AddMove(moves, x, y, x, newY, 0);
-            if ((y == 1 && color == WHITE) || (y == 6 && color == BLACK)) {
+            if (((y == 1 && color == WHITE) || (y == 6 && color == BLACK)) && (SingleBitBoard(x, y - direction * 2) & ~allPieces)) {
                 TryAddMove(moves, board, x, y, x, y - direction * 2);
             }
         }
