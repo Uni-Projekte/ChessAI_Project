@@ -44,7 +44,7 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int pawnFileCounts  = this->PawnFileCounts();
     int defence         = this->Defense();
     int pawnStructure   = this->PawnStructure();
-    int multiplierPiC = max(1, 30000 - this->board->GetFullMoveNumber());
+    int multiplierPiC = max(1,(3 - this->board->GetFullMoveNumber())*300);
     int pawnsInCenter   = this->PawnsInCenter(player, this->board->GetFullMoveNumber()) * multiplierPiC;
 
     return ((int) ( materialWorth + attackedFields + pawnFileCounts + defence + pawnStructure + pawnsInCenter));
@@ -91,7 +91,7 @@ bool MoveAlgorithms::inCheck(Board board)
     return in_check;
 }
 
-int MoveAlgorithms::QuiescenceSearch(int searchDepth,
+/*int MoveAlgorithms::QuiescenceSearch(int searchDepth,
                      MOVE_ARRAY moves,
                      int &states,
                      int alpha,
@@ -172,7 +172,7 @@ int MoveAlgorithms::QuiescenceSearch(int searchDepth,
     }
 
     return best;
-}
+}*/
 
 MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS, COLOR player)
 {
@@ -189,7 +189,7 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
 
     while (true)
     {
-        this->Negamax(searchDepth, moves, countStates, INT_MIN + 1, INT_MAX-1, &result, player);
+        this->Negamax(searchDepth, moves, countStates, INT_MIN + 1, INT_MAX-1, &result, player, true);
 
         searchDepth = searchDepth + 1;
         end = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -220,9 +220,14 @@ int MoveAlgorithms::Negamax(
         int alpha,
         int beta,
         MOVE *result,
-        COLOR player)
+        COLOR player,
+        bool root)
 {
     states += 1;
+    if (this->board->IsCheckmate(player))
+    {
+        return INT_MIN + 1;
+    }
     if (searchDepth <= 0)
     {
         return (-2 * player + 1) * BoardRanking(player);
@@ -231,41 +236,77 @@ int MoveAlgorithms::Negamax(
     std::unordered_map<uint64_t, TranspositionEntry>::iterator entryA;
     uint64_t boardKey = 0;
 
-    if(this->useTranspositionTable){
+    if (this->useTranspositionTable) {
         boardKey = this->keyGenerator->CalculateZobristKey(this->board);
         entryA = this->transpositionTable->find(boardKey);
-        if(entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
+
+        if (entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
             TranspositionEntry &entry = entryA->second;
-            if (entry.alpha >= beta) {
-                return entry.alpha;
+
+            // Check if we have a stored exact score
+            if (entry.exactScore != 0) {
+                return entry.exactScore;
             }
-            if (entry.beta <= alpha) {
-                return entry.beta;
+
+            // Check if we have a stored lower bound
+            if (entry.lowerBound >= beta) {
+                return entry.lowerBound; // Return the stored lower bound (beta cutoff)
             }
-            alpha = std::max(alpha, entry.alpha);
-            beta = std::min(beta, entry.beta);
+
+            // Check if we have a stored upper bound
+            if (entry.upperBound <= alpha) {
+                return entry.upperBound; // Return the stored upper bound (alpha cutoff)
+            }
+
+            // Update alpha and beta bounds with the stored values
+            alpha = std::max(alpha, entry.lowerBound);
+            beta = std::min(beta, entry.upperBound);
+        }
+    }
+    int best = INT_MIN + 1;
+    bool pvNode = (beta - alpha > 1); // Check if this is a PV (Principal Variation) node
+
+    Board oldBoard(this->board);
+
+    // Aspiration window search (first move)
+    if (pvNode && moves[1] != 0)
+    {
+        this->board->DoMove(moves[1]); // do move with index 1
+        NEW_MOVE_ARRAY(nextMoves);    // allocate memory for next moves
+        this->board->GetMoves(nextMoves); // get all moves
+        int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player), false);
+        best = std::max(best, val);
+        alpha = std::max(alpha, best);
+
+        if (this->copyUndo)
+        {
+            *this->board = oldBoard;
+        }
+
+        if (!root && (val <= alpha || val >= beta)) // Check if aspiration window failed
+        {
+            // Perform a full window search with regular PVS
+            val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player), false);
+            best = std::max(best, val);
+            alpha = std::max(alpha, best);
         }
     }
 
-    /*if (isQuiet(this->board))
+    // Regular search (remaining moves)
+    for (int i = 2; i < moves[0]; i++)
     {
-        int value = QuiescenceSearch(3, moves, states, beta, alpha, NULL, player);
-        return value;
-    }*/
+        this->board->DoMove(moves[i]); // do move with index i
+        NEW_MOVE_ARRAY(nextMoves);    // allocate memory for next moves
+        this->board->GetMoves(nextMoves); // get all moves
 
-    int best = INT_MIN+1;
+        // Null window search
+        int val = -Negamax(searchDepth - 1, nextMoves, states, -alpha - 1, -alpha, NULL, opponent(player), false);
+        if (val > alpha && val < beta)
+        {
+            // If within the window, perform a full window search
+            val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player), false);
+        }
 
-    Board oldBoard (this->board);
-    uint8_t oldMoveRights = this->board->GetMoveRights();
-    uint8_t oldEnpassent = this->board->GetEnPassant();
-    uint8_t oldHalfMoveClock = this->board->GetHalfMoveClock();
-
-    for (int i = 1; i < moves[0]; i++)
-    {
-        this->board->DoMove(moves[i]);    // do move with index i
-        NEW_MOVE_ARRAY(nextMoves);     // allocate memory for next moves
-        this->board->GetMoves(nextMoves);             // get all moves
-        int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player));
         if (val > best && result != NULL)
         {
             *result = moves[i];
@@ -273,10 +314,9 @@ int MoveAlgorithms::Negamax(
         best = std::max(best, val);
         alpha = std::max(alpha, best);
 
-        if (this->copyUndo) {
+        if (this->copyUndo)
+        {
             *this->board = oldBoard;
-        } else {
-            this->board->UndoMove(moves[i], oldMoveRights, oldEnpassent, oldHalfMoveClock);
         }
 
         if (beta <= alpha)
@@ -285,55 +325,69 @@ int MoveAlgorithms::Negamax(
         }
     }
 
-    if(this->useTranspositionTable){
-        if(entryA == this->transpositionTable->end() && this->transpositionTable->size() < 500000){
+    if (this->useTranspositionTable)
+    {
+        if (entryA == this->transpositionTable->end()) {
+            boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+            // Entry not found in the table, create a new one
             TranspositionEntry newEntry{};
             newEntry.depth = searchDepth;
-            newEntry.alpha = best;
-            newEntry.beta = best;
+
+            // Update bounds and exact score
+            if (best <= alpha) {
+                newEntry.upperBound = best;
+            } else if (best >= beta) {
+                newEntry.lowerBound = best;
+            } else {
+                newEntry.exactScore = best;
+                newEntry.lowerBound = best;
+                newEntry.upperBound = best;
+            }
+
             this->transpositionTable->insert({boardKey, newEntry});
-        }
-        else if(entryA != this->transpositionTable->end() && entryA->second.depth < searchDepth && entryA->second.alpha > best){
+        } else {
+            // Update the existing entry with new bounds and exact score
             entryA->second.depth = searchDepth;
-            entryA->second.alpha = best;
-            entryA->second.beta = best;
+
+            if (best <= alpha) {
+                entryA->second.upperBound = best;
+            } else if (best >= beta) {
+                entryA->second.lowerBound = best;
+            } else {
+                entryA->second.exactScore = best;
+                entryA->second.lowerBound = best;
+                entryA->second.upperBound = best;
+            }
         }
     }
 
     return best;
 }
 
-
-int MoveAlgorithms::MaterialWorth()
+int MoveAlgorithms::MaterialWorthWithoutPawns()
 {
     int ranking = 0;
 
-    uint64_t whiteKing = this->board->GetWhiteKing();
-    uint64_t whiteQueen = this->board->GetWhiteQueen();
-    uint64_t whiteRooks = this->board->GetWhiteRooks();
-    uint64_t whiteBishops = this->board->GetWhiteBishops();
-    uint64_t whiteKnights = this->board->GetWhiteKnights();
-    uint64_t whitePawns = this->board->GetWhitePawns();
+    ranking = ranking + kingValue   * popcount(this->board->GetWhiteKing());
+    ranking = ranking + queenValue  * popcount(this->board->GetWhiteQueen());
+    ranking = ranking + rookValue   * popcount(this->board->GetWhiteRooks());
+    ranking = ranking + bishopValue * popcount(this->board->GetWhiteBishops());
+    ranking = ranking + knightValue * popcount(this->board->GetWhiteKnights());
+    ranking = ranking - kingValue   * popcount(this->board->GetBlackKing());
+    ranking = ranking - queenValue  * popcount(this->board->GetBlackQueen());
+    ranking = ranking - rookValue   * popcount(this->board->GetBlackRooks());
+    ranking = ranking - bishopValue * popcount(this->board->GetBlackBishops());
+    ranking = ranking - knightValue * popcount(this->board->GetBlackKnights());
 
-    uint64_t blackKing = this->board->GetBlackKing();
-    uint64_t blackQueen = this->board->GetBlackQueen();
-    uint64_t blackRooks = this->board->GetBlackRooks();
-    uint64_t blackBishops = this->board->GetBlackBishops();
-    uint64_t blackKnights = this->board->GetBlackKnights();
-    uint64_t blackPawns = this->board->GetBlackPawns();
+    return ranking;
+}
 
-    ranking = ranking + 20000 * popcount(whiteKing);
-    ranking = ranking + 900 * popcount(whiteQueen);
-    ranking = ranking + 500 * popcount(whiteRooks);
-    ranking = ranking + 300 * popcount(whiteBishops);
-    ranking = ranking + 300 * popcount(whiteKnights);
-    ranking = ranking + 100 * popcount(whitePawns);
-    ranking = ranking - 20000 * popcount(blackKing);
-    ranking = ranking - 900 * popcount(blackQueen);
-    ranking = ranking - 500 * popcount(blackRooks);
-    ranking = ranking - 300 * popcount(blackBishops);
-    ranking = ranking - 300 * popcount(blackKnights);
-    ranking = ranking - 100 * popcount(blackPawns);
+int MoveAlgorithms::MaterialWorth()
+{
+    int ranking = MaterialWorthWithoutPawns();
+
+    ranking = ranking + pawnValue   * popcount(this->board->GetWhitePawns());
+    ranking = ranking - pawnValue   * popcount(this->board->GetBlackPawns());
 
     return ranking;
 }
@@ -384,22 +438,22 @@ int MoveAlgorithms::PawnFileCounts()
     uint64_t whitePawns = this->board->GetWhitePawns();
     uint64_t blackPawns = this->board->GetBlackPawns();
 
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnA) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnB) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnC) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnD) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnE) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnF) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnG) - 1);
-    ranking = ranking - 40 * (popcount(whitePawns & BoardColumnH) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnA) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnB) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnC) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnD) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnE) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnF) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnG) - 1);
-    ranking = ranking + 40 * (popcount(blackPawns & BoardColumnH) - 1);
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnA) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnB) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnC) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnD) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnE) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnF) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnG) - 1, 0));
+    ranking = ranking - 40 * (max(popcount(whitePawns & BoardColumnH) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnA) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnB) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnC) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnD) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnE) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnF) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnG) - 1, 0));
+    ranking = ranking + 40 * (max(popcount(blackPawns & BoardColumnH) - 1, 0));
 
     return ranking;
 }
@@ -414,9 +468,9 @@ int MoveAlgorithms::Defense()
     uint64_t white = this->board->GetWhite();
     uint64_t black = this->board->GetBlack();
 
-    ranking = ranking + 40 * popcount(attackedFromWhite & white);
+    ranking = ranking + 60 * popcount(attackedFromWhite & white);
 
-    ranking = ranking - 40 * popcount(attackedFromBlack & black);
+    ranking = ranking - 60 * popcount(attackedFromBlack & black);
 
     return ranking;
 }
@@ -451,10 +505,10 @@ int MoveAlgorithms::PawnStructure()
     uint64_t whiteAttacked = this->board->GetFromWhiteAttackedFields();
     uint64_t blackAttacked = this->board->GetFromBlackAttackedFields();
 
-
     ranking = ranking + 40 * popcount(pawns & white & whiteAttacked);
-
     ranking = ranking - 40 * popcount(pawns & black & blackAttacked);
+
+
 
     return ranking;
 }

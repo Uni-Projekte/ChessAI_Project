@@ -1195,3 +1195,67 @@ bool Board::Equals(Board other) const {
     && this->halfmove_clock == other.halfmove_clock
     && this->fullmove_number == other.fullmove_number;
 }
+
+bool Board::IsCheckmate(COLOR player) {
+    uint64_t isInCheck;
+    // First, check if the player's king is in check
+    switch (player) {
+        case WHITE:
+            isInCheck = this->attackedFromBlack & this->kings & this->white;
+            if (isInCheck) {
+                // If the king is in check, check if there are any legal moves available
+                NEW_MOVE_ARRAY(moves);
+                this->GetMoves(moves);
+
+                bool hasLegalMove = false;
+
+                Board oldBoard(this);
+
+                for (int i = 1; i < moves[0]; i++) {
+                    // Try each move and see if it results in the king being safe
+                    this->DoMove(moves[i]);
+                    this->MarkFields(BLACK);
+
+                    if (!bool(this->attackedFromBlack & this->kings & this->white)) {
+                        hasLegalMove = true;
+                        break;
+                    }
+
+                    *this = oldBoard;
+                }
+
+                return !hasLegalMove;
+            }
+            break;
+        case BLACK:
+            isInCheck = this->attackedFromWhite & this->kings & this->black;
+            if (isInCheck) {
+                // If the king is in check, check if there are any legal moves available
+                NEW_MOVE_ARRAY(moves);
+                this->GetMoves(moves);
+
+                bool hasLegalMove = false;
+
+                Board oldBoard(this);
+
+                for (int i = 1; i < moves[0]; i++) {
+                    // Try each move and see if it results in the king being safe
+                    this->DoMove(moves[i]);
+
+                    this->MarkFields(WHITE);
+                    if (!bool(this->attackedFromWhite & this->kings & this->black)) {
+                        hasLegalMove = true;
+                        break;
+                    }
+
+                    *this = oldBoard;
+                }
+
+                return !hasLegalMove;
+            }
+            break;
+    }
+
+
+    return false; // King is not in checkmate
+}

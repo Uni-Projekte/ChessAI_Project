@@ -56,7 +56,7 @@ uint64_t GetColumnFromIndex(int index)
 
 char GetColumnLetterFromIndex(int index)
 {
-    return static_cast<char>('A' + index);
+    return static_cast<char>('A' +   index);
 }
 
 std::string StringMultiply(std::string src, unsigned int times)
@@ -146,18 +146,19 @@ std::string Uint8ToString(uint8_t board)
     return out;
 }
 
-std::string MoveForGameServer(MOVE move){
-    uint8_t xFrom = (move & 0b000111000000) >> 6;
+std::string MoveForGameServer(MOVE move) {
+    uint8_t xFrom = 7-((move & 0b000111000000) >> 6);
     uint8_t yFrom = (move & 0b111000000000) >> 9;
-    uint8_t xTo = (move & 0b000000000111);
+    uint8_t xTo = 7-(move & 0b000000000111);
     uint8_t yTo = (move & 0b000000111000) >> 3;
 
     std::string out = "";
 
-    out.append(std::to_string(std::tolower(GetColumnLetterFromIndex(xFrom))));
-    out.append(std::to_string(yFrom + 1));
-    out.append(std::to_string(std::tolower(GetColumnLetterFromIndex(xTo))));
+    out.push_back(std::tolower(GetColumnLetterFromIndex(xFrom)));
+    out.append((std::to_string(yFrom + 1)));
+    out.push_back(std::tolower(GetColumnLetterFromIndex(xTo)));
     out.append(std::to_string(yTo + 1));
+    out.push_back('\n');
 
     return out;
 }

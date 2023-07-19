@@ -17,6 +17,7 @@ private:
     bool useTranspositionTable;
     bool copyUndo;
 
+
 public:
     MoveAlgorithms(Board *board,
                    std::unordered_map<uint64_t ,TranspositionEntry> *transpositionTable,
@@ -29,6 +30,17 @@ public:
     MOVE GetMoveAlphaBeta(int maxTime = 1000);
     MOVE GetMoveMinMax(int maxTime = 1000);
 
+
+    const int pawnValue = 100;
+    const int knightValue = 300;
+    const int bishopValue = 320;
+    const int rookValue = 500;
+    const int queenValue = 900;
+    const int kingValue = 20000;
+    const float endgameMaterialStart = rookValue * 2 + bishopValue + knightValue;
+
+    float EndgamePhaseWeight(int materialCountWithoutPawns);
+    int MaterialWorthWithoutPawns();
     int MaterialWorth();
     int AttackedFields();
     int PawnFileCounts();
@@ -58,7 +70,8 @@ public:
             int alpha,
             int beta,
             MOVE *result,
-            COLOR player);
+            COLOR player,
+            bool root);
 
 };
 

@@ -73,7 +73,7 @@ public:
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
 
-
+    bool IsCheckmate(COLOR player);
     // Check if piece of player is on position with row and column
     uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);
 

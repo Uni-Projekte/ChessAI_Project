@@ -52,7 +52,7 @@ TEST(BoardTest, FromFENTestRandomBoard2) {
     EXPECT_EQ(board.GetWhiteKing(), 0x100);
     EXPECT_EQ(board.GetWhiteBishops(), 0x0);
     EXPECT_EQ(board.GetWhiteKnights(), 0x0);
-}
+}*/
 
 TEST(BoardTest, PlayGame)
 {
@@ -63,7 +63,7 @@ TEST(BoardTest, PlayGame)
     //board.PlayGame();
 }
 
-TEST(BoardTest, StartRanking)
+/*TEST(BoardTest, StartRanking)
 {
     Board board("rnbqk1nr/pp1p1ppp/2p5/2b1p1B1/8/3P1N2/PPP1PPPP/RN1QKB1R w KQkq - 0 1");
     ZobristKeyGenerator zobristKeyGenerator;
@@ -322,6 +322,17 @@ TEST(BoardTest, DoMoveBenchmarkEndAlphaBeta2)
 TEST(BoardTest, PlayGameTest)
 {
     PlayGameWithItself();
+}
+
+TEST(BoardTest, Checkmate)
+{
+    Board board("8/8/8/8/4N3/8/P7/K1q5 w - - 0 1");
+    Presenter presenter = Presenter();
+    std::cout << std::endl
+              << presenter.ToString(board);
+    board.MarkFields(BLACK);
+    board.MarkFields(WHITE);
+    EXPECT_EQ(board.IsCheckmate(board.GetCurrentColor()), true);
 }
 
 

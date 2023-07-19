@@ -354,18 +354,11 @@ enum FlagEntry {
 // Define a type for the transposition table entry
 struct TranspositionEntry {
     int depth;
-    int alpha;
-    int beta;
-    MOVE bestMoveAlpha;
-    MOVE bestMoveBeta;
+    int exactScore;
+    int lowerBound;
+    int upperBound;
 };
 
-struct TranspositionEntryNegamax {
-    int depth;
-    int value;
-    FlagEntry flag;
-    MOVE bestMove;
-};
 
 std::string MoveForGameServer(MOVE move);
 

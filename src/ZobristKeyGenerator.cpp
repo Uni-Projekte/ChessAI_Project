@@ -1,6 +1,5 @@
 #include "ZobristKeyGenerator.h"
 
-
 ZobristKeyGenerator::ZobristKeyGenerator()
 {
     this->InitRandomFields();
@@ -22,7 +21,7 @@ void ZobristKeyGenerator::InitRandomFields(){
 
 uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
 
-    uint64_t zobristKey = 0;
+     uint64_t zobristKey = 0;
 
     uint64_t black = board.GetBlack();
     uint64_t white = board.GetWhite();
@@ -45,6 +44,7 @@ uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
                 {
                     zobristKey ^= this->randomKeyFields[y][x][6];
                     //zobristKey ^= SingleBitBoard(x,y);
+
                 }
                 else if (queens & currentPosition)
                 {
