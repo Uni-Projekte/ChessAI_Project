@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include "../components/Board.h"
-#include "../components/presenter.h"
-#include "../components/MoveGenerator/pieces/bishop.h"
-#include "../components/MoveGenerator/pieces/queen.h"
-#include "../components/MoveGenerator/pieces/rook.h"
-#include "../components/MoveGenerator/pieces/knight.h"
-#include "../components/MoveGenerator/pieces/king.h"
+#include "../src/Board.h"
+#include "../src/presenter.h"
+#include "../src/MoveGenerator/pieces/bishop.h"
+#include "../src/MoveGenerator/pieces/queen.h"
+#include "../src/MoveGenerator/pieces/rook.h"
+#include "../src/MoveGenerator/pieces/knight.h"
+#include "../src/MoveGenerator/pieces/king.h"
 #include <filesystem>
 #include <bitset>
 #include <string>
@@ -38,7 +38,6 @@ TEST(PiecesTest, BishopTest1) {
     };
 
     std::unordered_set<int> expectedMovesSet(expectedMoves, expectedMoves + expectedMoves[0]);
-
 
     NEW_MOVE_ARRAY(moves);
     bishop::possibleMoves(moves, &board, board.GetPosition("e5") >> 3, board.GetPosition("e5") & 0b111, 0);

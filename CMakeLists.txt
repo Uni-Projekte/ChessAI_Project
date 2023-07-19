@@ -5,12 +5,13 @@ project(ChessAI_Project)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_executable(${PROJECT_NAME} ChessAI_Project.cpp)
+add_executable(${PROJECT_NAME} ChessAI_Project.cpp src/contest/gameclient.cpp src/contest/gameclient.h)
 
-add_subdirectory(components)
-add_subdirectory(components_tests)
+add_subdirectory(src)
+add_subdirectory(test)
 
-target_link_libraries(${PROJECT_NAME} components)
+find_package(jsoncpp CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} src JsonCpp::JsonCpp)
 
 if(NOT googletest)
 	include(FetchContent)

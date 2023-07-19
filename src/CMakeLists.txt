@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(components)
+project(src)
 
 #SET(GCC_COVERAGE_COMPILE_FLAGS "-O2 -g")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
@@ -26,4 +26,4 @@ set(ChessAI_Project_Src
         MoveGenerator/pieces/rook.cpp
         MoveGenerator/pieces/rook.h ZobristKeyGenerator.cpp ZobristKeyGenerator.h MoveAlgorithms.cpp MoveAlgorithms.h MoveGenerator/MoveGeneratorHelper.cpp MoveGenerator/MoveGeneratorHelper.h Game.cpp Game.h)
 
-add_library(components ${ChessAI_Project_Src} )
+add_library(src ${ChessAI_Project_Src} )

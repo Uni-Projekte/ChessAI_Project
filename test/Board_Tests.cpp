@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
-#include "../components/Board.h"
-#include "../components/MoveAlgorithms.h"
-#include "../components/presenter.h"
-#include "../components/Game.h"
+#include "../src/Board.h"
+#include "../src/MoveAlgorithms.h"
+#include "../src/presenter.h"
+#include "../src/Game.h"
 #include <filesystem>
 namespace fs = std::filesystem;
 

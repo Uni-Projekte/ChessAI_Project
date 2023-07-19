@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include "../components/helper.h"
+#include "../src/helper.h"
 
 TEST(HelperTest, FieldIndexTest) {
     uint8_t fieldIndex = FieldIndex(2,2);
