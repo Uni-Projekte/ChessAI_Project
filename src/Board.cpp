@@ -843,7 +843,26 @@ void Board::MarkFields(COLOR currentColor){
     }
 }
 
-void Board::GetMoves(MOVE_ARRAY &moves)
+void Board::GetMoves(MOVE_ARRAY &moves) {
+    switch (this->GetCurrentColor())
+    {
+        case BLACK:
+            if(this->attackedFromWhite & this->kings & this->black){
+                this->OnlyPossibleMovesInCheck(BLACK, moves);
+                return;
+            }
+            break;
+        case WHITE:
+            if(this->attackedFromBlack & this->kings & this->white){
+                this->OnlyPossibleMovesInCheck(WHITE, moves);
+                return;
+            }
+            break;
+    }
+    this->GetMovesNoCheck(moves);
+}
+
+void Board::GetMovesNoCheck(MOVE_ARRAY &moves)
 {
     uint8_t whiteKingPostition = SingleBitboardToPosition(this->kings & this->white);
     uint8_t blackKingPostition = SingleBitboardToPosition(this->kings & this->black);
@@ -1196,7 +1215,7 @@ bool Board::Equals(Board other) const {
     && this->fullmove_number == other.fullmove_number;
 }
 
-bool Board::IsCheckmate(COLOR player) {
+void Board::OnlyPossibleMovesInCheck(COLOR player, MOVE_ARRAY &possibleMovesInCheck) {
     uint64_t isInCheck;
     // First, check if the player's king is in check
     switch (player) {
@@ -1204,58 +1223,71 @@ bool Board::IsCheckmate(COLOR player) {
             isInCheck = this->attackedFromBlack & this->kings & this->white;
             if (isInCheck) {
                 // If the king is in check, check if there are any legal moves available
-                NEW_MOVE_ARRAY(moves);
-                this->GetMoves(moves);
-
-                bool hasLegalMove = false;
+                NEW_MOVE_ARRAY(movesTemp);
+                this->GetMovesNoCheck(movesTemp);
 
                 Board oldBoard(this);
 
-                for (int i = 1; i < moves[0]; i++) {
+                for (int i = 1; i < movesTemp[0]; i++) {
                     // Try each move and see if it results in the king being safe
-                    this->DoMove(moves[i]);
+                    this->DoMove(movesTemp[i]);
                     this->MarkFields(BLACK);
 
                     if (!bool(this->attackedFromBlack & this->kings & this->white)) {
-                        hasLegalMove = true;
+                        possibleMovesInCheck[0]++;
+                        possibleMovesInCheck[possibleMovesInCheck[0]] = movesTemp[i];
                         break;
                     }
 
                     *this = oldBoard;
                 }
 
-                return !hasLegalMove;
             }
             break;
         case BLACK:
             isInCheck = this->attackedFromWhite & this->kings & this->black;
             if (isInCheck) {
                 // If the king is in check, check if there are any legal moves available
-                NEW_MOVE_ARRAY(moves);
-                this->GetMoves(moves);
-
-                bool hasLegalMove = false;
+                NEW_MOVE_ARRAY(movesTemp);
+                this->GetMovesNoCheck(movesTemp);
 
                 Board oldBoard(this);
 
-                for (int i = 1; i < moves[0]; i++) {
+                for (int i = 1; i < movesTemp[0]; i++) {
                     // Try each move and see if it results in the king being safe
-                    this->DoMove(moves[i]);
+                    this->DoMove(movesTemp[i]);
 
                     this->MarkFields(WHITE);
                     if (!bool(this->attackedFromWhite & this->kings & this->black)) {
-                        hasLegalMove = true;
+                        possibleMovesInCheck[0]++;
+                        possibleMovesInCheck[possibleMovesInCheck[0]] = movesTemp[i];
                         break;
                     }
 
                     *this = oldBoard;
                 }
+            }
+            break;
+    }
+}
 
-                return !hasLegalMove;
+bool Board::IsCheckmate(COLOR player){
+    NEW_MOVE_ARRAY(possible);
+    switch (player)
+    {
+        case BLACK:
+            if(this->attackedFromWhite & this->kings & this->black){
+                this->OnlyPossibleMovesInCheck(BLACK, possible);
+                return possible[0] == 1;
+            }
+            break;
+        case WHITE:
+            if(this->attackedFromBlack & this->kings & this->white){
+                this->OnlyPossibleMovesInCheck(WHITE, possible);
+                return possible[0] == 1;
             }
             break;
     }
 
-
-    return false; // King is not in checkmate
+    return false;
 }

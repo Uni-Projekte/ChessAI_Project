@@ -52,10 +52,10 @@ int MoveAlgorithms::BoardRanking(COLOR player)
 
 
 
-bool MoveAlgorithms::isQuiet(Board board)
+/*bool MoveAlgorithms::isQuiet(Board board)
 {
     MOVE_ARRAY moves;
-    board.GetMoves(moves);
+    boardGetMoves(moves);
 
     for (int i = 1; i < moves[0]; ++i)
     {
@@ -68,7 +68,7 @@ bool MoveAlgorithms::isQuiet(Board board)
         }
     }
     return true;
-}
+}*/
 
 bool MoveAlgorithms::inCheck(Board board)
 {
@@ -224,7 +224,7 @@ int MoveAlgorithms::Negamax(
         bool root)
 {
     states += 1;
-    if (this->board->IsCheckmate(player))
+    if (moves[0] == 1)
     {
         return INT_MIN + 1;
     }
@@ -275,13 +275,18 @@ int MoveAlgorithms::Negamax(
         NEW_MOVE_ARRAY(nextMoves);    // allocate memory for next moves
         this->board->GetMoves(nextMoves); // get all moves
         int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player), false);
-        best = std::max(best, val);
+
         alpha = std::max(alpha, best);
 
         if (this->copyUndo)
         {
             *this->board = oldBoard;
         }
+
+        if(best>=beta){
+            return best;
+        }
+
 
         if (!root && (val <= alpha || val >= beta)) // Check if aspiration window failed
         {

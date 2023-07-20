@@ -73,7 +73,9 @@ public:
     // Constructor that initializes the chessboard from a FEN string
     explicit Board(std::string fen);
 
+    void OnlyPossibleMovesInCheck(COLOR player, MOVE_ARRAY &possibleMovesInCheck);
     bool IsCheckmate(COLOR player);
+
     // Check if piece of player is on position with row and column
     uint64_t IsOnField(uint64_t player, uint64_t piece, uint64_t row, uint64_t column);
 
@@ -96,6 +98,8 @@ public:
     void UndoMove(MOVE move, uint8_t oldMoveRights, uint8_t oldEnPassent, uint8_t oldHalfmoveClock);
 
     void GetMoves(MOVE_ARRAY &moves);
+
+    void GetMovesNoCheck(MOVE_ARRAY &moves);
 
     void MarkFields(COLOR currentColor);
 

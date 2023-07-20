@@ -2,7 +2,7 @@
 #include <iostream>
 
 void PlayGameWithItself() {
-    Board board("7k/7p/3n4/8/5Q2/8/8/K7 w - - 0 1");
+    Board board("7k/8/8/2q5/8/4N3/P7/K7 b - - 0 1");
     Presenter presenter = Presenter();
 
     board.MarkFields(BLACK);
