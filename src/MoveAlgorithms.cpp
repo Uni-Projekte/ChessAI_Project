@@ -11,6 +11,8 @@ MoveAlgorithms::MoveAlgorithms(Board *board,
 {
     this->board = board;
     this->transpositionTable = transpositionTable;
+    this->killerMoves = std::unordered_map<uint64_t , std::vector<MOVE> >();
+    this->historyMoves = std::unordered_map<uint64_t , std::tuple<uint8_t, MOVE> >();
     this->keyGenerator = keyGenerator;
     this->useTranspositionTable = useTranspositionTable;
     this->copyUndo = copyUndo;
@@ -46,8 +48,9 @@ int MoveAlgorithms::BoardRanking(COLOR player)
     int pawnStructure   = this->PawnStructure();
     int multiplierPiC = max(1,(3 - this->board->GetFullMoveNumber())*300);
     int pawnsInCenter   = this->PawnsInCenter(player, this->board->GetFullMoveNumber()) * multiplierPiC;
+    int kingDistanceToCenter = this->KingDistanceToCenter();
 
-    return ((int) ( materialWorth + attackedFields + pawnFileCounts + defence + pawnStructure + pawnsInCenter));
+    return ((int) ( materialWorth + attackedFields + pawnFileCounts + defence + pawnStructure + pawnsInCenter + kingDistanceToCenter));
 }
 
 
@@ -186,10 +189,23 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
 
 
     int64_t end;
+    uint64_t boardKey = 0;
+    std::tuple<uint8_t, MOVE> historyMove;
+    boardKey = this->keyGenerator->CalculateZobristKey(this->board);
 
-    while (true)
+    this->historyMoves.insert({boardKey, std::tuple<uint8_t, MOVE> {0, 0}});
+    while (searchDepth <= 4)
     {
         this->Negamax(searchDepth, moves, countStates, INT_MIN + 1, INT_MAX-1, &result, player, true);
+
+        boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+
+        historyMove = this->historyMoves.find(boardKey)->second;
+
+        if (std::get<0>(historyMove) > searchDepth) {
+            historyMove = std::tuple<uint8_t, MOVE> {searchDepth, result};
+        }
+
 
         searchDepth = searchDepth + 1;
         end = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -202,10 +218,25 @@ MOVE MoveAlgorithms::NegamaxIterative(MOVE_ARRAY moves, int maxTime, bool usePVS
         {
             break;
         }
+
+        std::cout << "Time:" << end - start << std::endl;
+        std::cout <<  "States: "<< countStates<< std::endl;
+        std::cout << "Max Time:" << maxTime << std::endl;
+
+        std::cout << "time is over iterations to depth:" << searchDepth << std::endl;
+    }
+
+    this->Negamax(5, moves, countStates, INT_MIN + 1, INT_MAX-1, &result, player, true);
+
+    boardKey = this->keyGenerator->CalculateZobristKey(this->board);
+    historyMove = this->historyMoves.find(boardKey)->second;
+
+    if (std::get<0>(historyMove) > searchDepth) {
+        historyMove = std::tuple<uint8_t, MOVE> {searchDepth, result};
     }
 
     std::cout << "Time:" << end - start << std::endl;
-    std:cout <<  "States: "<< countStates<< std::endl;
+    std::cout <<  "States: "<< countStates<< std::endl;
     std::cout << "Max Time:" << maxTime << std::endl;
 
     std::cout << "time is over iterations to depth:" << searchDepth << std::endl;
@@ -237,12 +268,11 @@ int MoveAlgorithms::Negamax(
     uint64_t boardKey = 0;
 
     if (this->useTranspositionTable) {
-        boardKey = this->keyGenerator->CalculateZobristKey(this->board);
         entryA = this->transpositionTable->find(boardKey);
 
         if (entryA != this->transpositionTable->end() && entryA->second.depth >= searchDepth) {
             TranspositionEntry &entry = entryA->second;
-
+            boardKey = this->keyGenerator->CalculateZobristKey(this->board);
             // Check if we have a stored exact score
             if (entry.exactScore != 0) {
                 return entry.exactScore;
@@ -273,6 +303,7 @@ int MoveAlgorithms::Negamax(
     {
         this->board->DoMove(moves[1]); // do move with index 1
         NEW_MOVE_ARRAY(nextMoves);    // allocate memory for next moves
+        sortMoves(nextMoves);
         this->board->GetMoves(nextMoves); // get all moves
         int val = -Negamax(searchDepth - 1, nextMoves, states, -beta, -alpha, NULL, opponent(player), false);
         best = std::max(best, val);
@@ -297,6 +328,7 @@ int MoveAlgorithms::Negamax(
     {
         this->board->DoMove(moves[i]); // do move with index i
         NEW_MOVE_ARRAY(nextMoves);    // allocate memory for next moves
+        sortMoves(nextMoves);
         this->board->GetMoves(nextMoves); // get all moves
 
         // Null window search
@@ -321,7 +353,14 @@ int MoveAlgorithms::Negamax(
 
         if (beta <= alpha)
         {
-            break;
+            if(boardKey == 0){
+                boardKey = this->keyGenerator->CalculateZobristKey(this->board);;
+            }
+            if(this->killerMoves.find(boardKey) == this->killerMoves.end()){
+                this->killerMoves.insert(std::pair<uint64_t, std::vector<MOVE>>(boardKey, std::vector<MOVE>()));
+            }
+
+            this->killerMoves.find(boardKey)->second.push_back(moves[i]);
         }
     }
 
@@ -512,4 +551,66 @@ int MoveAlgorithms::PawnStructure()
 
     return ranking;
 }
+
+int MoveAlgorithms::KingDistanceToCenter(){
+    uint8_t posBlackKing = SingleBitboardToPosition(this->board->GetBlackKing());
+    uint8_t posWhiteKing = SingleBitboardToPosition(this->board->GetWhiteKing());
+
+    uint8_t posBlackKingX = (posBlackKing & 0b111000 >> 3);
+    uint8_t posBlackKingY = (posBlackKing & 0b111);
+
+    uint8_t posWhiteKingX = (posWhiteKing & 0b111000 >> 3);
+    uint8_t posWhiteKingY = (posWhiteKing & 0b111);
+
+    double blackKingDistanceUpperLeft = sqrt(pow(posBlackKingX - 3, 2) + pow(posBlackKingY - 4, 2));
+    double blackKingDistanceUpperRight = sqrt(pow(posBlackKingX - 4, 2) + pow(posBlackKingY - 4, 2));
+    double blackKingDistanceLowerLeft = sqrt(pow(posBlackKingX - 3, 2) + pow(posBlackKingY - 3, 2));
+    double blackKingDistanceLowerRight = sqrt(pow(posBlackKingX - 4, 2) + pow(posBlackKingY - 3, 2));
+
+    double whiteKingDistanceUpperLeft = sqrt(pow(posWhiteKingX - 3, 2) + pow(posWhiteKingY - 4, 2));
+    double whiteKingDistanceUpperRight = sqrt(pow(posWhiteKingX - 4, 2) + pow(posWhiteKingY - 4, 2));
+    double whiteKingDistanceLowerLeft = sqrt(pow(posWhiteKingX - 3, 2) + pow(posWhiteKingY - 3, 2));
+    double whiteKingDistanceLowerRight = sqrt(pow(posWhiteKingX - 4, 2) + pow(posWhiteKingY - 3, 2));
+
+    double blackKingDistance = std::min({blackKingDistanceUpperLeft, blackKingDistanceUpperRight, blackKingDistanceLowerLeft, blackKingDistanceLowerRight});
+    double whiteKingDistance = std::min({whiteKingDistanceUpperLeft, whiteKingDistanceUpperRight, whiteKingDistanceLowerLeft, whiteKingDistanceLowerRight});
+
+    int ranking = (int) (100 * (whiteKingDistance - blackKingDistance));
+
+}
+
+int MoveAlgorithms::KingSafety(){
+    int amountPinnedBlackPieces = std::popcount(this->board->GetBlackPinnedPieces());
+    int amountPinnedWhitePieces = std::popcount(this->board->GetWhitePinnedPieces());
+    return 50 * (amountPinnedWhitePieces - amountPinnedBlackPieces);
+}
+
+
+void MoveAlgorithms::sortMoves(MOVE_ARRAY moves)
+{
+    int pointerSorted = 1;
+    uint64_t zobristKey = this->keyGenerator->CalculateZobristKey(this->board);
+    if(this->killerMoves.find(zobristKey) == this->killerMoves.end()){
+        this->killerMoves.insert(std::pair<uint64_t, std::vector<MOVE>>(zobristKey, std::vector<MOVE>()));
+    }
+    std::vector<MOVE> kMoves = this->killerMoves.find(zobristKey)->second;
+    bool useHistory = true;
+    if(this->historyMoves.find(zobristKey) == this->historyMoves.end()){
+        this->historyMoves.insert(std::pair<uint64_t, std::tuple<int, MOVE>>(zobristKey, std::tuple<int, MOVE>(0, 0)));
+        useHistory = false;
+    }
+    std::tuple<int, MOVE> hMoves = this->historyMoves.find(zobristKey)->second;
+
+    for(int i = 1; i < moves[0]; i++){
+        if(std::find(kMoves.begin(), kMoves.end(), moves[i]) != kMoves.end()
+                || (useHistory && std::get<1>(hMoves) == moves[i])){
+            MOVE temp = moves[pointerSorted];
+            moves[pointerSorted] = moves[i];
+            moves[i] = temp;
+            pointerSorted++;
+        }
+    }
+}
+
+
 

@@ -8,11 +8,14 @@
 #include <bit>
 #include "ZobristKeyGenerator.h"
 #include "helper.h"
+#include <vector>
 
 class MoveAlgorithms {
 private:
     Board *board;
     std::unordered_map<uint64_t , TranspositionEntry> *transpositionTable;//0. Best Move 1. Alpha 2. Beta
+    std::unordered_map<uint64_t , std::tuple<uint8_t, MOVE>> historyMoves;
+    std::unordered_map<uint64_t , std::vector<MOVE> > killerMoves;
     ZobristKeyGenerator *keyGenerator;
     bool useTranspositionTable;
     bool copyUndo;
@@ -47,6 +50,8 @@ public:
     int Defense();
     int PawnStructure();
     int PawnsInCenter(COLOR player, int fullMoveNumber);
+    int KingDistanceToCenter();
+    int KingSafety();
 
     int BoardRanking(COLOR player);
 
@@ -73,6 +78,7 @@ public:
             COLOR player,
             bool root);
 
+    void sortMoves(MOVE_ARRAY moves);
 };
 
 #endif //CHESSAI_PROJECT_MOVEALGORITHMS_H

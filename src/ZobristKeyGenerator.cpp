@@ -10,12 +10,16 @@ void ZobristKeyGenerator::InitRandomFields(){
     std::mt19937_64 eng(rd());                       // Seed the random number engine
     std::uniform_int_distribution<uint64_t> distr;   // Distribution for uint64_t
 
-    for(int row = 0; row <= 7; row++){
-        for(int column = 0; column <=7; column++){
-            for(int field = 0; field <= 11; field++){
+    for(int row = 0; row < 8; row++){
+        for(int column = 0; column < 8; column++){
+            for(int field = 0; field < 12; field++){
                 this->randomKeyFields[row][column][field] = distr(eng);
             }
         }
+    }
+
+    for(int i = 0; i<7; i++){
+        this->randomRights[i] = distr(eng);
     }
 }
 
@@ -31,6 +35,38 @@ uint64_t ZobristKeyGenerator::CalculateZobristKey(Board board){
     uint64_t knights = board.GetKnights();
     uint64_t rooks = board.GetRooks();
     uint64_t pawns = board.GetPawns();
+
+    uint8_t moveRights = board.GetMoveRights();
+    uint8_t enPassant = board.GetEnPassant();
+    COLOR playerTurn = board.GetCurrentColor();
+
+    switch (playerTurn) {
+        case WHITE:
+            zobristKey ^= this->randomRights[0];
+            break;
+        case BLACK:
+            zobristKey ^= this->randomRights[1];
+            break;
+        default:
+            break;
+    }
+
+    if(moveRights & 0b10000000){
+        zobristKey ^= this->randomRights[2];
+    }
+    if(moveRights & 0b01000000){
+        zobristKey ^= this->randomRights[3];
+    }
+    if(moveRights & 0b00100000){
+        zobristKey ^= this->randomRights[4];
+    }
+    if(moveRights & 0b00010000){
+        zobristKey ^= this->randomRights[5];
+    }
+
+    if(enPassant & 0b10000000){
+        zobristKey ^= this->randomRights[6];
+    }
 
 
     for (uint8_t x = 0; x < 8; x = x + 1)
