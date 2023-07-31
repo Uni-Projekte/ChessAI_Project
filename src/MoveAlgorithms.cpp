@@ -582,7 +582,7 @@ int MoveAlgorithms::KingDistanceToCenter(){
 int MoveAlgorithms::KingSafety(){
     int amountPinnedBlackPieces = std::popcount(this->board->GetBlackPinnedPieces());
     int amountPinnedWhitePieces = std::popcount(this->board->GetWhitePinnedPieces());
-    return 50 * (amountPinnedWhitePieces - amountPinnedBlackPieces);
+    return 50 * (amountPinnedBlackPieces - amountPinnedWhitePieces);
 }
 
 
